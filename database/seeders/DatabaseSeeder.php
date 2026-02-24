@@ -22,5 +22,7 @@ class DatabaseSeeder extends Seeder
                 'password' => bcrypt('Admin@Bree2025!'),
             ]
         );
+
+        $this->call(PermissionSeeder::class);
     }
 }
