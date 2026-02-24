@@ -5,7 +5,175 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/* ============================================================
+   FONDATION BREE — Design Tokens
+   Brand: Magenta | Navy | Gold | White | Off-white
+   NO CSS gradients — solid colors only
+   ============================================================ */
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* Fonts */
+    --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+    /* Brand Colors */
+    --color-primary: #c80078;
+    --color-primary-dark: #a8006a;
+    --color-primary-light: #e8009a;
+
+    --color-secondary: #143c64;
+    --color-secondary-dark: #002850;
+    --color-secondary-light: #285078;
+
+    --color-accent: #c8a03c;
+    --color-accent-light: #dcc864;
+    --color-accent-dark: #a07828;
+
+    --color-off-white: #f8f5f0;
+    --color-warm-gray: #e8e4de;
+
+    /* Semantic aliases for Tailwind utilities */
+    --color-bree-magenta: #c80078;
+    --color-bree-magenta-dark: #a8006a;
+    --color-bree-navy: #143c64;
+    --color-bree-navy-dark: #002850;
+    --color-bree-navy-light: #285078;
+    --color-bree-gold: #c8a03c;
+    --color-bree-gold-light: #dcc864;
+    --color-bree-off-white: #f8f5f0;
+}
+
+/* ============================================================
+   Global Base Styles
+   ============================================================ */
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-sans);
+    color: #1a1a2e;
+    background-color: #ffffff;
+}
+
+/* Heading typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    line-height: 1.2;
+}
+
+/* Focus styles — accessible Magenta ring */
+*:focus-visible {
+    outline: 3px solid #c80078;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* ============================================================
+   Custom Utility Classes
+   ============================================================ */
+
+.font-heading {
+    font-family: var(--font-heading);
+}
+
+.text-primary { color: #c80078; }
+.bg-primary { background-color: #c80078; }
+.border-primary { border-color: #c80078; }
+
+.text-secondary { color: #143c64; }
+.bg-secondary { background-color: #143c64; }
+.bg-secondary-dark { background-color: #002850; }
+
+.text-accent { color: #c8a03c; }
+.bg-accent { background-color: #c8a03c; }
+.border-accent { border-color: #c8a03c; }
+
+.bg-off-white { background-color: #f8f5f0; }
+
+/* ============================================================
+   Button Components
+   ============================================================ */
+
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem 1.5rem;
+    background-color: #c80078;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    border: 2px solid #c80078;
+    transition: background-color 150ms ease, border-color 150ms ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-primary:hover {
+    background-color: #a8006a;
+    border-color: #a8006a;
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem 1.5rem;
+    background-color: transparent;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    border: 2px solid #ffffff;
+    transition: background-color 150ms ease, color 150ms ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.625rem 1.5rem;
+    background-color: transparent;
+    color: #c80078;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+    border: 2px solid #c80078;
+    transition: background-color 150ms ease, color 150ms ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-outline:hover {
+    background-color: #c80078;
+    color: #ffffff;
+}
+
+/* ============================================================
+   Gale Loading States
+   ============================================================ */
+
+[x-cloak] { display: none !important; }
+
+/* ============================================================
+   Scroll Reveal Animation Classes (GSAP targets)
+   ============================================================ */
+
+[data-animate] {
+    opacity: 0;
+}
+
+[data-animate].animated {
+    opacity: 1;
 }
