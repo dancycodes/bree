@@ -1,4 +1,17 @@
 import './bootstrap';
+import { initAnimations, killAnimations, pageTransitionIn } from './animations';
 
-// Google Fonts will be loaded via <link> in the layout head for performance.
-// This file handles JS-level initializations.
+// Initialize animations on first page load
+document.addEventListener('DOMContentLoaded', () => {
+    initAnimations();
+});
+
+// Hook into Gale navigation lifecycle
+document.addEventListener('gale:navigated', () => {
+    initAnimations();
+    pageTransitionIn();
+});
+
+document.addEventListener('gale:navigating', () => {
+    killAnimations();
+});
