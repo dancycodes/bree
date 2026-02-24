@@ -4,13 +4,13 @@
             "command": "php",
             "args": ["artisan", "boost:mcp"]
         },
-        "state-manager": {
+        "dd-manager": {
             "command": "node",
             "args": [
-                "C:/Users/pc/.claude/mcp-servers/state-manager/build/index.js"
+                "C:/Users/pc/.claude/mcp-servers/dd-manager/build/index.js"
             ],
             "env": {
-                "STATE_DIR": "C:/Users/pc/Herd/dmc/.executor"
+                "DD_DIR": "C:/Users/pc/Herd/bree-foundation/.dancydev"
             }
         }
     }
