@@ -230,3 +230,47 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - CRITICAL: ALWAYS use `search-docs` tool for version-specific Pest documentation and updated code examples.
 - IMPORTANT: Activate `pest-testing` every time you're working with a Pest or testing-related task.
 </laravel-boost-guidelines>
+
+<!-- EXECUTOR:START -->
+## Fondation BREE Website — Implementation Reference
+
+### Tech Stack
+| Layer | Technology | Version |
+|-------|-----------|---------|
+| Backend | Laravel | 12 |
+| Reactivity | Gale (SSE + Alpine.js) | latest |
+| Styling | Tailwind CSS | v4 |
+| Database | PostgreSQL | 16 |
+| Payments | Flutterwave | v3 |
+| RBAC | Spatie Permission | latest |
+| Media | Spatie Media Library + Intervention Image | latest |
+| Logging | Spatie Activitylog | latest |
+| Spam | Spatie Honeypot | latest |
+| Animations | GSAP + ScrollTrigger | free tier |
+
+### Brand
+- Primary: Magenta `#c80078` | Secondary: Navy `#143c64` / `#002850` | Accent: Gold `#c8a03c`
+- Fonts: Playfair Display (headings) + Inter (body)
+- Logo: `public/images/logo.png` | Section images: `public/images/sections/`
+- **NO CSS gradients anywhere**
+
+### Key Rules
+- All nav via `Gale::navigate()` — zero full reloads
+- Every admin route/action protected by named Spatie permission
+- Bilingual FR (default) + EN — all text via `__('key')`
+- Flutterwave: inline modal, webhook at POST `/webhook/flutterwave` (CSRF-exempt)
+- Honeypot on all public forms via `@honeypot` directive
+- GSAP ScrollTrigger killed on Gale navigation, re-initialized on new page
+
+### Skills to Activate Per Feature
+- Any blade/controller: **gale** skill
+- Any UI component: **ui-designer** + **frontend-design** skills
+- Any animation: **gsap-sequencing** + **awwwards-animations** skills
+- Images needed: **unsplash-asset-images** skill
+- Any test: **pest-testing** skill
+
+<!-- DANCYDEV:STATE -->
+Phase: implementing | Progress: 1/90
+Last: F-001 done (Laravel Project Scaffolding)
+<!-- DANCYDEV:STATE -->
+<!-- EXECUTOR:END -->
