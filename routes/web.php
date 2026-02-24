@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Public\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,7 +33,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 | Public Routes placeholder (home needed for logo link)
 |--------------------------------------------------------------------------
 */
-Route::get('/', fn () => redirect('/admin/login'))->name('public.home');
+Route::get('/', [HomeController::class, 'index'])->name('public.home');
 
 /*
 |--------------------------------------------------------------------------
@@ -45,5 +46,5 @@ Route::get('/lang/{locale}', function (string $locale) {
         session()->put('locale', $locale);
     }
 
-    return redirect()->back()->fallback('/');
+    return redirect(url()->previous('/'));
 })->name('lang.switch');

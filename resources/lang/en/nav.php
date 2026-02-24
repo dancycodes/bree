@@ -11,4 +11,10 @@ return [
     'donate' => 'Make a Donation',
     'contact' => 'Contact',
     'language' => 'Language',
+    'donate' => 'Make a Donation',
+    'about' => 'About',
+    'programs' => 'Programs',
+    'events' => 'Events',
+    'gallery' => 'Gallery',
+    'partners' => 'Partners',
 ];
