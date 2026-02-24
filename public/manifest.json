@@ -1,0 +1,26 @@
+{
+    "name": "Fondation BREE",
+    "short_name": "BREE",
+    "description": "Protéger. Élever. Inspirer. Pour un avenir plus humain.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#c80078",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/images/logo.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/images/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": ["philanthropy", "social"],
+    "lang": "fr"
+}
