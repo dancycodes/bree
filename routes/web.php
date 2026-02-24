@@ -33,3 +33,17 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::get('/', fn () => redirect('/admin/login'))->name('public.home');
+
+/*
+|--------------------------------------------------------------------------
+| Language Switcher
+|--------------------------------------------------------------------------
+*/
+Route::get('/lang/{locale}', function (string $locale) {
+    $supported = ['fr', 'en'];
+    if (in_array($locale, $supported, true)) {
+        session()->put('locale', $locale);
+    }
+
+    return redirect()->back()->fallback('/');
+})->name('lang.switch');
