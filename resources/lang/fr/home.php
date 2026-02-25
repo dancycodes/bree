@@ -25,4 +25,9 @@ return [
     'newsletter_success' => 'Merci pour votre abonnement !',
     'donate_now' => 'Faire un Don',
     'pledge_donation' => 'Faire une Promesse de Don',
+    'gallery_eyebrow' => 'Galerie Photos',
+    'gallery_title' => 'Nos Activités en Images',
+    'gallery_cta' => 'Voir toute la galerie',
+    'gallery_empty' => 'Aucune photo disponible pour le moment',
+    'gallery_photo_alt' => 'Photo de la Fondation BREE',
 ];

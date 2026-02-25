@@ -25,4 +25,9 @@ return [
     'newsletter_success' => 'Thank you for subscribing!',
     'donate_now' => 'Make a Donation',
     'pledge_donation' => 'Make a Pledge',
+    'gallery_eyebrow' => 'Photo Gallery',
+    'gallery_title' => 'Our Activities in Pictures',
+    'gallery_cta' => 'View the full gallery',
+    'gallery_empty' => 'No photos available yet',
+    'gallery_photo_alt' => 'Fondation BREE photo',
 ];

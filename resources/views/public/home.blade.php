@@ -604,6 +604,167 @@
 
 
     {{-- ================================================================
+         GALLERY PREVIEW SECTION (F-023)
+         White background. 4x2 grid desktop, 2-col mobile.
+         Hover: caption overlay fades in. Click: Alpine.js lightbox.
+         ================================================================ --}}
+    @php
+        $galleryItems = $galleryPhotos->map(fn ($p) => [
+            'src'     => asset($p->path),
+            'caption' => app()->getLocale() === 'fr' ? $p->caption_fr : $p->caption_en,
+        ])->values()->all();
+    @endphp
+
+    <section class="py-20 lg:py-28" style="background-color: #ffffff;"
+        x-data="{
+            open: false,
+            idx: 0,
+            photos: {{ Js::from($galleryItems) }},
+            openAt(i) { this.idx = i; this.open = true; },
+            prev() { this.idx = (this.idx - 1 + this.photos.length) % this.photos.length; },
+            next() { this.idx = (this.idx + 1) % this.photos.length; }
+        }"
+        @keydown.escape.window="open = false"
+        @keydown.arrow-left.window="if (open) prev()"
+        @keydown.arrow-right.window="if (open) next()">
+
+        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+
+            {{-- Section Header --}}
+            <div class="text-center mb-12" data-animate>
+                <p class="text-xs font-bold tracking-widest uppercase mb-3" style="color: #c80078;">
+                    {{ __('home.gallery_eyebrow') }}
+                </p>
+                <h2 class="font-heading text-3xl sm:text-4xl font-bold mb-4" style="color: #143c64;">
+                    {{ __('home.gallery_title') }}
+                </h2>
+            </div>
+
+            @if ($galleryPhotos->isEmpty())
+                {{-- Empty state --}}
+                <div class="text-center py-16" data-animate>
+                    <p class="text-sm" style="color: #94a3b8;">{{ __('home.gallery_empty') }}</p>
+                </div>
+            @else
+                {{-- Photo Grid --}}
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-4" data-animate>
+                    @foreach ($galleryPhotos as $idx => $photo)
+                        @php
+                            $caption = app()->getLocale() === 'fr' ? $photo->caption_fr : $photo->caption_en;
+                        @endphp
+                        <div
+                            class="relative overflow-hidden rounded-xl cursor-pointer group"
+                            style="aspect-ratio: 1 / 1;"
+                            @click="openAt({{ $idx }})"
+                            role="button"
+                            tabindex="0"
+                            @keydown.enter="openAt({{ $idx }})"
+                            aria-label="{{ $caption ?: __('home.gallery_photo_alt') }}">
+
+                            {{-- Photo --}}
+                            <img
+                                src="{{ asset($photo->path) }}"
+                                alt="{{ $caption }}"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                loading="lazy"
+                                onerror="this.src='/images/sections/gallery-placeholder.jpg'">
+
+                            {{-- Caption overlay --}}
+                            @if ($caption)
+                                <div
+                                    class="absolute inset-0 flex items-end p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    style="background: linear-gradient(to top, rgba(0,20,50,0.75) 0%, transparent 60%);">
+                                    <p class="text-white text-xs font-medium leading-tight line-clamp-2">
+                                        {{ $caption }}
+                                    </p>
+                                </div>
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- CTA --}}
+                <div class="text-center mt-10" data-animate>
+                    <a href="{{ route('public.gallery') }}"
+                       class="btn-secondary text-sm font-semibold px-8 py-3 rounded-full inline-flex items-center gap-2 transition-all">
+                        {{ __('home.gallery_cta') }}
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+            @endif
+
+        </div>
+
+        {{-- ================================================================
+             ALPINE.JS LIGHTBOX
+             Full-screen overlay, arrow navigation, escape to close.
+        ================================================================ --}}
+        <div
+            x-show="open"
+            x-cloak
+            class="fixed inset-0 z-50 flex items-center justify-center"
+            style="background-color: rgba(0, 0, 0, 0.92);"
+            @click.self="open = false">
+
+            {{-- Close button --}}
+            <button
+                @click="open = false"
+                class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-colors"
+                style="background-color: rgba(255,255,255,0.12); color: white;"
+                aria-label="{{ __('ui.close') }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            {{-- Prev arrow --}}
+            <button
+                @click.stop="prev()"
+                class="absolute left-4 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-colors"
+                style="background-color: rgba(255,255,255,0.12); color: white;"
+                aria-label="{{ __('ui.previous') }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+
+            {{-- Image + Caption --}}
+            <div class="flex flex-col items-center max-w-4xl w-full px-16">
+                <img
+                    :src="photos[idx]?.src"
+                    :alt="photos[idx]?.caption"
+                    class="max-h-[75vh] max-w-full rounded-lg object-contain"
+                    style="box-shadow: 0 25px 60px rgba(0,0,0,0.6);">
+                <p
+                    x-show="photos[idx]?.caption"
+                    x-text="photos[idx]?.caption"
+                    class="mt-4 text-sm text-center"
+                    style="color: rgba(255,255,255,0.75);">
+                </p>
+                {{-- Counter --}}
+                <p class="mt-2 text-xs" style="color: rgba(255,255,255,0.4);">
+                    <span x-text="idx + 1"></span> / <span x-text="photos.length"></span>
+                </p>
+            </div>
+
+            {{-- Next arrow --}}
+            <button
+                @click.stop="next()"
+                class="absolute right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-colors"
+                style="background-color: rgba(255,255,255,0.12); color: white;"
+                aria-label="{{ __('ui.next') }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+
+        </div>
+
+    </section>
+
+    {{-- ================================================================
          FOUNDER & PATRON SECTION (F-021)
          Navy background. Split layout: Founder (left) + Patron (right).
          Circular portrait with gold ring. Monogram placeholder when
