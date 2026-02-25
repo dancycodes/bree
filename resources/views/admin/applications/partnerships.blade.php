@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Candidatures bénévoles')
-@section('page_title', 'Candidatures bénévoles')
-@section('breadcrumb', 'Candidatures › Bénévoles')
+@section('title', 'Candidatures partenariats')
+@section('page_title', 'Candidatures partenariats')
+@section('breadcrumb', 'Candidatures › Partenariats')
 
 @section('content')
 
@@ -10,12 +10,12 @@
     <div class="flex items-center gap-1 mb-6 bg-white rounded-2xl shadow-sm p-1.5" style="border: 1px solid #e2e8f0; width: fit-content;">
         <a href="{{ route('admin.applications.index') }}"
            class="px-4 py-2 rounded-xl text-sm font-semibold"
-           style="background-color: #143c64; color: #ffffff;">
+           style="color: #64748b;">
             Bénévoles
         </a>
         <a href="{{ route('admin.partnerships.index') }}"
            class="px-4 py-2 rounded-xl text-sm font-semibold"
-           style="color: #64748b;">
+           style="background-color: #143c64; color: #ffffff;">
             Partenariats
         </a>
     </div>
@@ -31,13 +31,13 @@
                 <div x-data="{ status: '', search: '' }" x-sync="['status','search']" class="flex flex-wrap items-center gap-3 flex-1">
                     <div class="flex-1 min-w-48">
                         <input type="text" x-model="search"
-                               @input.debounce.400ms="$action.post('{{ route('admin.applications.index') }}', { include: ['status','search'] })"
-                               placeholder="Rechercher par nom ou email…"
+                               @input.debounce.400ms="$action.post('{{ route('admin.partnerships.index') }}', { include: ['status','search'] })"
+                               placeholder="Rechercher par organisation ou email…"
                                class="w-full px-3.5 py-2 rounded-xl text-sm"
                                style="border: 1px solid #e2e8f0; outline: none;">
                     </div>
                     <select x-model="status"
-                            @change="$action.post('{{ route('admin.applications.index') }}', { include: ['status','search'] })"
+                            @change="$action.post('{{ route('admin.partnerships.index') }}', { include: ['status','search'] })"
                             class="px-3.5 py-2 rounded-xl text-sm"
                             style="border: 1px solid #e2e8f0; outline: none; color: #374151;">
                         <option value="">Tous les statuts</option>
@@ -47,7 +47,7 @@
                         <option value="rejected">Rejeté</option>
                     </select>
                 </div>
-                <a href="{{ route('admin.applications.export') }}"
+                <a href="{{ route('admin.partnerships.export') }}"
                    class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold flex-shrink-0"
                    style="background-color: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -75,7 +75,7 @@
                 @if ($applications->isEmpty())
                     <div class="py-16 text-center">
                         <svg class="w-10 h-10 mx-auto mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
                         <p class="text-sm" style="color: #94a3b8;">Aucune candidature reçue</p>
                     </div>
@@ -90,12 +90,13 @@
                                     'rejected' => ['label' => 'Rejeté', 'bg' => 'rgba(100,116,139,0.1)', 'color' => '#64748b'],
                                     default    => ['label' => $application->status, 'bg' => '#f1f5f9', 'color' => '#94a3b8'],
                                 };
-                                $areas = collect($application->areas_of_interest)
-                                    ->map(fn($a) => match($a) { 'protege' => 'Protège', 'eleve' => 'Élève', 'respire' => 'Respire', default => $a })
-                                    ->implode(', ');
+                                $typeLabel = match($application->organization_type) {
+                                    'ngo' => 'ONG', 'government' => 'Gouvernement',
+                                    'private' => 'Secteur privé', default => 'Autre'
+                                };
                             @endphp
                             <div class="flex items-start gap-4 px-5 py-4 cursor-pointer transition-colors hover:bg-slate-50"
-                                 @click="$action.post('{{ route('admin.applications.show', $application) }}', { include: [] })">
+                                 @click="$action.post('{{ route('admin.partnerships.show', $application) }}', { include: [] })">
 
                                 {{-- New dot --}}
                                 <div class="flex-shrink-0 mt-1.5">
@@ -111,20 +112,17 @@
                                     <div class="flex items-baseline justify-between gap-2">
                                         <p class="text-sm truncate {{ $application->status === 'pending' ? 'font-bold' : 'font-medium' }}"
                                            style="color: {{ $application->status === 'pending' ? '#1e293b' : '#475569' }};">
-                                            {{ $application->fullName() }}
+                                            {{ $application->organization_name }}
                                         </p>
                                         <time class="text-xs flex-shrink-0" style="color: #94a3b8;">
                                             {{ $application->created_at->format('d/m/Y') }}
                                         </time>
                                     </div>
                                     <p class="text-xs truncate mt-0.5" style="color: #64748b;">
-                                        {{ $application->email }}
-                                        @if ($application->city_country)
-                                            · {{ $application->city_country }}
-                                        @endif
+                                        {{ $application->contact_name }} · {{ $application->email }}
                                     </p>
                                     <div class="flex items-center gap-2 mt-1">
-                                        <span class="text-xs" style="color: #94a3b8;">{{ $areas }}</span>
+                                        <span class="text-xs" style="color: #94a3b8;">{{ $typeLabel }}</span>
                                         <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium"
                                               style="background-color: {{ $statusMeta['bg'] }}; color: {{ $statusMeta['color'] }};">
                                             {{ $statusMeta['label'] }}
@@ -172,9 +170,6 @@
              style="{{ $showPanel ? '' : 'display: none;' }}">
 
             @if ($showPanel)
-                @php
-                    $areaLabels = ['protege' => 'Protège', 'eleve' => 'Élève', 'respire' => 'Respire'];
-                @endphp
                 <div x-data="{
                         status: '{{ $application->status }}',
                         adminNotes: {{ Js::from($application->admin_notes ?? '') }}
@@ -186,7 +181,8 @@
                     <div class="px-6 py-4" style="border-bottom: 1px solid #f1f5f9;">
                         <div class="flex items-start justify-between gap-2">
                             <div class="min-w-0">
-                                <p class="font-semibold text-sm truncate" style="color: #1e293b;">{{ $application->fullName() }}</p>
+                                <p class="font-semibold text-sm truncate" style="color: #1e293b;">{{ $application->organization_name }}</p>
+                                <p class="text-xs mt-0.5" style="color: #64748b;">{{ $application->contact_name }}</p>
                                 <p class="text-xs mt-0.5" style="color: #94a3b8;">{{ $application->email }}</p>
                                 @if ($application->phone)
                                     <p class="text-xs mt-0.5" style="color: #94a3b8;">{{ $application->phone }}</p>
@@ -196,50 +192,30 @@
                                 {{ $application->created_at->format('d/m/Y') }}
                             </time>
                         </div>
-                        @if ($application->city_country)
-                            <p class="mt-2 text-xs" style="color: #64748b;">
-                                <svg class="inline w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                </svg>
-                                {{ $application->city_country }}
-                            </p>
-                        @endif
+                        <div class="mt-2">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
+                                  style="background-color: rgba(20,60,100,0.1); color: #143c64;">
+                                {{ match($application->organization_type) {
+                                    'ngo' => 'ONG', 'government' => 'Gouvernement',
+                                    'private' => 'Secteur privé', default => 'Autre'
+                                } }}
+                            </span>
+                        </div>
                     </div>
 
                     {{-- Application Details --}}
                     <div class="px-6 py-4 space-y-4" style="border-bottom: 1px solid #f1f5f9;">
 
-                        {{-- Domains --}}
+                        {{-- Proposal --}}
                         <div>
-                            <p class="text-xs font-semibold uppercase tracking-wide mb-2" style="color: #94a3b8;">Domaines d'intérêt</p>
-                            <div class="flex flex-wrap gap-1.5">
-                                @foreach ($application->areas_of_interest as $area)
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
-                                          style="background-color: rgba(20,60,100,0.1); color: #143c64;">
-                                        {{ $areaLabels[$area] ?? $area }}
-                                    </span>
-                                @endforeach
-                            </div>
+                            <p class="text-xs font-semibold uppercase tracking-wide mb-2" style="color: #94a3b8;">Proposition de partenariat</p>
+                            <p class="text-sm leading-relaxed whitespace-pre-line" style="color: #475569;">{{ $application->proposal }}</p>
                         </div>
 
-                        {{-- Availability --}}
-                        <div>
-                            <p class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: #94a3b8;">Disponibilité</p>
-                            <p class="text-sm" style="color: #475569;">
-                                {{ match($application->availability) {
-                                    'weekends' => 'Week-ends',
-                                    'weekdays' => 'Jours de semaine',
-                                    'flexible' => 'Flexible',
-                                    default => $application->availability
-                                } }}
-                            </p>
-                        </div>
-
-                        {{-- Motivation --}}
-                        @if ($application->motivation)
+                        @if ($application->heard_about)
                             <div>
-                                <p class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: #94a3b8;">Motivation</p>
-                                <p class="text-sm leading-relaxed whitespace-pre-line" style="color: #475569;">{{ $application->motivation }}</p>
+                                <p class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: #94a3b8;">Comment nous a-t-il connu ?</p>
+                                <p class="text-sm" style="color: #475569;">{{ $application->heard_about }}</p>
                             </div>
                         @endif
 
@@ -263,13 +239,13 @@
 
                             {{-- Accept --}}
                             <button x-show="status !== 'accepted'"
-                                    @click="status = 'accepted'; $action.patch('{{ route('admin.applications.status', $application) }}', { include: ['status', 'adminNotes'] })"
+                                    @click="status = 'accepted'; $action.patch('{{ route('admin.partnerships.status', $application) }}', { include: ['status', 'adminNotes'] })"
                                     class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white"
                                     style="background-color: #16a34a;">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                Accepter la candidature
+                                Accepter le partenariat
                             </button>
 
                             <div x-show="status === 'accepted'"
@@ -278,12 +254,12 @@
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                Candidature acceptée
+                                Partenariat accepté
                             </div>
 
                             {{-- Reject --}}
                             <button x-show="status !== 'rejected'"
-                                    @click="status = 'rejected'; $action.patch('{{ route('admin.applications.status', $application) }}', { include: ['status', 'adminNotes'] })"
+                                    @click="status = 'rejected'; $action.patch('{{ route('admin.partnerships.status', $application) }}', { include: ['status', 'adminNotes'] })"
                                     class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold"
                                     style="background-color: #fef2f2; color: #dc2626;">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -301,8 +277,8 @@
                                 Candidature rejetée
                             </div>
 
-                            {{-- Save notes only (if no status change) --}}
-                            <button @click="$action.patch('{{ route('admin.applications.status', $application) }}', { include: ['status', 'adminNotes'] })"
+                            {{-- Save notes only --}}
+                            <button @click="$action.patch('{{ route('admin.partnerships.status', $application) }}', { include: ['status', 'adminNotes'] })"
                                     class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold"
                                     style="background-color: #f1f5f9; color: #475569;">
                                 Enregistrer les notes

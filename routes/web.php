@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminContactMessagesController;
 use App\Http\Controllers\Admin\AdminDonationsController;
 use App\Http\Controllers\Admin\AdminNewsletterController;
 use App\Http\Controllers\Admin\AdminPartnersController;
+use App\Http\Controllers\Admin\AdminPartnershipApplicationsController;
 use App\Http\Controllers\Admin\AdminRecurringDonationsController;
 use App\Http\Controllers\Admin\AdminRolesController;
 use App\Http\Controllers\Admin\AdminUsersController;
@@ -149,6 +150,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/candidatures/benevoles/{application}', [AdminVolunteerApplicationsController::class, 'show'])->name('applications.show');
     Route::patch('/candidatures/benevoles/{application}/statut', [AdminVolunteerApplicationsController::class, 'updateStatus'])->name('applications.status');
     Route::get('/candidatures/benevoles/exporter', [AdminVolunteerApplicationsController::class, 'exportCsv'])->name('applications.export');
+
+    // Partnership Applications
+    Route::match(['GET', 'POST'], '/candidatures/partenariats', [AdminPartnershipApplicationsController::class, 'index'])->name('partnerships.index');
+    Route::post('/candidatures/partenariats/{application}', [AdminPartnershipApplicationsController::class, 'show'])->name('partnerships.show');
+    Route::patch('/candidatures/partenariats/{application}/statut', [AdminPartnershipApplicationsController::class, 'updateStatus'])->name('partnerships.status');
+    Route::get('/candidatures/partenariats/exporter', [AdminPartnershipApplicationsController::class, 'exportCsv'])->name('partnerships.export');
 
     // Contact Messages
     Route::get('/messages', [AdminContactMessagesController::class, 'index'])->name('messages.index');
