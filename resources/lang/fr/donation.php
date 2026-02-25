@@ -44,4 +44,18 @@ return [
     'cta_secondary_sub' => 'Devenez bénévole ou partenaire de la Fondation BREE et contribuez à notre mission par votre temps et vos compétences.',
     'cta_volunteer_btn' => 'Devenir bénévole',
     'cta_partner_btn' => 'Devenir partenaire',
+
+    'amount_heading' => 'Choisissez votre montant',
+    'amount_sub' => 'Sélectionnez un montant prédéfini ou saisissez le vôtre',
+    'amount_type_label_direct' => 'Don unique',
+    'amount_type_label_recurring' => 'Don mensuel',
+    'amount_change_type' => 'Changer le type de don',
+    'amount_custom_label' => 'Autre montant',
+    'amount_custom_hint_short' => 'Libre',
+    'amount_custom_placeholder' => 'Ex: 75',
+    'amount_custom_hint' => 'Montant minimum : 1€',
+    'amount_error_min' => 'Le montant minimum est de 1€',
+    'amount_error_numeric' => 'Veuillez saisir un montant valide',
+    'amount_continue_btn' => 'Continuer',
+    'amount_recommended' => 'Recommandé',
 ];

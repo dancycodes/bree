@@ -44,4 +44,18 @@ return [
     'cta_secondary_sub' => 'Become a volunteer or partner of Fondation BREE and contribute to our mission through your time and skills.',
     'cta_volunteer_btn' => 'Become a volunteer',
     'cta_partner_btn' => 'Become a partner',
+
+    'amount_heading' => 'Choose your amount',
+    'amount_sub' => 'Select a preset amount or enter your own',
+    'amount_type_label_direct' => 'One-time gift',
+    'amount_type_label_recurring' => 'Monthly gift',
+    'amount_change_type' => 'Change donation type',
+    'amount_custom_label' => 'Other amount',
+    'amount_custom_hint_short' => 'Custom',
+    'amount_custom_placeholder' => 'E.g. 75',
+    'amount_custom_hint' => 'Minimum amount: €1',
+    'amount_error_min' => 'Minimum donation amount is €1',
+    'amount_error_numeric' => 'Please enter a valid amount',
+    'amount_continue_btn' => 'Continue',
+    'amount_recommended' => 'Recommended',
 ];

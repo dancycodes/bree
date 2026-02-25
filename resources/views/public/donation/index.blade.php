@@ -5,6 +5,26 @@
 
 @section('content')
 
+<div x-data="{
+    donationType: '',
+    selectorVisible: false,
+    selectedAmount: 0,
+    customAmount: '',
+    showCustom: false,
+    amountConfirmed: false,
+    confirmedAmount: 0,
+    confirmedType: '',
+    selectPreset(amount) {
+        this.selectedAmount = amount;
+        this.showCustom = false;
+        this.customAmount = '';
+    },
+    selectCustom() {
+        this.selectedAmount = 0;
+        this.showCustom = true;
+    }
+}">
+
     {{-- ================================================================
          PAGE HERO
          ================================================================ --}}
@@ -115,7 +135,7 @@
     {{-- ================================================================
          DONATION TYPE CARDS
          ================================================================ --}}
-    <section class="py-16 lg:py-24" style="background-color: #f8f5f0;">
+    <section id="donation-types" class="py-16 lg:py-24" style="background-color: #f8f5f0;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="text-center mb-12" data-animate="fade-up">
@@ -150,7 +170,7 @@
                     <div class="inline-flex items-center gap-1.5 text-xs font-bold tracking-widest uppercase mb-3 px-3 py-1 rounded-full"
                          style="background-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9);">
                         <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 8 8"><circle cx="4" cy="4" r="3"/></svg>
-                        Recommandé
+                        {{ __('donation.amount_recommended') }}
                     </div>
                     <h3 class="text-xl font-bold mb-3 text-white"
                         style="font-family: 'Playfair Display', serif;">
@@ -159,14 +179,22 @@
                     <p class="text-sm mb-6" style="color: rgba(255,255,255,0.8); line-height: 1.7;">
                         {{ __('donation.type_direct_sub') }}
                     </p>
-                    <a href="{{ route('public.donate') }}?programme={{ $programme }}#don-direct"
-                       class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-opacity hover:opacity-90"
-                       style="background-color: #ffffff; color: #c80078;">
-                        {{ __('donation.type_direct_btn') }}
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <button type="button"
+                            @click="donationType = 'direct'; $action('{{ route('public.donate.selectAmount') }}', { include: ['donationType'] })"
+                            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-opacity hover:opacity-90 cursor-pointer"
+                            style="background-color: #ffffff; color: #c80078;">
+                        <span x-show="!(donationType === 'direct' && $fetching())">{{ __('donation.type_direct_btn') }}</span>
+                        <span x-show="donationType === 'direct' && $fetching()">
+                            <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                            </svg>
+                        </span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
+                             x-show="!(donationType === 'direct' && $fetching())">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                         </svg>
-                    </a>
+                    </button>
                 </div>
 
                 {{-- Recurring Donation --}}
@@ -187,14 +215,22 @@
                     <p class="text-sm mb-6" style="color: rgba(255,255,255,0.7); line-height: 1.7;">
                         {{ __('donation.type_recurring_sub') }}
                     </p>
-                    <a href="{{ route('public.donate') }}?programme={{ $programme }}#don-mensuel"
-                       class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-opacity hover:opacity-90"
-                       style="background-color: #c8a03c; color: #ffffff;">
-                        {{ __('donation.type_recurring_btn') }}
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <button type="button"
+                            @click="donationType = 'recurring'; $action('{{ route('public.donate.selectAmount') }}', { include: ['donationType'] })"
+                            class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-opacity hover:opacity-90 cursor-pointer"
+                            style="background-color: #c8a03c; color: #ffffff;">
+                        <span x-show="!(donationType === 'recurring' && $fetching())">{{ __('donation.type_recurring_btn') }}</span>
+                        <span x-show="donationType === 'recurring' && $fetching()">
+                            <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                            </svg>
+                        </span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
+                             x-show="!(donationType === 'recurring' && $fetching())">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                         </svg>
-                    </a>
+                    </button>
                 </div>
 
                 {{-- Pledge --}}
@@ -277,6 +313,151 @@
     </section>
 
     {{-- ================================================================
+         AMOUNT SELECTOR (loaded via Gale fragment)
+         ================================================================ --}}
+    <div x-show="selectorVisible"
+         style="display:none;"
+         x-effect="if (selectorVisible) $nextTick(() => $el.scrollIntoView({ behavior: 'smooth', block: 'start' }))">
+
+        @fragment('amount-selector')
+        <div id="amount-selector">
+            @isset($amountSelectorType)
+            <section class="py-16 lg:py-20" style="background-color: #ffffff; border-top: 3px solid #c80078;">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                    {{-- Header --}}
+                    <div class="flex items-start justify-between mb-10">
+                        <div>
+                            <p class="text-xs font-bold tracking-widest uppercase mb-2" style="color: #c8a03c;">
+                                {{ $amountSelectorType === 'recurring' ? __('donation.amount_type_label_recurring') : __('donation.amount_type_label_direct') }}
+                            </p>
+                            <h2 class="text-2xl lg:text-3xl font-bold"
+                                style="color: #143c64; font-family: 'Playfair Display', serif;">
+                                {{ __('donation.amount_heading') }}
+                            </h2>
+                            <p class="mt-2 text-sm" style="color: #64748b;">
+                                {{ __('donation.amount_sub') }}
+                            </p>
+                        </div>
+                        <button type="button"
+                                @click="selectorVisible = false; donationType = ''"
+                                class="shrink-0 ml-4 text-xs font-semibold px-4 py-2 rounded-lg transition-colors hover:bg-pink-50 flex items-center gap-1.5"
+                                style="color: #c80078;">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                            {{ __('donation.amount_change_type') }}
+                        </button>
+                    </div>
+
+                    {{-- Preset amount tiles --}}
+                    <div class="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-3">
+                        @foreach ($impactExamples as $example)
+                        <button type="button"
+                                @click="selectPreset({{ $example->amount }})"
+                                :style="selectedAmount === {{ $example->amount }} && !showCustom
+                                    ? 'background-color:#c80078; color:#ffffff; border-color:#c80078;'
+                                    : 'background-color:#ffffff; color:#143c64; border-color:#e2e8f0;'"
+                                class="p-4 rounded-2xl border-2 text-center transition-all duration-200 cursor-pointer hover:border-pink-300 focus:outline-none focus:ring-2"
+                                style="--tw-ring-color: #c80078;">
+                            <div class="text-2xl font-bold mb-1" style="font-family:'Playfair Display',serif;">
+                                {{ $example->amount }}€
+                            </div>
+                            <div class="text-xs leading-tight"
+                                 :style="selectedAmount === {{ $example->amount }} && !showCustom ? 'opacity:0.85' : 'color:#64748b'">
+                                {{ \Illuminate\Support\Str::limit($example->description(), 32) }}
+                            </div>
+                        </button>
+                        @endforeach
+
+                        {{-- Custom amount tile --}}
+                        <button type="button"
+                                @click="selectCustom()"
+                                :style="showCustom
+                                    ? 'background-color:#c80078; color:#ffffff; border-color:#c80078;'
+                                    : 'background-color:#ffffff; color:#143c64; border-color:#e2e8f0;'"
+                                class="p-4 rounded-2xl border-2 text-center transition-all duration-200 cursor-pointer hover:border-pink-300 focus:outline-none focus:ring-2"
+                                style="--tw-ring-color: #c80078;">
+                            <div class="text-2xl font-bold mb-1" style="font-family:'Playfair Display',serif;">
+                                ✏️
+                            </div>
+                            <div class="text-xs leading-tight"
+                                 :style="showCustom ? 'opacity:0.85' : 'color:#64748b'">
+                                {{ __('donation.amount_custom_label') }}
+                            </div>
+                        </button>
+                    </div>
+
+                    {{-- Selected impact detail --}}
+                    @foreach ($impactExamples as $example)
+                    <div x-show="selectedAmount === {{ $example->amount }} && !showCustom"
+                         style="display:none;"
+                         class="mb-6 px-5 py-4 rounded-xl text-sm flex items-start gap-3"
+                         style="background-color:rgba(200,0,120,0.06); border:1px solid rgba(200,0,120,0.15);">
+                        <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" style="color:#c80078;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+                        </svg>
+                        <span style="color:#7c1048;">
+                            <strong>{{ $example->amount }}€</strong> {{ $example->description() }}
+                        </span>
+                    </div>
+                    @endforeach
+
+                    {{-- Custom amount input --}}
+                    <div x-show="showCustom" style="display:none;" class="mb-6">
+                        <label class="block text-sm font-semibold mb-2" style="color:#143c64;">
+                            {{ __('donation.amount_custom_label') }}
+                        </label>
+                        <div class="relative max-w-xs">
+                            <input type="text"
+                                   x-model="customAmount"
+                                   @input="customAmount = $el.value.replace(/[^0-9,\.]/g, '')"
+                                   placeholder="{{ __('donation.amount_custom_placeholder') }}"
+                                   class="w-full px-4 py-3 pr-10 rounded-xl border-2 text-xl font-bold transition-colors focus:outline-none"
+                                   style="border-color:#e2e8f0; color:#143c64; background-color:#ffffff;"
+                                   @focus="$el.style.borderColor='#c80078'"
+                                   @blur="$el.style.borderColor='#e2e8f0'">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-lg font-bold" style="color:#94a3b8;">€</span>
+                        </div>
+                        <p class="text-xs mt-1.5" style="color:#94a3b8;">{{ __('donation.amount_custom_hint') }}</p>
+                    </div>
+
+                    {{-- Validation error --}}
+                    <p x-message="amount" class="text-sm mb-4 font-medium" style="color:#dc2626;"></p>
+
+                    {{-- Continue button --}}
+                    <div class="flex items-center justify-end pt-4" style="border-top:1px solid #f0e8f0;">
+                        <button type="button"
+                                @click="$action('{{ route('public.donate.validateAmount') }}', { include: ['donationType', 'selectedAmount', 'customAmount', 'showCustom'] })"
+                                :disabled="!showCustom ? selectedAmount <= 0 : (parseFloat(customAmount.replace(',','.')) || 0) < 1"
+                                :style="(!showCustom ? selectedAmount > 0 : (parseFloat(customAmount.replace(',','.')) || 0) >= 1)
+                                    ? 'background-color:#c80078; opacity:1; cursor:pointer;'
+                                    : 'background-color:#c80078; opacity:0.4; cursor:not-allowed;'"
+                                class="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-sm font-bold text-white transition-opacity"
+                                style="background-color:#c80078; color:#ffffff;">
+                            <span x-show="!$fetching()">{{ __('donation.amount_continue_btn') }}</span>
+                            <span x-show="$fetching()">
+                                <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                </svg>
+                            </span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
+                                 x-show="!$fetching()">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+            </section>
+            @endisset
+        </div>
+        @endfragment
+
+    </div>
+
+    {{-- ================================================================
          SECONDARY CTA — VOLUNTEER / PARTNER
          ================================================================ --}}
     <section class="py-12 lg:py-16" style="background-color: #ffffff;">
@@ -303,5 +484,7 @@
             </div>
         </div>
     </section>
+
+</div>
 
 @endsection

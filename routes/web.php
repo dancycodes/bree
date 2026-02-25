@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\PatronProfileController;
 use App\Http\Controllers\Admin\ProgramActivitiesController;
 use App\Http\Controllers\Admin\ProgramsController as AdminProgramsController;
 use App\Http\Controllers\Public\AboutController;
+use App\Http\Controllers\Public\DonationController;
 use App\Http\Controllers\Public\EventsController;
 use App\Http\Controllers\Public\GalleryController;
 use App\Http\Controllers\Public\HomeController;
@@ -142,6 +143,9 @@ Route::post('/benevoles/candidater', [VolunteerController::class, 'store'])
     ->name('public.volunteers.store')
     ->middleware(\Spatie\Honeypot\ProtectAgainstSpam::class);
 Route::get('/programmes', [ProgramsController::class, 'index'])->name('public.programs');
+Route::get('/faire-un-don', [DonationController::class, 'index'])->name('public.donate');
+Route::post('/faire-un-don/choisir-montant', [DonationController::class, 'selectAmount'])->name('public.donate.selectAmount');
+Route::post('/faire-un-don/valider-montant', [DonationController::class, 'validateAmount'])->name('public.donate.validateAmount');
 Route::get('/programmes/{program:slug}', [ProgramsController::class, 'show'])->name('public.programs.show');
 
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'store'])
