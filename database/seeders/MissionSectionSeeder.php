@@ -20,26 +20,26 @@ class MissionSectionSeeder extends Seeder
 
     public function run(): void
     {
-        MissionSection::firstOrCreate(
+        MissionSection::updateOrCreate(
             ['id' => 1],
             [
-                'vision_fr' => 'Notre vision est un monde où chaque femme et chaque enfant peut s\'épanouir, se former et vivre dignement, dans un environnement sain et sécurisé.',
-                'vision_en' => 'Our vision is a world where every woman and every child can thrive, learn, and live with dignity in a healthy and safe environment.',
-                'mission_1_fr' => 'Protéger les droits des femmes et des enfants vulnérables',
-                'mission_1_en' => 'Protect the rights of vulnerable women and children',
+                'vision_fr' => 'Construire un avenir où chaque femme est protégée, chaque enfant accompagné et chaque vie fragile peut s\'épanouir.',
+                'vision_en' => 'Build a future where every woman is protected, every child supported, and every fragile life can flourish.',
+                'mission_1_fr' => 'Défendre les droits des femmes',
+                'mission_1_en' => 'Defend women\'s rights',
                 'mission_1_icon' => self::SHIELD,
-                'mission_2_fr' => 'Favoriser l\'accès à l\'éducation pour tous',
-                'mission_2_en' => 'Foster access to education for all',
-                'mission_2_icon' => self::BOOK,
-                'mission_3_fr' => 'Promouvoir la santé et l\'environnement durable',
-                'mission_3_en' => 'Promote health and a sustainable environment',
-                'mission_3_icon' => self::LEAF,
-                'mission_4_fr' => 'Renforcer les capacités des communautés locales',
-                'mission_4_en' => 'Strengthen the capacities of local communities',
-                'mission_4_icon' => self::USERS,
-                'mission_5_fr' => 'Créer des partenariats pour un impact durable',
-                'mission_5_en' => 'Build partnerships for lasting impact',
-                'mission_5_icon' => self::LINK,
+                'mission_2_fr' => 'Protéger les orphelins et enfants vulnérables',
+                'mission_2_en' => 'Protect orphans and vulnerable children',
+                'mission_2_icon' => self::USERS,
+                'mission_3_fr' => 'Réduire la pauvreté',
+                'mission_3_en' => 'Reduce poverty',
+                'mission_3_icon' => self::LINK,
+                'mission_4_fr' => 'Lutter contre la pollution environnementale',
+                'mission_4_en' => 'Fight environmental pollution',
+                'mission_4_icon' => self::LEAF,
+                'mission_5_fr' => 'Prévenir les maladies et promouvoir la santé',
+                'mission_5_en' => 'Prevent disease and promote health',
+                'mission_5_icon' => self::BOOK,
                 'is_active' => true,
             ]
         );
