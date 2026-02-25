@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminContactMessagesController;
 use App\Http\Controllers\Admin\AdminPartnersController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -103,6 +104,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/actualites/{article:slug}/modifier', [NewsArticlesController::class, 'edit'])->name('news.edit');
     Route::patch('/actualites/{article:slug}', [NewsArticlesController::class, 'update'])->name('news.update');
     Route::delete('/actualites/{article:slug}', [NewsArticlesController::class, 'destroy'])->name('news.destroy');
+
+    // Contact Messages
+    Route::get('/messages', [AdminContactMessagesController::class, 'index'])->name('messages.index');
+    Route::post('/messages/{message}', [AdminContactMessagesController::class, 'show'])->name('messages.show');
+    Route::delete('/messages/{message}', [AdminContactMessagesController::class, 'destroy'])->name('messages.destroy');
 
     // Partners
     Route::get('/partenaires', [AdminPartnersController::class, 'index'])->name('partners.index');
