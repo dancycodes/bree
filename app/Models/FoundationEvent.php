@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -24,6 +25,7 @@ class FoundationEvent extends Model
         'thumbnail_path',
         'is_published',
         'program_slug',
+        'registration_required',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -36,7 +38,13 @@ class FoundationEvent extends Model
         return [
             'event_date' => 'date',
             'is_published' => 'boolean',
+            'registration_required' => 'boolean',
         ];
+    }
+
+    public function registrations(): HasMany
+    {
+        return $this->hasMany(EventRegistration::class, 'event_id');
     }
 
     /** Return the title in the current locale. */

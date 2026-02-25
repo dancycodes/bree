@@ -86,6 +86,10 @@ Route::get('/a-propos', [AboutController::class, 'index'])->name('public.about')
 Route::get('/actualites', [NewsController::class, 'index'])->name('public.news');
 Route::get('/actualites/{article:slug}', [NewsController::class, 'show'])->name('public.news.show');
 Route::get('/evenements', [EventsController::class, 'index'])->name('public.events');
+Route::get('/evenements/{event:slug}', [EventsController::class, 'show'])->name('public.events.show');
+Route::post('/evenements/{event:slug}/inscription', [EventsController::class, 'register'])
+    ->name('public.events.register')
+    ->middleware(\Spatie\Honeypot\ProtectAgainstSpam::class);
 Route::get('/programmes', [ProgramsController::class, 'index'])->name('public.programs');
 Route::get('/programmes/{program:slug}', [ProgramsController::class, 'show'])->name('public.programs.show');
 
