@@ -148,7 +148,10 @@ Route::get('/faire-un-don', [DonationController::class, 'index'])->name('public.
 Route::post('/faire-un-don/choisir-montant', [DonationController::class, 'selectAmount'])->name('public.donate.selectAmount');
 Route::post('/faire-un-don/valider-montant', [DonationController::class, 'validateAmount'])->name('public.donate.validateAmount');
 Route::post('/faire-un-don/initier-paiement', [DonationController::class, 'initPayment'])->name('public.donate.initPayment');
+Route::post('/faire-un-don/charger-carte', [DonationController::class, 'chargeCard'])->name('public.donate.chargeCard');
+Route::post('/faire-un-don/authentifier', [DonationController::class, 'authenticateCharge'])->name('public.donate.authenticateCharge');
 Route::get('/don/merci', [DonationController::class, 'successPage'])->name('public.donate.merci');
+Route::get('/don/callback-3ds', [DonationController::class, 'verifyPayment'])->name('public.donate.verify3ds');
 Route::post('/webhook/flutterwave', [WebhookController::class, 'flutterwave'])->name('webhook.flutterwave');
 Route::get('/programmes/{program:slug}', [ProgramsController::class, 'show'])->name('public.programs.show');
 

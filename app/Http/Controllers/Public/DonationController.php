@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Mail\DonationConfirmation;
 use App\Models\Donation;
 use App\Models\ImpactExample;
 use App\Models\RecurringDonation;
+use App\Services\FlutterwaveDirectCharge;
 use Flutterwave\Payments\Facades\Flutterwave;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class DonationController extends Controller
 {
@@ -128,22 +131,191 @@ class DonationController extends Controller
             'status' => 'pending',
         ]);
 
-        $paymentConfig = Flutterwave::render('inline', [
+        return gale()->state('cardStep', true)->state('txRef', $txRef);
+    }
+
+    public function chargeCard(Request $request): mixed
+    {
+        $txRef = (string) $request->state('txRef', '');
+        $cardNumber = preg_replace('/\D/', '', (string) $request->state('cardNumber', ''));
+        $cardExpiry = (string) $request->state('cardExpiry', '');
+        $cardCvv = preg_replace('/\D/', '', (string) $request->state('cardCvv', ''));
+        $confirmedType = (string) $request->state('confirmedType', 'direct');
+
+        if (strlen($cardNumber) < 13 || strlen($cardNumber) > 19) {
+            return gale()->messages(['cardNumber' => [__('donation.card_number_invalid')]]);
+        }
+
+        if (! preg_match('/^(\d{2})[\/\-]?(\d{2,4})$/', str_replace(' ', '', $cardExpiry), $m)) {
+            return gale()->messages(['cardExpiry' => [__('donation.card_expiry_invalid')]]);
+        }
+
+        $expiryMonth = $m[1];
+        $expiryYear = strlen($m[2]) === 2 ? '20'.$m[2] : $m[2];
+
+        if (strlen($cardCvv) < 3 || strlen($cardCvv) > 4) {
+            return gale()->messages(['cardCvv' => [__('donation.card_cvv_invalid')]]);
+        }
+
+        if (empty($txRef)) {
+            return gale()->messages(['cardNumber' => [__('donation.payment_error_generic')]]);
+        }
+
+        $isRecurring = $confirmedType === 'recurring';
+        $donation = $isRecurring
+            ? RecurringDonation::where('tx_ref', $txRef)->first()
+            : Donation::where('tx_ref', $txRef)->first();
+
+        if (! $donation) {
+            return gale()->messages(['cardNumber' => [__('donation.payment_error_generic')]]);
+        }
+
+        if (! $isRecurring && $donation->isCompleted()) {
+            return gale()->redirect(route('public.donate.merci', ['tx_ref' => $txRef]));
+        }
+
+        $payload = [
+            'card_number' => $cardNumber,
+            'cvv' => $cardCvv,
+            'expiry_month' => $expiryMonth,
+            'expiry_year' => $expiryYear,
+            'currency' => $donation->currency,
+            'amount' => (float) $donation->amount,
+            'fullname' => $donation->donor_name,
+            'email' => $donation->donor_email,
+            'phone_number' => $donation->donor_phone ?? '',
             'tx_ref' => $txRef,
-            'amount' => $confirmedAmount,
-            'currency' => 'EUR',
-            'customer' => [
-                'name' => $donorName,
-                'email' => $donorEmail,
-                'phone_number' => $donorPhone ?: '',
-            ],
+            'redirect_url' => route('public.donate.verify3ds'),
             'meta' => [
-                'programme' => $programme,
+                'programme' => $donation->programme,
                 'type' => $confirmedType,
             ],
-        ]);
+        ];
 
-        return gale()->state('paymentConfig', $paymentConfig);
+        if ($isRecurring && $donation->flutterwave_plan_id) {
+            $payload['payment_plan'] = (int) $donation->flutterwave_plan_id;
+        }
+
+        $service = new FlutterwaveDirectCharge(config('flutterwave.secretKey'));
+        session(['flw_payload_'.md5($txRef) => $payload]);
+
+        $result = $service->charge($payload);
+
+        return $this->handleChargeResponse($result, $txRef, $isRecurring);
+    }
+
+    public function authenticateCharge(Request $request): mixed
+    {
+        $authMode = (string) $request->state('authMode', '');
+        $pinValue = (string) $request->state('pinValue', '');
+        $otpValue = (string) $request->state('otpValue', '');
+        $flwRef = (string) $request->state('flwRef', '');
+        $txRef = (string) $request->state('txRef', '');
+        $confirmedType = (string) $request->state('confirmedType', 'direct');
+        $isRecurring = $confirmedType === 'recurring';
+
+        $service = new FlutterwaveDirectCharge(config('flutterwave.secretKey'));
+
+        if ($authMode === 'pin') {
+            if (strlen(preg_replace('/\D/', '', $pinValue)) < 4) {
+                return gale()->messages(['pinValue' => [__('donation.card_pin_invalid')]]);
+            }
+
+            $sessionKey = 'flw_payload_'.md5($txRef);
+            $payload = session($sessionKey);
+
+            if (! $payload) {
+                return gale()->messages(['pinValue' => [__('donation.payment_error_generic')]]);
+            }
+
+            $payload['authorization'] = ['mode' => 'pin', 'pin' => preg_replace('/\D/', '', $pinValue)];
+            session()->forget($sessionKey);
+
+            $result = $service->charge($payload);
+
+            return $this->handleChargeResponse($result, $txRef, $isRecurring);
+        }
+
+        if ($authMode === 'otp') {
+            if (empty($otpValue)) {
+                return gale()->messages(['otpValue' => [__('donation.card_otp_required')]]);
+            }
+
+            $result = $service->validateCharge($otpValue, $flwRef);
+
+            if (($result['status'] ?? '') === 'success') {
+                return $this->completeDonation($result['data'] ?? [], $txRef, $isRecurring);
+            }
+
+            Log::channel('flutterwave')->error('OTP validation failed', ['result' => $result, 'txRef' => $txRef]);
+
+            return gale()->messages(['otpValue' => [$result['message'] ?? __('donation.payment_error_generic')]]);
+        }
+
+        return gale()->messages(['cardNumber' => [__('donation.payment_error_generic')]]);
+    }
+
+    public function verifyPayment(Request $request): mixed
+    {
+        $txRef = (string) $request->input('tx_ref', '');
+        $transactionId = (int) $request->input('transaction_id', 0);
+
+        if ($txRef && $transactionId) {
+            $service = new FlutterwaveDirectCharge(config('flutterwave.secretKey'));
+            $verification = $service->verifyTransaction($transactionId);
+            $txStatus = $verification['data']['status'] ?? 'failed';
+            $data = $verification['data'] ?? [];
+
+            $donation = Donation::where('tx_ref', $txRef)->first();
+            $isRecurring = false;
+
+            if (! $donation) {
+                $donation = RecurringDonation::where('tx_ref', $txRef)->first();
+                $isRecurring = true;
+            }
+
+            if ($donation) {
+                if ($isRecurring) {
+                    $donation->update([
+                        'flutterwave_subscription_id' => (string) ($data['id'] ?? ''),
+                        'status' => $txStatus === 'successful' ? 'active' : 'failed',
+                        'flutterwave_data' => $data ?: null,
+                    ]);
+                } else {
+                    $newStatus = $txStatus === 'successful' ? 'completed' : 'failed';
+                    $donation->update([
+                        'flutterwave_id' => (string) ($data['id'] ?? ''),
+                        'status' => $newStatus,
+                        'flutterwave_data' => $data ?: null,
+                    ]);
+
+                    if ($newStatus === 'completed') {
+                        Mail::to($donation->donor_email)->queue(new DonationConfirmation($donation));
+                    }
+                }
+            }
+        }
+
+        return redirect()->route('public.donate.merci', array_filter(['tx_ref' => $txRef]));
+    }
+
+    public function successPage(Request $request): mixed
+    {
+        $txRef = $request->input('tx_ref');
+        $donation = $txRef ? Donation::where('tx_ref', $txRef)->first() : null;
+
+        $programmeLabel = null;
+        if ($donation) {
+            $programmeMap = [
+                'bree-protege' => __('donation.programme_protege'),
+                'bree-eleve' => __('donation.programme_eleve'),
+                'bree-respire' => __('donation.programme_respire'),
+                'general' => __('donation.programme_general'),
+            ];
+            $programmeLabel = $programmeMap[$donation->programme] ?? __('donation.programme_general');
+        }
+
+        return gale()->view('public.donation.merci', compact('donation', 'programmeLabel'), web: true);
     }
 
     private function initRecurringPayment(
@@ -196,47 +368,83 @@ class DonationController extends Controller
             'status' => 'pending',
         ]);
 
-        $modalData = [
-            'tx_ref' => $txRef,
-            'amount' => $amount,
-            'currency' => 'EUR',
-            'customer' => [
-                'name' => $donorName,
-                'email' => $donorEmail,
-                'phone_number' => $donorPhone ?: '',
-            ],
-            'meta' => [
-                'programme' => $programme,
-                'type' => 'recurring',
-                'frequency' => $frequency,
-            ],
-        ];
-
-        if ($planId) {
-            $modalData['payment_plan'] = (int) $planId;
-        }
-
-        $paymentConfig = Flutterwave::render('inline', $modalData);
-
-        return gale()->state('paymentConfig', $paymentConfig);
+        return gale()->state('cardStep', true)->state('txRef', $txRef);
     }
 
-    public function successPage(Request $request): mixed
+    private function handleChargeResponse(array $result, string $txRef, bool $isRecurring): mixed
     {
-        $txRef = $request->input('tx_ref');
-        $donation = $txRef ? Donation::where('tx_ref', $txRef)->first() : null;
+        $status = $result['status'] ?? 'error';
 
-        $programmeLabel = null;
-        if ($donation) {
-            $programmeMap = [
-                'bree-protege' => __('donation.programme_protege'),
-                'bree-eleve' => __('donation.programme_eleve'),
-                'bree-respire' => __('donation.programme_respire'),
-                'general' => __('donation.programme_general'),
-            ];
-            $programmeLabel = $programmeMap[$donation->programme] ?? __('donation.programme_general');
+        if ($status === 'error' || $status === 'failed') {
+            Log::channel('flutterwave')->error('Direct charge error', ['result' => $result, 'txRef' => $txRef]);
+
+            return gale()->messages(['cardNumber' => [$result['message'] ?? __('donation.payment_error_generic')]]);
         }
 
-        return gale()->view('public.donation.merci', compact('donation', 'programmeLabel'), web: true);
+        if ($status === 'success') {
+            $data = $result['data'] ?? [];
+            $meta = $result['meta'] ?? [];
+            $authMode = $meta['authorization']['mode'] ?? '';
+            $dataStatus = $data['status'] ?? '';
+
+            if ($dataStatus === 'successful' || $authMode === 'noauth') {
+                return $this->completeDonation($data, $txRef, $isRecurring);
+            }
+
+            if ($authMode === 'pin') {
+                return gale()->state('authMode', 'pin');
+            }
+
+            if ($authMode === 'otp') {
+                return gale()
+                    ->state('authMode', 'otp')
+                    ->state('flwRef', $data['flw_ref'] ?? '');
+            }
+
+            if ($authMode === 'redirect') {
+                return gale()
+                    ->state('authMode', 'redirect')
+                    ->state('redirectUrl', $meta['authorization']['redirect'] ?? '');
+            }
+
+            // Pending — webhook will confirm
+            return $this->completeDonation($data, $txRef, $isRecurring);
+        }
+
+        return gale()->messages(['cardNumber' => [__('donation.payment_error_generic')]]);
+    }
+
+    private function completeDonation(array $transactionData, string $txRef, bool $isRecurring): mixed
+    {
+        if ($isRecurring) {
+            $donation = RecurringDonation::where('tx_ref', $txRef)->first();
+
+            if ($donation && ! $donation->isActive()) {
+                $donation->update([
+                    'flutterwave_subscription_id' => (string) ($transactionData['id'] ?? ''),
+                    'status' => 'active',
+                    'flutterwave_data' => $transactionData ?: null,
+                ]);
+            }
+        } else {
+            $donation = Donation::where('tx_ref', $txRef)->first();
+
+            if ($donation && ! $donation->isCompleted()) {
+                $txStatus = $transactionData['status'] ?? 'pending';
+                $newStatus = $txStatus === 'successful' ? 'completed' : 'pending';
+
+                $donation->update([
+                    'flutterwave_id' => (string) ($transactionData['id'] ?? ''),
+                    'status' => $newStatus,
+                    'flutterwave_data' => $transactionData ?: null,
+                ]);
+
+                if ($newStatus === 'completed') {
+                    Mail::to($donation->donor_email)->queue(new DonationConfirmation($donation));
+                }
+            }
+        }
+
+        return gale()->redirect(route('public.donate.merci', ['tx_ref' => $txRef]));
     }
 }

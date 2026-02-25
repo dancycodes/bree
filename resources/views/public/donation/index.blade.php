@@ -1,9 +1,5 @@
 @extends('layouts.public')
 
-@push('scripts')
-<script src="https://checkout.flutterwave.com/v3.js"></script>
-@endpush
-
 @section('title', __('donation.page_title') . ' — ' . config('app.name'))
 @section('meta_description', __('donation.meta_description'))
 
@@ -25,7 +21,16 @@
     donorEmail: '',
     donorPhone: '',
     donorCountry: 'CM',
-    paymentConfig: null,
+    cardStep: false,
+    txRef: '',
+    cardNumber: '',
+    cardExpiry: '',
+    cardCvv: '',
+    authMode: '',
+    pinValue: '',
+    otpValue: '',
+    flwRef: '',
+    redirectUrl: '',
     selectPreset(amount) {
         this.selectedAmount = amount;
         this.showCustom = false;
@@ -34,20 +39,17 @@
     selectCustom() {
         this.selectedAmount = 0;
         this.showCustom = true;
+    },
+    formatCardNumber() {
+        let v = this.cardNumber.replace(/\D/g, '').substring(0, 16);
+        this.cardNumber = v.replace(/(\d{4})(?=\d)/g, '$1 ');
+    },
+    formatExpiry() {
+        let v = this.cardExpiry.replace(/\D/g, '').substring(0, 4);
+        if (v.length >= 3) { v = v.substring(0, 2) + '/' + v.substring(2); }
+        this.cardExpiry = v;
     }
-}"
-x-init="$watch('paymentConfig', function(cfg) {
-    if (cfg) {
-        const config = JSON.parse(cfg);
-        config.callback = function(response) {
-            if (response.status === 'successful' || response.status === 'completed') {
-                window.location.href = '{{ route('public.donate.merci') }}?tx_ref=' + response.tx_ref;
-            }
-        };
-        config.onclose = function() {};
-        FlutterwaveCheckout(config);
-    }
-})">
+}">
 
     {{-- ================================================================
          PAGE HERO
@@ -511,11 +513,11 @@ x-init="$watch('paymentConfig', function(cfg) {
     </div>
 
     {{-- ================================================================
-         DONOR INFO FORM (shows after amount confirmed)
+         DONOR INFO FORM (shows after amount confirmed, hides when on card step)
          ================================================================ --}}
-    <div x-show="amountConfirmed"
+    <div x-show="amountConfirmed && !cardStep"
          style="display:none;"
-         x-effect="if (amountConfirmed) $nextTick(() => $el.scrollIntoView({ behavior: 'smooth', block: 'start' }))">
+         x-effect="if (amountConfirmed && !cardStep) $nextTick(() => $el.scrollIntoView({ behavior: 'smooth', block: 'start' }))">
         <section class="py-16 lg:py-20" style="background-color: #143c64;">
             <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -537,7 +539,7 @@ x-init="$watch('paymentConfig', function(cfg) {
                         </p>
                     </div>
                     <button type="button"
-                            @click="amountConfirmed = false"
+                            @click="amountConfirmed = false; cardStep = false; authMode = ''"
                             class="text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
                             style="color: rgba(255,255,255,0.7); background-color: rgba(255,255,255,0.1);">
                         {{ __('donation.donor_change_amount') }}
@@ -645,6 +647,250 @@ x-init="$watch('paymentConfig', function(cfg) {
                 <p class="mt-4 text-center text-xs" style="color: rgba(255,255,255,0.4);">
                     🔒 {{ __('donation.security_note') }}
                 </p>
+
+            </div>
+        </section>
+    </div>
+
+    {{-- ================================================================
+         CARD PAYMENT FORM (shows after initPayment succeeds)
+         ================================================================ --}}
+    <div x-show="cardStep"
+         style="display:none;"
+         x-effect="if (cardStep) $nextTick(() => $el.scrollIntoView({ behavior: 'smooth', block: 'start' }))">
+        <section class="py-16 lg:py-20" style="background-color: #0a1f3a;">
+            <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                {{-- Amount summary --}}
+                <div class="flex items-center justify-between mb-8 p-4 rounded-xl"
+                     style="background-color: rgba(255,255,255,0.07);">
+                    <div>
+                        <p class="text-xs font-bold tracking-widest uppercase mb-1"
+                           style="color: rgba(255,255,255,0.5);">
+                            {{ __('donation.donor_amount_summary') }}
+                        </p>
+                        <p class="text-3xl font-bold" style="color: #c8a03c; font-family:'Playfair Display',serif;">
+                            <span x-text="confirmedAmount"></span>€
+                        </p>
+                    </div>
+                    <button type="button"
+                            @click="cardStep = false; authMode = ''"
+                            class="text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                            style="color: rgba(255,255,255,0.7); background-color: rgba(255,255,255,0.1);">
+                        {{ __('donation.card_back_btn') }}
+                    </button>
+                </div>
+
+                {{-- STEP: Card entry --}}
+                <div x-show="authMode === ''" style="display:none;">
+
+                    <h2 class="text-2xl font-bold text-white mb-2"
+                        style="font-family:'Playfair Display',serif;">
+                        {{ __('donation.card_heading') }}
+                    </h2>
+                    <p class="text-sm mb-8" style="color: rgba(255,255,255,0.6); line-height: 1.7;">
+                        {{ __('donation.card_sub') }}
+                    </p>
+
+                    {{-- Card number --}}
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold mb-2" style="color: rgba(255,255,255,0.9);">
+                            {{ __('donation.card_number_label') }}
+                        </label>
+                        <div class="relative">
+                            <input type="text"
+                                   x-model="cardNumber"
+                                   @input="formatCardNumber()"
+                                   inputmode="numeric"
+                                   placeholder="{{ __('donation.card_number_placeholder') }}"
+                                   maxlength="19"
+                                   autocomplete="cc-number"
+                                   class="w-full px-4 py-3 pr-12 rounded-xl border-2 text-sm font-mono tracking-wider transition-colors focus:outline-none"
+                                   style="border-color: rgba(255,255,255,0.2); background-color: rgba(255,255,255,0.08); color: #ffffff;"
+                                   @focus="$el.style.borderColor='#c8a03c'"
+                                   @blur="$el.style.borderColor='rgba(255,255,255,0.2)'">
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75" style="color: rgba(255,255,255,0.35);">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <p x-message="cardNumber" class="text-xs mt-1.5 font-medium" style="color: #fca5a5;"></p>
+                    </div>
+
+                    {{-- Expiry + CVV --}}
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: rgba(255,255,255,0.9);">
+                                {{ __('donation.card_expiry_label') }}
+                            </label>
+                            <input type="text"
+                                   x-model="cardExpiry"
+                                   @input="formatExpiry()"
+                                   inputmode="numeric"
+                                   placeholder="{{ __('donation.card_expiry_placeholder') }}"
+                                   maxlength="5"
+                                   autocomplete="cc-exp"
+                                   class="w-full px-4 py-3 rounded-xl border-2 text-sm font-mono transition-colors focus:outline-none"
+                                   style="border-color: rgba(255,255,255,0.2); background-color: rgba(255,255,255,0.08); color: #ffffff;"
+                                   @focus="$el.style.borderColor='#c8a03c'"
+                                   @blur="$el.style.borderColor='rgba(255,255,255,0.2)'">
+                            <p x-message="cardExpiry" class="text-xs mt-1.5 font-medium" style="color: #fca5a5;"></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: rgba(255,255,255,0.9);">
+                                {{ __('donation.card_cvv_label') }}
+                            </label>
+                            <input type="password"
+                                   x-model="cardCvv"
+                                   @input="cardCvv = cardCvv.replace(/\D/g, '').substring(0, 4)"
+                                   inputmode="numeric"
+                                   placeholder="{{ __('donation.card_cvv_placeholder') }}"
+                                   maxlength="4"
+                                   autocomplete="cc-csc"
+                                   class="w-full px-4 py-3 rounded-xl border-2 text-sm font-mono transition-colors focus:outline-none"
+                                   style="border-color: rgba(255,255,255,0.2); background-color: rgba(255,255,255,0.08); color: #ffffff;"
+                                   @focus="$el.style.borderColor='#c8a03c'"
+                                   @blur="$el.style.borderColor='rgba(255,255,255,0.2)'">
+                            <p x-message="cardCvv" class="text-xs mt-1.5 font-medium" style="color: #fca5a5;"></p>
+                        </div>
+                    </div>
+
+                    {{-- Pay button --}}
+                    <button type="button"
+                            @click="$action('{{ route('public.donate.chargeCard') }}', { include: ['txRef', 'cardNumber', 'cardExpiry', 'cardCvv', 'confirmedType'] })"
+                            :disabled="cardNumber.replace(/\D/g,'').length < 13 || cardExpiry.length < 5 || cardCvv.replace(/\D/g,'').length < 3"
+                            :style="(cardNumber.replace(/\D/g,'').length >= 13 && cardExpiry.length >= 5 && cardCvv.replace(/\D/g,'').length >= 3)
+                                ? 'background-color:#c8a03c; opacity:1; cursor:pointer;'
+                                : 'background-color:#c8a03c; opacity:0.45; cursor:not-allowed;'"
+                            class="w-full flex items-center justify-center gap-3 py-4 rounded-xl text-sm font-bold transition-all"
+                            style="color:#143c64;">
+                        <span x-show="!$fetching()">
+                            {{ __('donation.card_pay_btn') }}
+                            — <span x-text="confirmedAmount + '€'"></span>
+                        </span>
+                        <span x-show="$fetching()">{{ __('donation.card_paying_btn') }}</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
+                             x-show="!$fetching()">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+                        </svg>
+                    </button>
+
+                    <p class="mt-4 text-center text-xs" style="color: rgba(255,255,255,0.35);">
+                        🔒 {{ __('donation.security_note') }}
+                    </p>
+
+                </div>
+
+                {{-- STEP: PIN entry --}}
+                <div x-show="authMode === 'pin'" style="display:none;">
+
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-6"
+                         style="background-color: rgba(200,160,60,0.15);">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75" style="color: #c8a03c;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+                        </svg>
+                    </div>
+
+                    <h2 class="text-2xl font-bold text-white mb-2" style="font-family:'Playfair Display',serif;">
+                        {{ __('donation.card_pin_heading') }}
+                    </h2>
+                    <p class="text-sm mb-8" style="color: rgba(255,255,255,0.6); line-height: 1.7;">
+                        {{ __('donation.card_pin_sub') }}
+                    </p>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold mb-2" style="color: rgba(255,255,255,0.9);">
+                            {{ __('donation.card_pin_label') }}
+                        </label>
+                        <input type="password"
+                               x-model="pinValue"
+                               @input="pinValue = pinValue.replace(/\D/g, '').substring(0, 6)"
+                               inputmode="numeric"
+                               placeholder="{{ __('donation.card_pin_placeholder') }}"
+                               maxlength="6"
+                               class="w-full max-w-xs px-4 py-3 rounded-xl border-2 text-2xl tracking-widest font-mono transition-colors focus:outline-none"
+                               style="border-color: rgba(255,255,255,0.2); background-color: rgba(255,255,255,0.08); color: #ffffff;"
+                               @focus="$el.style.borderColor='#c8a03c'"
+                               @blur="$el.style.borderColor='rgba(255,255,255,0.2)'">
+                        <p x-message="pinValue" class="text-xs mt-1.5 font-medium" style="color: #fca5a5;"></p>
+                    </div>
+
+                    <button type="button"
+                            @click="$action('{{ route('public.donate.authenticateCharge') }}', { include: ['authMode', 'pinValue', 'txRef', 'confirmedType'] })"
+                            :disabled="pinValue.replace(/\D/g,'').length < 4"
+                            :style="pinValue.replace(/\D/g,'').length >= 4
+                                ? 'background-color:#c8a03c; opacity:1; cursor:pointer;'
+                                : 'background-color:#c8a03c; opacity:0.45; cursor:not-allowed;'"
+                            class="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-sm font-bold transition-all"
+                            style="color:#143c64;">
+                        <span x-show="!$fetching()">{{ __('donation.card_confirm_btn') }}</span>
+                        <span x-show="$fetching()">{{ __('donation.card_confirming_btn') }}</span>
+                    </button>
+
+                </div>
+
+                {{-- STEP: OTP entry --}}
+                <div x-show="authMode === 'otp'" style="display:none;">
+
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-6"
+                         style="background-color: rgba(200,0,120,0.15);">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75" style="color: #c80078;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/>
+                        </svg>
+                    </div>
+
+                    <h2 class="text-2xl font-bold text-white mb-2" style="font-family:'Playfair Display',serif;">
+                        {{ __('donation.card_otp_heading') }}
+                    </h2>
+                    <p class="text-sm mb-8" style="color: rgba(255,255,255,0.6); line-height: 1.7;">
+                        {{ __('donation.card_otp_sub') }}
+                    </p>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold mb-2" style="color: rgba(255,255,255,0.9);">
+                            {{ __('donation.card_otp_label') }}
+                        </label>
+                        <input type="text"
+                               x-model="otpValue"
+                               inputmode="numeric"
+                               placeholder="{{ __('donation.card_otp_placeholder') }}"
+                               maxlength="8"
+                               class="w-full max-w-xs px-4 py-3 rounded-xl border-2 text-2xl tracking-widest font-mono transition-colors focus:outline-none"
+                               style="border-color: rgba(255,255,255,0.2); background-color: rgba(255,255,255,0.08); color: #ffffff;"
+                               @focus="$el.style.borderColor='#c8a03c'"
+                               @blur="$el.style.borderColor='rgba(255,255,255,0.2)'">
+                        <p x-message="otpValue" class="text-xs mt-1.5 font-medium" style="color: #fca5a5;"></p>
+                    </div>
+
+                    <button type="button"
+                            @click="$action('{{ route('public.donate.authenticateCharge') }}', { include: ['authMode', 'otpValue', 'flwRef', 'txRef', 'confirmedType'] })"
+                            :disabled="!otpValue.trim()"
+                            :style="otpValue.trim()
+                                ? 'background-color:#c8a03c; opacity:1; cursor:pointer;'
+                                : 'background-color:#c8a03c; opacity:0.45; cursor:not-allowed;'"
+                            class="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-sm font-bold transition-all"
+                            style="color:#143c64;">
+                        <span x-show="!$fetching()">{{ __('donation.card_validate_btn') }}</span>
+                        <span x-show="$fetching()">{{ __('donation.card_validating_btn') }}</span>
+                    </button>
+
+                </div>
+
+                {{-- STEP: 3DS Redirect --}}
+                <div x-show="authMode === 'redirect'" style="display:none;"
+                     x-effect="if (redirectUrl) window.location.href = redirectUrl">
+
+                    <div class="text-center py-10">
+                        <svg class="w-12 h-12 animate-spin mx-auto mb-4" fill="none" viewBox="0 0 24 24" style="color: #c8a03c;">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                        </svg>
+                        <p class="text-lg font-semibold text-white mb-2">{{ __('donation.card_redirect_heading') }}</p>
+                        <p class="text-sm" style="color: rgba(255,255,255,0.55);">{{ __('donation.card_redirect_sub') }}</p>
+                    </div>
+
+                </div>
 
             </div>
         </section>
