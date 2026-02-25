@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventsController as AdminEventsController;
 use App\Http\Controllers\Admin\FounderProfileController;
+use App\Http\Controllers\Admin\GalleryAlbumsController;
 use App\Http\Controllers\Admin\MilestonesController;
 use App\Http\Controllers\Admin\NewsArticlesController;
 use App\Http\Controllers\Admin\NewsCategoriesController;
@@ -62,6 +63,14 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::patch('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'update'])->name('programs.activities.update');
     Route::delete('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'destroy'])->name('programs.activities.destroy');
     Route::post('/programmes/{program:slug}/activites/reorder', [ProgramActivitiesController::class, 'reorder'])->name('programs.activities.reorder');
+
+    // Gallery Albums
+    Route::get('/galerie/albums', [GalleryAlbumsController::class, 'index'])->name('gallery.albums.index');
+    Route::get('/galerie/albums/creer', [GalleryAlbumsController::class, 'create'])->name('gallery.albums.create');
+    Route::post('/galerie/albums', [GalleryAlbumsController::class, 'store'])->name('gallery.albums.store');
+    Route::get('/galerie/albums/{album:slug}/modifier', [GalleryAlbumsController::class, 'edit'])->name('gallery.albums.edit');
+    Route::patch('/galerie/albums/{album:slug}', [GalleryAlbumsController::class, 'update'])->name('gallery.albums.update');
+    Route::delete('/galerie/albums/{album:slug}', [GalleryAlbumsController::class, 'destroy'])->name('gallery.albums.destroy');
 
     // Events
     Route::get('/evenements', [AdminEventsController::class, 'index'])->name('events.index');
