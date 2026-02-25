@@ -435,6 +435,67 @@
     </section>
 
     {{-- ================================================================
+         TEAM MEMBERS
+         ================================================================ --}}
+    @if ($teamMembers->isNotEmpty())
+        <section class="py-24 lg:py-32" style="background-color: #f8f5f0;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="text-center mb-16" data-animate="fade-up">
+                    <span class="block text-xs font-bold tracking-widest uppercase mb-3"
+                          style="color: #c80078;">
+                        {{ __('about.team_label') }}
+                    </span>
+                    <h2 class="font-heading font-bold"
+                        style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+                               color: #002850;">
+                        {{ __('about.team_heading') }}
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" data-stagger="0.07">
+                    @foreach ($teamMembers as $member)
+                        <div class="text-center group" data-animate="fade-up">
+
+                            {{-- Photo or monogram --}}
+                            <div class="mx-auto mb-5 relative"
+                                 style="width: 140px; height: 140px;">
+                                @if ($member->photo_path)
+                                    <div class="w-full h-full rounded-full overflow-hidden border-2 transition-transform duration-300 group-hover:scale-105"
+                                         style="border-color: #e2e8f0;">
+                                        <img src="{{ asset($member->photo_path) }}"
+                                             alt="{{ $member->name }}"
+                                             class="w-full h-full object-cover">
+                                    </div>
+                                @else
+                                    <div class="w-full h-full rounded-full flex items-center justify-center border-2 transition-transform duration-300 group-hover:scale-105"
+                                         style="border-color: #c8007830; background-color: rgba(200,0,120,0.06);">
+                                        <span class="font-heading font-bold text-2xl"
+                                              style="font-family: 'Playfair Display', serif; color: #c80078;">
+                                            {{ $member->initials() }}
+                                        </span>
+                                    </div>
+                                @endif
+                            </div>
+
+                            {{-- Name & title --}}
+                            <h3 class="font-semibold text-base mb-1" style="color: #002850;">
+                                {{ $member->name }}
+                            </h3>
+                            <p class="text-xs font-medium" style="color: #c80078;">
+                                {{ $member->title() }}
+                            </p>
+
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
+        </section>
+    @endif
+
+    {{-- ================================================================
          CTA
          ================================================================ --}}
     <section class="py-20" style="background-color: #ffffff;">

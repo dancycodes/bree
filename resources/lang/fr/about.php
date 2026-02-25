@@ -42,6 +42,10 @@ return [
     'patron_label' => 'Notre Marraine',
     'patron_heading' => 'Un soutien institutionnel précieux',
 
+    // Team section
+    'team_label' => 'Notre Équipe',
+    'team_heading' => 'Les femmes et hommes engagés',
+
     // CTA
     'cta_label' => 'Rejoignez-nous',
     'cta_heading' => 'Ensemble, nous pouvons faire plus',

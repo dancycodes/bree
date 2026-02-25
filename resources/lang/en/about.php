@@ -42,6 +42,10 @@ return [
     'patron_label' => 'Our Patron',
     'patron_heading' => 'Precious institutional support',
 
+    // Team section
+    'team_label' => 'Our Team',
+    'team_heading' => 'The people behind the mission',
+
     // CTA
     'cta_label' => 'Join us',
     'cta_heading' => 'Together, we can do more',
