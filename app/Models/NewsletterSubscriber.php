@@ -14,6 +14,7 @@ class NewsletterSubscriber extends Model
         'email',
         'locale',
         'subscribed_at',
+        'status',
     ];
 
     public function getActivitylogOptions(): LogOptions

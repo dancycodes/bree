@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminContactMessagesController;
+use App\Http\Controllers\Admin\AdminNewsletterController;
 use App\Http\Controllers\Admin\AdminPartnersController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -104,6 +105,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/actualites/{article:slug}/modifier', [NewsArticlesController::class, 'edit'])->name('news.edit');
     Route::patch('/actualites/{article:slug}', [NewsArticlesController::class, 'update'])->name('news.update');
     Route::delete('/actualites/{article:slug}', [NewsArticlesController::class, 'destroy'])->name('news.destroy');
+
+    // Newsletter Subscribers
+    Route::get('/newsletter', [AdminNewsletterController::class, 'index'])->name('newsletter.index');
+    Route::delete('/newsletter/{subscriber}', [AdminNewsletterController::class, 'destroy'])->name('newsletter.destroy');
+    Route::get('/newsletter/export', [AdminNewsletterController::class, 'exportCsv'])->name('newsletter.export');
 
     // Contact Messages
     Route::get('/messages', [AdminContactMessagesController::class, 'index'])->name('messages.index');
