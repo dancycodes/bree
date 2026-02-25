@@ -113,6 +113,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/roles', [AdminRolesController::class, 'index'])->name('roles.index');
     Route::get('/roles/creer', [AdminRolesController::class, 'create'])->name('roles.create');
     Route::post('/roles', [AdminRolesController::class, 'store'])->name('roles.store');
+    Route::get('/roles/{role}/modifier', [AdminRolesController::class, 'edit'])->name('roles.edit');
+    Route::patch('/roles/{role}', [AdminRolesController::class, 'update'])->name('roles.update');
     Route::delete('/roles/{role}', [AdminRolesController::class, 'destroy'])->name('roles.destroy');
 
     // Users

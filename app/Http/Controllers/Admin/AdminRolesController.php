@@ -28,6 +28,38 @@ class AdminRolesController extends Controller
         return gale()->view('admin.roles.create', compact('permissionGroups'), web: true);
     }
 
+    public function edit(Role $role): mixed
+    {
+        $this->authorize('roles.edit');
+
+        $allPermissions = Permission::orderBy('name')->get();
+        $permissionGroups = $this->buildGroups($allPermissions);
+        $rolePermissions = $role->permissions->pluck('name')->toArray();
+
+        return gale()->view('admin.roles.edit', compact('role', 'permissionGroups', 'rolePermissions'), web: true);
+    }
+
+    public function update(Request $request, Role $role): mixed
+    {
+        $this->authorize('roles.edit');
+
+        if ($role->name === 'Super Admin') {
+            return gale()->dispatch('toast', [
+                'message' => 'Les permissions du rôle Super Admin ne peuvent pas être modifiées.',
+                'type' => 'error',
+            ]);
+        }
+
+        $request->validate([
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'string|exists:permissions,name',
+        ]);
+
+        $role->syncPermissions($request->input('permissions', []));
+
+        return gale()->dispatch('toast', ['message' => 'Permissions mises à jour', 'type' => 'success']);
+    }
+
     public function store(Request $request): mixed
     {
         $this->authorize('roles.create');
