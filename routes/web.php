@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FounderProfileController;
 use App\Http\Controllers\Admin\MilestonesController;
+use App\Http\Controllers\Admin\NewsArticlesController;
 use App\Http\Controllers\Admin\NewsCategoriesController;
 use App\Http\Controllers\Admin\PatronProfileController;
 use App\Http\Controllers\Admin\ProgramActivitiesController;
@@ -58,6 +59,14 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::patch('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'update'])->name('programs.activities.update');
     Route::delete('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'destroy'])->name('programs.activities.destroy');
     Route::post('/programmes/{program:slug}/activites/reorder', [ProgramActivitiesController::class, 'reorder'])->name('programs.activities.reorder');
+
+    // News Articles
+    Route::get('/actualites', [NewsArticlesController::class, 'index'])->name('news.index');
+    Route::get('/actualites/creer', [NewsArticlesController::class, 'create'])->name('news.create');
+    Route::post('/actualites', [NewsArticlesController::class, 'store'])->name('news.store');
+    Route::get('/actualites/{article:slug}/modifier', [NewsArticlesController::class, 'edit'])->name('news.edit');
+    Route::patch('/actualites/{article:slug}', [NewsArticlesController::class, 'update'])->name('news.update');
+    Route::delete('/actualites/{article:slug}', [NewsArticlesController::class, 'destroy'])->name('news.destroy');
 
     // News Categories
     Route::get('/actualites/categories', [NewsCategoriesController::class, 'index'])->name('news.categories.index');
