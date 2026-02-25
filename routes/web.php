@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminContactMessagesController;
 use App\Http\Controllers\Admin\AdminDonationsController;
 use App\Http\Controllers\Admin\AdminNewsletterController;
 use App\Http\Controllers\Admin\AdminPartnersController;
+use App\Http\Controllers\Admin\AdminRecurringDonationsController;
 use App\Http\Controllers\Admin\AdminRolesController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\AuthController;
@@ -112,6 +113,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     // Donations
     Route::match(['GET', 'POST'], '/dons', [AdminDonationsController::class, 'index'])->name('donations.index');
+    Route::match(['GET', 'POST'], '/dons/recurrants', [AdminRecurringDonationsController::class, 'index'])->name('donations.recurring.index');
+    Route::post('/dons/recurrants/{recurring}/annuler', [AdminRecurringDonationsController::class, 'cancel'])->name('donations.recurring.cancel');
     Route::get('/dons/promesses/{pledge}', [AdminDonationsController::class, 'showPledge'])->name('donations.pledge.show');
     Route::patch('/dons/promesses/{pledge}/statut', [AdminDonationsController::class, 'updatePledgeStatus'])->name('donations.pledge.status');
     Route::get('/dons/nature/{inkind}', [AdminDonationsController::class, 'showInKind'])->name('donations.inkind.show');
