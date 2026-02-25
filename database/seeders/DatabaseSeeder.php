@@ -24,5 +24,7 @@ class DatabaseSeeder extends Seeder
         );
 
         $this->call(PermissionSeeder::class);
+        $this->call(FounderProfileSeeder::class);
+        $this->call(PatronProfileSeeder::class);
     }
 }
