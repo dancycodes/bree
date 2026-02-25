@@ -1,0 +1,309 @@
+@extends('layouts.public')
+
+@section('title', __('about.page_title') . ' — ' . config('app.name'))
+@section('meta_description', __('about.meta_description'))
+
+@section('content')
+
+    {{-- ================================================================
+         PAGE HERO
+         ================================================================ --}}
+    <section class="relative overflow-hidden" style="height: clamp(360px, 50vw, 560px);">
+
+        <img src="{{ asset('images/sections/about.jpg') }}"
+             alt="{{ __('about.page_title') }}"
+             class="absolute inset-0 w-full h-full object-cover">
+
+        <div class="absolute inset-0" style="background-color: rgba(0,20,60,0.75);"></div>
+
+        <div class="relative z-10 h-full flex flex-col justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+
+            <nav class="mb-5" aria-label="Breadcrumb">
+                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.6);">
+                    <li>
+                        <a href="{{ route('public.home') }}"
+                           class="hover:text-white transition-colors"
+                           style="color: rgba(255,255,255,0.6);">
+                            {{ __('nav.home') }}
+                        </a>
+                    </li>
+                    <li style="color: rgba(255,255,255,0.4);">/</li>
+                    <li style="color: #ffffff;">{{ __('about.page_title') }}</li>
+                </ol>
+            </nav>
+
+            <span class="block text-xs font-bold tracking-widest uppercase mb-3"
+                  style="color: #c8a03c;"
+                  data-animate="fade-up">
+                {{ __('about.hero_label') }}
+            </span>
+
+            <h1 class="font-heading font-bold"
+                style="font-family: 'Playfair Display', serif;
+                       font-size: clamp(2rem, 5vw, 4rem);
+                       color: #ffffff;
+                       line-height: 1.1;"
+                data-animate="fade-up">
+                {{ __('about.hero_heading') }}
+            </h1>
+
+            <p class="mt-4 text-base max-w-xl"
+               style="color: rgba(255,255,255,0.75);"
+               data-animate="fade-up">
+                {{ __('about.hero_tagline') }}
+            </p>
+
+            <div class="mt-6 h-1 w-16 rounded-full" style="background-color: #c8a03c;"></div>
+        </div>
+
+    </section>
+
+    {{-- ================================================================
+         ORIGIN STORY
+         ================================================================ --}}
+    <section class="py-24 lg:py-32" style="background-color: #ffffff;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+                {{-- Image --}}
+                <div class="relative" data-animate="fade-right">
+                    <div class="rounded-2xl overflow-hidden" style="aspect-ratio: 4/3;">
+                        <img src="{{ asset('images/sections/about.jpg') }}"
+                             alt="{{ __('about.story_heading') }}"
+                             class="w-full h-full object-cover">
+                    </div>
+                    {{-- Accent block --}}
+                    <div class="absolute -bottom-4 -right-4 w-32 h-32 rounded-2xl -z-10"
+                         style="background-color: #c8a03c26;"></div>
+                    <div class="absolute -top-4 -left-4 w-16 h-16 rounded-xl -z-10"
+                         style="background-color: #c8007826;"></div>
+                </div>
+
+                {{-- Text --}}
+                <div data-animate="fade-left">
+                    <span class="block text-xs font-bold tracking-widest uppercase mb-4"
+                          style="color: #c80078;">
+                        {{ __('about.story_label') }}
+                    </span>
+                    <h2 class="font-heading font-bold mb-8"
+                        style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+                               color: #002850;
+                               line-height: 1.2;">
+                        {{ __('about.story_heading') }}
+                    </h2>
+                    <div class="space-y-5">
+                        <p class="text-base leading-relaxed" style="color: #5a6a7a;">
+                            {{ __('about.story_p1') }}
+                        </p>
+                        <p class="text-base leading-relaxed" style="color: #5a6a7a;">
+                            {{ __('about.story_p2') }}
+                        </p>
+                        <p class="text-base font-medium leading-relaxed" style="color: #143c64;">
+                            {{ __('about.story_p3') }}
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    {{-- ================================================================
+         TIMELINE
+         ================================================================ --}}
+    @if ($milestones->count() > 0)
+        <section class="py-24 lg:py-32 overflow-hidden" style="background-color: #f8f5f0;">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="text-center mb-16" data-animate="fade-up">
+                    <span class="block text-xs font-bold tracking-widest uppercase mb-3"
+                          style="color: #c8a03c;">
+                        {{ __('about.timeline_label') }}
+                    </span>
+                    <h2 class="font-heading font-bold"
+                        style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+                               color: #002850;">
+                        {{ __('about.timeline_heading') }}
+                    </h2>
+                </div>
+
+                {{-- Timeline --}}
+                <div class="relative">
+                    {{-- Vertical line --}}
+                    <div class="absolute left-6 top-0 bottom-0 w-px md:left-1/2 md:-translate-x-px"
+                         style="background-color: #143c6430;"></div>
+
+                    <div class="space-y-12">
+                        @foreach ($milestones as $index => $milestone)
+                            @php $isEven = $index % 2 === 0; @endphp
+                            <div class="relative flex items-start gap-6 md:gap-0"
+                                 data-animate="fade-up">
+
+                                {{-- Desktop: alternate sides --}}
+                                {{-- Mobile: always left --}}
+                                <div class="md:w-1/2 @if($isEven) md:pr-10 md:text-right @else md:order-last md:pl-10 @endif hidden md:block">
+                                    @if ($isEven)
+                                        <div class="inline-block">
+                                            <div class="text-3xl font-bold font-heading mb-1"
+                                                 style="font-family: 'Playfair Display', serif; color: #c8a03c;">
+                                                {{ $milestone->year }}
+                                            </div>
+                                            <h3 class="font-semibold text-lg mb-2" style="color: #002850;">
+                                                {{ $milestone->title() }}
+                                            </h3>
+                                            @if ($milestone->description())
+                                                <p class="text-sm leading-relaxed" style="color: #5a6a7a;">
+                                                    {{ $milestone->description() }}
+                                                </p>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+
+                                {{-- Gold dot --}}
+                                <div class="flex-shrink-0 relative z-10 md:absolute md:left-1/2 md:-translate-x-1/2 md:top-1">
+                                    <div class="w-3 h-3 rounded-full border-2"
+                                         style="background-color: #c8a03c; border-color: #f8f5f0; box-shadow: 0 0 0 3px #c8a03c40;"></div>
+                                </div>
+
+                                {{-- Right side (even) or left side (odd) on desktop, always shown on mobile --}}
+                                <div class="flex-1 md:w-1/2 @if(!$isEven) md:pr-10 md:text-right @else md:pl-10 @endif">
+                                    {{-- Mobile: always show here --}}
+                                    <div class="md:hidden">
+                                        <div class="text-2xl font-bold font-heading mb-1"
+                                             style="font-family: 'Playfair Display', serif; color: #c8a03c;">
+                                            {{ $milestone->year }}
+                                        </div>
+                                        <h3 class="font-semibold text-base mb-1.5" style="color: #002850;">
+                                            {{ $milestone->title() }}
+                                        </h3>
+                                        @if ($milestone->description())
+                                            <p class="text-sm leading-relaxed" style="color: #5a6a7a;">
+                                                {{ $milestone->description() }}
+                                            </p>
+                                        @endif
+                                    </div>
+                                    {{-- Desktop: only show on odd --}}
+                                    @if (!$isEven)
+                                        <div class="hidden md:inline-block">
+                                            <div class="text-3xl font-bold font-heading mb-1"
+                                                 style="font-family: 'Playfair Display', serif; color: #c8a03c;">
+                                                {{ $milestone->year }}
+                                            </div>
+                                            <h3 class="font-semibold text-lg mb-2" style="color: #002850;">
+                                                {{ $milestone->title() }}
+                                            </h3>
+                                            @if ($milestone->description())
+                                                <p class="text-sm leading-relaxed" style="color: #5a6a7a;">
+                                                    {{ $milestone->description() }}
+                                                </p>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </div>
+
+                            </div>
+                        @endforeach
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    @endif
+
+    {{-- ================================================================
+         5 MISSION COMMITMENTS
+         ================================================================ --}}
+    <section class="py-24 lg:py-32" style="background-color: #002850;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center mb-16" data-animate="fade-up">
+                <span class="block text-xs font-bold tracking-widest uppercase mb-3"
+                      style="color: #c8a03c;">
+                    {{ __('about.values_label') }}
+                </span>
+                <h2 class="font-heading font-bold"
+                    style="font-family: 'Playfair Display', serif;
+                           font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+                           color: #ffffff;">
+                    {{ __('about.values_heading') }}
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6" data-stagger="0.08">
+                @foreach ([1,2,3,4,5] as $i)
+                    <div class="rounded-2xl p-6 flex flex-col items-center text-center"
+                         style="background-color: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);"
+                         data-animate="fade-up">
+
+                        {{-- Number badge --}}
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center mb-4 font-bold text-sm"
+                             style="background-color: #c8a03c20; color: #c8a03c; border: 1px solid #c8a03c40;">
+                            {{ $i }}
+                        </div>
+
+                        <h3 class="font-heading font-bold mb-3"
+                            style="font-family: 'Playfair Display', serif;
+                                   font-size: 1.1rem;
+                                   color: #ffffff;">
+                            {{ __('about.value_' . $i . '_title') }}
+                        </h3>
+                        <p class="text-xs leading-relaxed" style="color: rgba(255,255,255,0.65);">
+                            {{ __('about.value_' . $i . '_desc') }}
+                        </p>
+                    </div>
+                @endforeach
+            </div>
+
+        </div>
+    </section>
+
+    {{-- ================================================================
+         CTA
+         ================================================================ --}}
+    <section class="py-20" style="background-color: #ffffff;">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-animate="fade-up">
+
+            <div class="h-1 w-16 mx-auto mb-8 rounded-full" style="background-color: #c80078;"></div>
+
+            <span class="block text-xs font-bold tracking-widest uppercase mb-4"
+                  style="color: #c80078;">
+                {{ __('about.cta_label') }}
+            </span>
+
+            <h2 class="font-heading font-bold mb-5"
+                style="font-family: 'Playfair Display', serif;
+                       font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+                       color: #002850;">
+                {{ __('about.cta_heading') }}
+            </h2>
+
+            <p class="text-base leading-relaxed mb-8" style="color: #5a6a7a;">
+                {{ __('about.cta_text') }}
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="{{ route('public.home') }}#don"
+                   class="inline-flex items-center gap-3 px-8 py-4 text-sm font-semibold rounded-full text-white transition-opacity hover:opacity-90"
+                   style="background-color: #c80078;">
+                    {{ __('about.cta_donate') }}
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/>
+                    </svg>
+                </a>
+                <a href="{{ route('public.home') }}#benevole"
+                   class="inline-flex items-center gap-3 px-8 py-4 text-sm font-semibold rounded-full transition-colors"
+                   style="color: #002850; border: 2px solid #002850;">
+                    {{ __('about.cta_volunteer') }}
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+@endsection

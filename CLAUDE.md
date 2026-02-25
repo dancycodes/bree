@@ -280,7 +280,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - Any test: **pest-testing** skill
 
 <!-- DANCYDEV:STATE -->
-Phase: implementing | Progress: 30/90
-Last: F-034 done (Program Content Admin Management)
+Phase: implementing | Progress: 31/90
+Last: F-035 done (About Page — Foundation Story)
 <!-- DANCYDEV:STATE -->
 <!-- EXECUTOR:END -->
