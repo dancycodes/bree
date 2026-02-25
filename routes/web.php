@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminContactMessagesController;
 use App\Http\Controllers\Admin\AdminNewsletterController;
 use App\Http\Controllers\Admin\AdminPartnersController;
+use App\Http\Controllers\Admin\AdminRolesController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -107,6 +108,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/actualites/{article:slug}/modifier', [NewsArticlesController::class, 'edit'])->name('news.edit');
     Route::patch('/actualites/{article:slug}', [NewsArticlesController::class, 'update'])->name('news.update');
     Route::delete('/actualites/{article:slug}', [NewsArticlesController::class, 'destroy'])->name('news.destroy');
+
+    // Roles
+    Route::get('/roles', [AdminRolesController::class, 'index'])->name('roles.index');
+    Route::get('/roles/creer', [AdminRolesController::class, 'create'])->name('roles.create');
+    Route::post('/roles', [AdminRolesController::class, 'store'])->name('roles.store');
+    Route::delete('/roles/{role}', [AdminRolesController::class, 'destroy'])->name('roles.destroy');
 
     // Users
     Route::get('/utilisateurs', [AdminUsersController::class, 'index'])->name('users.index');
