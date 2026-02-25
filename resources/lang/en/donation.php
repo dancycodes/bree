@@ -1,0 +1,47 @@
+<?php
+
+return [
+    'page_title' => 'Make a Donation',
+    'meta_description' => 'Support Fondation BREE and contribute to women\'s empowerment and child protection in Cameroon.',
+
+    'hero_label' => 'Act now',
+    'hero_heading' => 'Your donation changes a life',
+    'hero_sub' => 'Every contribution, big or small, has a real impact on women and children in Cameroon.',
+
+    'impact_heading' => 'Your donation in action',
+    'impact_sub' => 'Concretely, your generosity translates into',
+    'impact_amount_prefix' => 'With',
+    'impact_amount_suffix' => '€, you',
+
+    'types_heading' => 'How would you like to contribute?',
+
+    'type_direct_title' => 'Direct donation',
+    'type_direct_sub' => 'Make an immediate and secure donation by credit card or mobile money via Flutterwave. Simple, fast, and 100% secure.',
+    'type_direct_btn' => 'Donate now',
+
+    'type_recurring_title' => 'Monthly donation',
+    'type_recurring_sub' => 'Join our circle of regular donors and create lasting impact. Your monthly support allows us to plan long-term.',
+    'type_recurring_btn' => 'Become a regular donor',
+
+    'type_pledge_title' => 'Donation pledge',
+    'type_pledge_sub' => 'Commit to a future donation at a date that suits you. Plan your generosity at your own pace.',
+    'type_pledge_btn' => 'Make a donation pledge',
+
+    'type_inkind_title' => 'In-kind donation',
+    'type_inkind_sub' => 'Donate school supplies, medical equipment, clothing or other material goods that our beneficiaries need.',
+    'type_inkind_btn' => 'Propose an in-kind donation',
+
+    'programme_label' => 'Designated programme',
+    'programme_general' => 'General fund',
+    'programme_protege' => 'BREE PROTÈGE',
+    'programme_eleve' => 'BREE ÉLÈVE',
+    'programme_respire' => 'BREE RESPIRE',
+
+    'security_note' => 'Payments 100% secured by Flutterwave',
+    'tax_note' => 'Tax-deductible donation according to your local legislation',
+
+    'cta_secondary_heading' => 'Prefer to support in another way?',
+    'cta_secondary_sub' => 'Become a volunteer or partner of Fondation BREE and contribute to our mission through your time and skills.',
+    'cta_volunteer_btn' => 'Become a volunteer',
+    'cta_partner_btn' => 'Become a partner',
+];
