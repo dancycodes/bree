@@ -2,6 +2,7 @@
 
 return [
     'failed' => 'These credentials do not match our records.',
+    'inactive' => 'Your account has been disabled.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many attempts. Please try again in :seconds seconds.',
 

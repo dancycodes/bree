@@ -2,6 +2,7 @@
 
 return [
     'failed' => 'Ces identifiants ne correspondent pas à nos enregistrements.',
+    'inactive' => 'Votre compte a été désactivé.',
     'password' => 'Le mot de passe fourni est incorrect.',
     'throttle' => 'Trop de tentatives. Veuillez réessayer dans :seconds secondes.',
 

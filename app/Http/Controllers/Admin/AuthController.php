@@ -34,6 +34,16 @@ class AuthController extends Controller
             ]);
         }
 
+        if (! Auth::user()->is_active) {
+            Auth::logout();
+
+            return gale()->messages([
+                'email' => __('auth.inactive'),
+            ]);
+        }
+
+        Auth::user()->update(['last_login_at' => now()]);
+
         $request->session()->regenerate();
 
         return gale()->redirect('/admin/dashboard');

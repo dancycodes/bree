@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminContactMessagesController;
 use App\Http\Controllers\Admin\AdminNewsletterController;
 use App\Http\Controllers\Admin\AdminPartnersController;
+use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventsController as AdminEventsController;
@@ -106,6 +107,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/actualites/{article:slug}/modifier', [NewsArticlesController::class, 'edit'])->name('news.edit');
     Route::patch('/actualites/{article:slug}', [NewsArticlesController::class, 'update'])->name('news.update');
     Route::delete('/actualites/{article:slug}', [NewsArticlesController::class, 'destroy'])->name('news.destroy');
+
+    // Users
+    Route::get('/utilisateurs', [AdminUsersController::class, 'index'])->name('users.index');
+    Route::post('/utilisateurs/{user}/desactiver', [AdminUsersController::class, 'disable'])->name('users.disable');
+    Route::post('/utilisateurs/{user}/activer', [AdminUsersController::class, 'enable'])->name('users.enable');
+    Route::delete('/utilisateurs/{user}', [AdminUsersController::class, 'destroy'])->name('users.destroy');
 
     // Newsletter Subscribers
     Route::get('/newsletter', [AdminNewsletterController::class, 'index'])->name('newsletter.index');
