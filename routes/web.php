@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminPartnershipApplicationsController;
 use App\Http\Controllers\Admin\AdminRecurringDonationsController;
 use App\Http\Controllers\Admin\AdminRolesController;
 use App\Http\Controllers\Admin\AdminSiteSettingsController;
+use App\Http\Controllers\Admin\AdminStatCountersController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\AdminVolunteerApplicationsController;
 use App\Http\Controllers\Admin\AuthController;
@@ -175,6 +176,13 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::patch('/partenaires/{partner}', [AdminPartnersController::class, 'update'])->name('partners.update');
     Route::delete('/partenaires/{partner}', [AdminPartnersController::class, 'destroy'])->name('partners.destroy');
     Route::post('/partenaires/reorder', [AdminPartnersController::class, 'reorder'])->name('partners.reorder');
+
+    // Impact Stats
+    Route::get('/statistiques', [AdminStatCountersController::class, 'index'])->name('stats.index');
+    Route::post('/statistiques', [AdminStatCountersController::class, 'store'])->name('stats.store');
+    Route::patch('/statistiques/{stat}', [AdminStatCountersController::class, 'update'])->name('stats.update');
+    Route::delete('/statistiques/{stat}', [AdminStatCountersController::class, 'destroy'])->name('stats.destroy');
+    Route::post('/statistiques/reorder', [AdminStatCountersController::class, 'reorder'])->name('stats.reorder');
 
     // News Categories
     Route::get('/actualites/categories', [NewsCategoriesController::class, 'index'])->name('news.categories.index');
