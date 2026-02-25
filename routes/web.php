@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\PatronProfileController;
 use App\Http\Controllers\Admin\ProgramActivitiesController;
 use App\Http\Controllers\Admin\ProgramsController as AdminProgramsController;
 use App\Http\Controllers\Public\AboutController;
+use App\Http\Controllers\Public\ContactController;
 use App\Http\Controllers\Public\DonationController;
 use App\Http\Controllers\Public\EventsController;
 use App\Http\Controllers\Public\GalleryController;
@@ -160,6 +161,11 @@ Route::post('/faire-un-don/don-en-nature', [DonationController::class, 'storeInK
     ->middleware(\Spatie\Honeypot\ProtectAgainstSpam::class);
 Route::post('/webhook/flutterwave', [WebhookController::class, 'flutterwave'])->name('webhook.flutterwave');
 Route::get('/programmes/{program:slug}', [ProgramsController::class, 'show'])->name('public.programs.show');
+
+Route::get('/contact', [ContactController::class, 'index'])->name('public.contact');
+Route::post('/contact/envoyer', [ContactController::class, 'store'])
+    ->name('public.contact.store')
+    ->middleware(\Spatie\Honeypot\ProtectAgainstSpam::class);
 
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'store'])
     ->name('newsletter.subscribe')
