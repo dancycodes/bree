@@ -23,6 +23,7 @@ class NewsArticle extends Model
         'content_en',
         'category_fr',
         'category_en',
+        'category_slug',
         'thumbnail_path',
         'status',
         'published_at',
@@ -70,5 +71,11 @@ class NewsArticle extends Model
         return $query->where('status', 'published')
             ->whereNotNull('published_at')
             ->orderByDesc('published_at');
+    }
+
+    /** Scope: filter by category slug. */
+    public function scopeByCategory(Builder $query, string $slug): Builder
+    {
+        return $query->where('category_slug', $slug);
     }
 }

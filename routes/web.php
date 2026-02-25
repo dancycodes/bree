@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProgramActivitiesController;
 use App\Http\Controllers\Admin\ProgramsController as AdminProgramsController;
 use App\Http\Controllers\Public\AboutController;
 use App\Http\Controllers\Public\HomeController;
+use App\Http\Controllers\Public\NewsController;
 use App\Http\Controllers\Public\NewsletterController;
 use App\Http\Controllers\Public\ProgramsController;
 use Illuminate\Support\Facades\Route;
@@ -65,6 +66,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 */
 Route::get('/', [HomeController::class, 'index'])->name('public.home');
 Route::get('/a-propos', [AboutController::class, 'index'])->name('public.about');
+Route::get('/actualites', [NewsController::class, 'index'])->name('public.news');
 Route::get('/programmes', [ProgramsController::class, 'index'])->name('public.programs');
 Route::get('/programmes/{program:slug}', [ProgramsController::class, 'show'])->name('public.programs.show');
 
