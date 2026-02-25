@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FounderProfileController;
 use App\Http\Controllers\Admin\ProgramActivitiesController;
 use App\Http\Controllers\Admin\ProgramsController as AdminProgramsController;
 use App\Http\Controllers\Public\AboutController;
@@ -33,6 +34,10 @@ Route::prefix('admin')->name('admin.')->middleware('guest')->group(function () {
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // About — Founder Profile
+    Route::get('/a-propos/fondatrice', [FounderProfileController::class, 'edit'])->name('about.founder.edit');
+    Route::patch('/a-propos/fondatrice', [FounderProfileController::class, 'update'])->name('about.founder.update');
 
     // Programs & Activities
     Route::get('/programmes', [AdminProgramsController::class, 'index'])->name('programs.index');

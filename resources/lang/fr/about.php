@@ -34,6 +34,10 @@ return [
     'value_5_title' => 'Transparence',
     'value_5_desc' => "Chaque don, chaque action, chaque résultat est rendu public. La confiance se mérite par l'honnêteté.",
 
+    // Founder section
+    'founder_label' => 'La Fondatrice',
+    'founder_heading' => 'Le visage derrière la mission',
+
     // CTA
     'cta_label' => 'Rejoignez-nous',
     'cta_heading' => 'Ensemble, nous pouvons faire plus',

@@ -34,6 +34,10 @@ return [
     'value_5_title' => 'Transparency',
     'value_5_desc' => 'Every donation, every action, every result is made public. Trust is earned through honesty.',
 
+    // Founder section
+    'founder_label' => 'The Founder',
+    'founder_heading' => 'The face behind the mission',
+
     // CTA
     'cta_label' => 'Join us',
     'cta_heading' => 'Together, we can do more',

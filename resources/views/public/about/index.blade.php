@@ -112,6 +112,90 @@
     </section>
 
     {{-- ================================================================
+         FOUNDER PROFILE
+         ================================================================ --}}
+    @if ($founder)
+        <section class="py-24 lg:py-32 overflow-hidden" style="background-color: #002850;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+                    {{-- Portrait --}}
+                    <div class="flex justify-center lg:justify-end" data-animate="fade-right">
+                        @if ($founder->photo_path)
+                            <div class="relative">
+                                <div class="w-72 h-72 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4"
+                                     style="border-color: #c8a03c;">
+                                    <img src="{{ asset($founder->photo_path) }}"
+                                         alt="{{ $founder->name }}"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                {{-- Gold ring accent --}}
+                                <div class="absolute -bottom-3 -right-3 w-24 h-24 rounded-full border-2"
+                                     style="border-color: #c8a03c40;"></div>
+                            </div>
+                        @else
+                            {{-- Elegant placeholder --}}
+                            <div class="relative">
+                                <div class="w-72 h-72 lg:w-80 lg:h-80 rounded-full flex items-center justify-center border-4"
+                                     style="border-color: #c8a03c; background-color: rgba(200,160,60,0.08);">
+                                    <div class="text-center">
+                                        <div class="font-heading font-bold text-5xl mb-2"
+                                             style="font-family: 'Playfair Display', serif; color: #c8a03c;">
+                                            {{ mb_strtoupper(mb_substr($founder->name, 0, 2)) }}
+                                        </div>
+                                        <div class="w-8 h-0.5 mx-auto rounded-full" style="background-color: #c8a03c;"></div>
+                                    </div>
+                                </div>
+                                <div class="absolute -bottom-3 -right-3 w-20 h-20 rounded-full border-2"
+                                     style="border-color: #c8a03c30;"></div>
+                            </div>
+                        @endif
+                    </div>
+
+                    {{-- Bio --}}
+                    <div data-animate="fade-left">
+                        <span class="block text-xs font-bold tracking-widest uppercase mb-4"
+                              style="color: #c8a03c;">
+                            {{ __('about.founder_label') }}
+                        </span>
+                        <h2 class="font-heading font-bold mb-2"
+                            style="font-family: 'Playfair Display', serif;
+                                   font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+                                   color: #ffffff;">
+                            {{ $founder->name }}
+                        </h2>
+                        <p class="text-sm font-semibold mb-8" style="color: #c80078;">
+                            {{ $founder->title() }}
+                        </p>
+
+                        <div class="space-y-4 mb-8">
+                            @foreach (explode("\n\n", $founder->bio()) as $paragraph)
+                                <p class="text-sm leading-relaxed" style="color: rgba(255,255,255,0.75);">
+                                    {{ $paragraph }}
+                                </p>
+                            @endforeach
+                        </div>
+
+                        @if ($founder->message())
+                            <blockquote class="border-l-2 pl-6 italic"
+                                        style="border-color: #c8a03c;
+                                               font-family: 'Playfair Display', serif;
+                                               font-size: 1rem;
+                                               color: rgba(255,255,255,0.9);
+                                               line-height: 1.6;">
+                                {{ $founder->message() }}
+                            </blockquote>
+                        @endif
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    @endif
+
+    {{-- ================================================================
          TIMELINE
          ================================================================ --}}
     @if ($milestones->count() > 0)
