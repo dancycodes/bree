@@ -124,6 +124,9 @@ Route::post('/evenements/{event:slug}/inscription', [EventsController::class, 'r
 Route::get('/galerie', [GalleryController::class, 'index'])->name('public.gallery');
 Route::get('/galerie/{album:slug}', [GalleryController::class, 'show'])->name('public.gallery.show');
 Route::get('/partenaires', [PartnersController::class, 'index'])->name('public.partners');
+Route::post('/partenaires/candidater', [PartnersController::class, 'storePartnership'])
+    ->name('public.partners.store')
+    ->middleware(\Spatie\Honeypot\ProtectAgainstSpam::class);
 Route::get('/benevoles', [VolunteerController::class, 'index'])->name('public.volunteers');
 Route::post('/benevoles/candidater', [VolunteerController::class, 'store'])
     ->name('public.volunteers.store')

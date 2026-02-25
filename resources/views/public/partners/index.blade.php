@@ -230,7 +230,7 @@
                     <p class="text-sm mb-6" style="color: #64748b; line-height: 1.7;">
                         {{ __('partners.cta_volunteer_sub') }}
                     </p>
-                    <a href="#benevoles"
+                    <a href="{{ route('public.volunteers') }}"
                        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-opacity hover:opacity-90"
                        style="background-color: #c80078; color: #ffffff;">
                         {{ __('partners.cta_volunteer_btn') }}
@@ -238,6 +238,177 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                         </svg>
                     </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {{-- ================================================================
+         PARTNERSHIP APPLICATION FORM
+         ================================================================ --}}
+    <section id="partenariat" class="py-16 lg:py-24" style="background-color: #ffffff;">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div
+                x-data="{
+                    orgName: '',
+                    contactName: '',
+                    email: '',
+                    phone: '',
+                    orgType: '',
+                    proposal: '',
+                    heardAbout: '',
+                    partnershipSubmitted: false
+                }"
+                x-sync>
+
+                {{-- Success state --}}
+                <div x-show="partnershipSubmitted"
+                     class="text-center py-16" style="display: none;">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"
+                         style="background-color: #dcfce7;">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
+                             style="color: #16a34a;">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-3"
+                        style="color: #143c64; font-family: 'Playfair Display', serif;">
+                        {{ __('partners.form_success_heading') }}
+                    </h2>
+                    <p class="text-base mb-8" style="color: #64748b;">
+                        {{ __('partners.form_success_sub') }}
+                    </p>
+                    <button @click="partnershipSubmitted = false"
+                            class="text-sm font-semibold transition-opacity hover:opacity-80"
+                            style="color: #c80078;">
+                        {{ __('partners.form_success_reset') }}
+                    </button>
+                </div>
+
+                {{-- Form --}}
+                <div x-show="!partnershipSubmitted">
+                    <div class="text-center mb-10">
+                        <span class="block text-xs font-bold tracking-widest uppercase mb-3"
+                              style="color: #c8a03c;"
+                              data-animate="fade-up">
+                            {{ __('partners.hero_label') }}
+                        </span>
+                        <h2 class="text-2xl font-bold mb-3"
+                            style="color: #143c64; font-family: 'Playfair Display', serif;"
+                            data-animate="fade-up">
+                            {{ __('partners.form_heading') }}
+                        </h2>
+                        <p class="text-base max-w-xl mx-auto" style="color: #64748b;" data-animate="fade-up">
+                            {{ __('partners.form_subtitle') }}
+                        </p>
+                    </div>
+
+                    <div class="rounded-3xl shadow-sm p-8 lg:p-10 space-y-6"
+                         style="background-color: #ffffff; border: 1px solid #e2e8f0;">
+
+                        {{-- Organization & Contact --}}
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" style="color: #475569;">
+                                    {{ __('partners.field_org_name') }} <span style="color: #c80078;">*</span>
+                                </label>
+                                <input x-model="orgName" x-name="orgName" type="text"
+                                       placeholder="Nom de votre organisation"
+                                       class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none transition-colors"
+                                       style="border-color: #e2e8f0; color: #1e293b;">
+                                <p x-message="orgName" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" style="color: #475569;">
+                                    {{ __('partners.field_contact_name') }} <span style="color: #c80078;">*</span>
+                                </label>
+                                <input x-model="contactName" x-name="contactName" type="text"
+                                       placeholder="Votre nom et prénom"
+                                       class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none transition-colors"
+                                       style="border-color: #e2e8f0; color: #1e293b;">
+                                <p x-message="contactName" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                            </div>
+                        </div>
+
+                        {{-- Email & Phone --}}
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" style="color: #475569;">
+                                    {{ __('partners.field_email') }} <span style="color: #c80078;">*</span>
+                                </label>
+                                <input x-model="email" x-name="email" type="email"
+                                       placeholder="contact@organisation.org"
+                                       class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none"
+                                       style="border-color: #e2e8f0; color: #1e293b;">
+                                <p x-message="email" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" style="color: #475569;">
+                                    {{ __('partners.field_phone') }}
+                                </label>
+                                <input x-model="phone" x-name="phone" type="tel"
+                                       placeholder="+237 6XX XXX XXX"
+                                       class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none"
+                                       style="border-color: #e2e8f0; color: #1e293b;">
+                            </div>
+                        </div>
+
+                        {{-- Organization type --}}
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #475569;">
+                                {{ __('partners.field_org_type') }} <span style="color: #c80078;">*</span>
+                            </label>
+                            <select x-model="orgType" x-name="orgType"
+                                    class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none appearance-none"
+                                    style="border-color: #e2e8f0; color: #1e293b; background-color: #ffffff;">
+                                <option value="">— Sélectionner un type —</option>
+                                <option value="ngo">{{ __('partners.org_type_ngo') }}</option>
+                                <option value="government">{{ __('partners.org_type_government') }}</option>
+                                <option value="private">{{ __('partners.org_type_private') }}</option>
+                                <option value="other">{{ __('partners.org_type_other') }}</option>
+                            </select>
+                            <p x-message="orgType" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                        </div>
+
+                        {{-- Partnership proposal --}}
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #475569;">
+                                {{ __('partners.field_proposal') }} <span style="color: #c80078;">*</span>
+                            </label>
+                            <textarea x-model="proposal" x-name="proposal" rows="6"
+                                      placeholder="{{ __('partners.proposal_hint') }}"
+                                      class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none resize-y"
+                                      style="border-color: #e2e8f0; color: #1e293b; line-height: 1.7;"></textarea>
+                            <p x-message="proposal" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                        </div>
+
+                        {{-- How heard --}}
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #475569;">
+                                {{ __('partners.field_heard') }}
+                            </label>
+                            <input x-model="heardAbout" x-name="heardAbout" type="text"
+                                   placeholder="Réseaux sociaux, recommandation, presse…"
+                                   class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none"
+                                   style="border-color: #e2e8f0; color: #1e293b;">
+                        </div>
+
+                        {{-- Honeypot --}}
+                        @honeypot
+
+                        {{-- Submit --}}
+                        <button
+                            @click="$action('{{ route('public.partners.store') }}')"
+                            :disabled="$fetching()"
+                            class="w-full py-4 rounded-2xl text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                            style="background-color: #143c64;">
+                            <span x-show="!$fetching()">{{ __('partners.form_submit') }}</span>
+                            <span x-show="$fetching()">{{ __('partners.form_submitting') }}</span>
+                        </button>
+
+                    </div>
                 </div>
 
             </div>
