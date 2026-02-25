@@ -609,6 +609,90 @@
          Circular portrait with gold ring. Monogram placeholder when
          no photo uploaded. Playfair Display quotes in italic.
          ================================================================ --}}
+    {{-- ================================================================
+         NEWSLETTER SUBSCRIPTION SECTION (F-025)
+         Off-white background. Single email field + subscribe button.
+         Gale-powered: validateState, toast on success, clear on done.
+         Honeypot protected. Duplicate email silently succeeds (BR-001).
+         ================================================================ --}}
+    <section class="py-20 lg:py-24" style="background-color: #f8f5f0;">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+            <div data-animate="fade-up"
+                 x-data="{ newsletter_email: '' }">
+
+                {{-- Decorative Gold icon --}}
+                <div class="flex justify-center mb-6">
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center"
+                         style="background-color: rgba(200,160,60,0.12);">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                             stroke-width="1.5" style="color: #c8a03c;" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+                        </svg>
+                    </div>
+                </div>
+
+                {{-- Headline --}}
+                <h2 class="font-heading font-bold mb-4"
+                    style="font-family: 'Playfair Display', serif;
+                           font-size: clamp(1.75rem, 4vw, 2.5rem);
+                           color: #002850;">
+                    {{ __('home.newsletter_headline') }}
+                </h2>
+
+                {{-- Subtitle --}}
+                <p class="text-base leading-relaxed mb-8 mx-auto"
+                   style="color: #5a6a7a; max-width: 480px;">
+                    {{ __('home.newsletter_subtitle') }}
+                </p>
+
+                {{-- Form --}}
+                <form
+                    @submit.prevent="$action('{{ route('newsletter.subscribe') }}')"
+                    x-sync="['newsletter_email']"
+                    class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+                    @csrf
+                    @honeypot
+
+                    <div class="flex-1">
+                        <input
+                            type="email"
+                            x-name="newsletter_email"
+                            x-model="newsletter_email"
+                            placeholder="{{ __('home.newsletter_placeholder') }}"
+                            autocomplete="email"
+                            class="w-full px-5 py-3.5 rounded-xl border text-sm focus:outline-none"
+                            style="border-color: rgba(0,40,80,0.15);
+                                   color: #002850;
+                                   background-color: #ffffff;">
+                        <p x-message="newsletter_email" class="mt-1 text-xs text-red-600 text-left"></p>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="btn-primary px-7 py-3.5 rounded-xl text-sm font-semibold whitespace-nowrap flex-shrink-0">
+                        <span x-show="!$fetching()">{{ __('home.newsletter_subscribe') }}</span>
+                        <span x-show="$fetching()" class="flex items-center gap-2">
+                            <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                            </svg>
+                        </span>
+                    </button>
+
+                </form>
+
+                {{-- GDPR note --}}
+                <p class="mt-4 text-xs" style="color: #9aacbb;">
+                    {{ __('home.newsletter_no_spam') }}
+                </p>
+
+            </div>
+
+        </div>
+    </section>
+
     @if ($founders)
         <section class="py-20 lg:py-28" style="background-color: #002850;">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

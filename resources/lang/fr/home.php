@@ -17,4 +17,10 @@ return [
     'see_event' => 'Voir l\'événement',
     'all_events' => 'Tous les événements',
     'no_events' => 'Aucun événement à venir',
+    'newsletter_headline' => 'Restez Informé',
+    'newsletter_subtitle' => 'Recevez nos actualités, événements et rapports directement dans votre boîte mail.',
+    'newsletter_placeholder' => 'Votre adresse email',
+    'newsletter_subscribe' => 'S\'abonner',
+    'newsletter_no_spam' => 'Pas de spam, désinscription facile.',
+    'newsletter_success' => 'Merci pour votre abonnement !',
 ];

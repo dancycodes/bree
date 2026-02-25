@@ -17,4 +17,10 @@ return [
     'see_event' => 'View event',
     'all_events' => 'All events',
     'no_events' => 'No upcoming events',
+    'newsletter_headline' => 'Stay Informed',
+    'newsletter_subtitle' => 'Receive our news, events, and reports directly in your inbox.',
+    'newsletter_placeholder' => 'Your email address',
+    'newsletter_subscribe' => 'Subscribe',
+    'newsletter_no_spam' => 'No spam, easy unsubscribe.',
+    'newsletter_success' => 'Thank you for subscribing!',
 ];
