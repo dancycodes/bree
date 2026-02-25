@@ -76,11 +76,24 @@ return [
     'donor_change_amount' => 'Change amount',
 
     'merci_heading' => 'Thank you for your generosity!',
+    'merci_heading_personalized' => 'Thank you, :name!',
     'merci_sub' => 'Your donation directly supports our mission. You will receive a receipt by email.',
+    'merci_sub_personalized' => 'Your donation of :amount€ for :programme has been confirmed. You will receive a receipt by email.',
     'merci_amount' => 'Donation amount',
+    'merci_programme' => 'Programme',
     'merci_reference' => 'Reference',
+    'merci_email_label' => 'Email',
+    'merci_status_label' => 'Status',
     'merci_status_pending' => 'Processing',
     'merci_status_completed' => 'Confirmed',
     'merci_back_home' => 'Back to homepage',
     'merci_see_programmes' => 'Discover our programmes',
+
+    'merci_share_heading' => 'Share your gesture',
+    'merci_share_text' => 'I just donated to Fondation BREE to support women and children in Cameroon. Join me!',
+
+    'merci_failed_heading' => 'Your payment was unsuccessful',
+    'merci_failed_sub' => 'Don\'t worry, you can try again or plan a donation at your own pace.',
+    'merci_failed_retry' => 'Try again',
+    'merci_failed_pledge' => 'Make a donation pledge',
 ];

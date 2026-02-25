@@ -131,6 +131,17 @@ class DonationController extends Controller
         $txRef = $request->input('tx_ref');
         $donation = $txRef ? Donation::where('tx_ref', $txRef)->first() : null;
 
-        return gale()->view('public.donation.merci', compact('donation'), web: true);
+        $programmeLabel = null;
+        if ($donation) {
+            $programmeMap = [
+                'bree-protege' => __('donation.programme_protege'),
+                'bree-eleve' => __('donation.programme_eleve'),
+                'bree-respire' => __('donation.programme_respire'),
+                'general' => __('donation.programme_general'),
+            ];
+            $programmeLabel = $programmeMap[$donation->programme] ?? __('donation.programme_general');
+        }
+
+        return gale()->view('public.donation.merci', compact('donation', 'programmeLabel'), web: true);
     }
 }

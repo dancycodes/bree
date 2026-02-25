@@ -1,5 +1,5 @@
 import './bootstrap';
-import { initAnimations, killAnimations, pageTransitionIn, playHeroEntrance, gsap, ScrollTrigger, animateCounter } from './animations';
+import { initAnimations, killAnimations, pageTransitionIn, playHeroEntrance, gsap, ScrollTrigger, animateCounter, playConfetti } from './animations';
 
 // Register Service Worker for PWA
 if ('serviceWorker' in navigator) {
@@ -53,11 +53,21 @@ function initCounters() {
     });
 }
 
+/**
+ * Trigger confetti burst if current page has [data-confetti] marker element.
+ */
+function initConfetti() {
+    if (document.querySelector('[data-confetti]')) {
+        playConfetti();
+    }
+}
+
 // Initialize animations on first page load
 document.addEventListener('DOMContentLoaded', () => {
     initAnimations();
     initHeroEntrance();
     initCounters();
+    initConfetti();
 });
 
 // Hook into Gale navigation lifecycle
@@ -66,6 +76,7 @@ document.addEventListener('gale:navigated', () => {
     pageTransitionIn();
     initHeroEntrance();
     initCounters();
+    initConfetti();
 });
 
 document.addEventListener('gale:navigating', () => {

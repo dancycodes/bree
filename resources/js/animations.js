@@ -195,4 +195,43 @@ function formatNumber(n) {
     return n.toLocaleString('fr-FR');
 }
 
+/**
+ * Confetti burst — one-time celebratory animation on donation success page.
+ * Creates coloured dots that shoot upward and fade out.
+ */
+export function playConfetti() {
+    if (prefersReducedMotion) return;
+
+    const colors = ['#c80078', '#143c64', '#c8a03c', '#e0a0cc', '#a0c0e8'];
+    const container = document.createElement('div');
+    container.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden;';
+    document.body.appendChild(container);
+
+    for (let i = 0; i < 70; i++) {
+        const dot = document.createElement('div');
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const size = Math.random() * 10 + 5;
+        const isCircle = Math.random() > 0.4;
+        dot.style.cssText = `position:absolute;width:${size}px;height:${size}px;background:${color};border-radius:${isCircle ? '50%' : '2px'};left:${Math.random() * 100}%;top:110%;opacity:1;`;
+        container.appendChild(dot);
+
+        gsap.to(dot, {
+            y: -(window.innerHeight * (Math.random() * 0.65 + 0.35)),
+            x: (Math.random() - 0.5) * 350,
+            rotation: Math.random() * 720 - 360,
+            opacity: 0,
+            duration: Math.random() * 1.4 + 0.8,
+            delay: Math.random() * 0.6,
+            ease: 'power2.out',
+            onComplete: () => dot.remove(),
+        });
+    }
+
+    gsap.delayedCall(3.5, () => {
+        if (container.parentNode) {
+            container.remove();
+        }
+    });
+}
+
 export { gsap, ScrollTrigger };

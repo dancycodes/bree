@@ -76,11 +76,24 @@ return [
     'donor_change_amount' => 'Modifier le montant',
 
     'merci_heading' => 'Merci pour votre générosité !',
+    'merci_heading_personalized' => 'Merci, :name !',
     'merci_sub' => 'Votre don contribue directement à notre mission. Vous recevrez un reçu par email.',
+    'merci_sub_personalized' => 'Votre don de :amount€ pour :programme est bien confirmé. Vous recevrez un reçu par email.',
     'merci_amount' => 'Montant du don',
+    'merci_programme' => 'Programme',
     'merci_reference' => 'Référence',
+    'merci_email_label' => 'Email',
+    'merci_status_label' => 'Statut',
     'merci_status_pending' => 'En cours de traitement',
     'merci_status_completed' => 'Confirmé',
     'merci_back_home' => 'Retour à l\'accueil',
     'merci_see_programmes' => 'Découvrir nos programmes',
+
+    'merci_share_heading' => 'Partagez votre geste',
+    'merci_share_text' => 'Je viens de faire un don à la Fondation BREE pour soutenir les femmes et enfants au Cameroun. Rejoignez-moi !',
+
+    'merci_failed_heading' => 'Votre paiement n\'a pas abouti',
+    'merci_failed_sub' => 'Ne vous inquiétez pas, vous pouvez réessayer ou planifier un don à votre rythme.',
+    'merci_failed_retry' => 'Réessayer un don',
+    'merci_failed_pledge' => 'Faire une promesse de don',
 ];
