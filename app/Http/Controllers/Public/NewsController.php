@@ -8,6 +8,21 @@ use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
+    public function show(NewsArticle $article): mixed
+    {
+        if ($article->status !== 'published' || ! $article->published_at) {
+            abort(404);
+        }
+
+        $related = NewsArticle::published()
+            ->where('id', '!=', $article->id)
+            ->when($article->category_slug, fn ($q) => $q->where('category_slug', $article->category_slug))
+            ->limit(3)
+            ->get();
+
+        return gale()->view('public.news.show', compact('article', 'related'), web: true);
+    }
+
     public function index(Request $request): mixed
     {
         $category = $request->input('category', 'all');

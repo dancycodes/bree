@@ -112,11 +112,12 @@
                                      data-animate="fade-up">
 
                                 {{-- Thumbnail --}}
-                                <div class="overflow-hidden" style="height: 200px;">
+                                <a href="{{ route('public.news.show', $article) }}"
+                                   class="block overflow-hidden" style="height: 200px;">
                                     <img src="{{ asset($article->thumbnail_path ?? 'images/sections/news-placeholder.jpg') }}"
                                          alt="{{ $article->title() }}"
                                          class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
-                                </div>
+                                </a>
 
                                 {{-- Content --}}
                                 <div class="p-6">
@@ -138,7 +139,8 @@
                                         style="font-family: 'Playfair Display', serif;
                                                font-size: 1.1rem;
                                                color: #002850;">
-                                        {{ $article->title() }}
+                                        <a href="{{ route('public.news.show', $article) }}"
+                                           class="hover:opacity-75 transition-opacity">{{ $article->title() }}</a>
                                     </h2>
 
                                     {{-- Excerpt --}}
@@ -148,13 +150,15 @@
                                         </p>
                                     @endif
 
-                                    {{-- Read more (F-041 will add the route) --}}
-                                    <div class="flex items-center gap-1 text-xs font-semibold" style="color: #c80078;">
+                                    {{-- Read more --}}
+                                    <a href="{{ route('public.news.show', $article) }}"
+                                       class="inline-flex items-center gap-1 text-xs font-semibold transition-opacity hover:opacity-75"
+                                       style="color: #c80078;">
                                         {{ __('news.read_more') }}
                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/>
                                         </svg>
-                                    </div>
+                                    </a>
                                 </div>
 
                             </article>

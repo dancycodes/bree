@@ -11,4 +11,8 @@ return [
     'no_articles_category' => 'Aucun article dans cette catégorie.',
     'read_more' => 'Lire la suite',
     'published_on' => 'Publié le',
+    'back_to_news' => 'Retour aux actualités',
+    'related_articles' => 'Articles connexes',
+    'share' => 'Partager',
+    'foundation_author' => 'Fondation BREE',
 ];

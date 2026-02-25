@@ -11,4 +11,8 @@ return [
     'no_articles_category' => 'No articles in this category.',
     'read_more' => 'Read more',
     'published_on' => 'Published on',
+    'back_to_news' => 'Back to news',
+    'related_articles' => 'Related articles',
+    'share' => 'Share',
+    'foundation_author' => 'BREE Foundation',
 ];
