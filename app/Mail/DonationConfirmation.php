@@ -19,7 +19,8 @@ class DonationConfirmation extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('donation.merci_heading'),
+            subject: __('donation.merci_heading_personalized', ['name' => $this->donation->donor_name]),
+            replyTo: [new \Illuminate\Mail\Mailables\Address('contact@breefondation.org', config('app.name'))],
         );
     }
 
