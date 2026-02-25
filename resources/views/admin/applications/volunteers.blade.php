@@ -8,7 +8,7 @@
 
     {{-- Sub-navigation --}}
     <div class="flex items-center gap-1 mb-6 bg-white rounded-2xl shadow-sm p-1.5" style="border: 1px solid #e2e8f0; width: fit-content;">
-        <a href="{{ route('admin.applications.index') }}"
+        <a href="{{ route('admin.applications.volunteers.index') }}"
            class="px-4 py-2 rounded-xl text-sm font-semibold"
            style="background-color: #143c64; color: #ffffff;">
             Bénévoles
@@ -31,13 +31,13 @@
                 <div x-data="{ status: '', search: '' }" x-sync="['status','search']" class="flex flex-wrap items-center gap-3 flex-1">
                     <div class="flex-1 min-w-48">
                         <input type="text" x-model="search"
-                               @input.debounce.400ms="$action.post('{{ route('admin.applications.index') }}', { include: ['status','search'] })"
+                               @input.debounce.400ms="$action.post('{{ route('admin.applications.volunteers.index') }}', { include: ['status','search'] })"
                                placeholder="Rechercher par nom ou email…"
                                class="w-full px-3.5 py-2 rounded-xl text-sm"
                                style="border: 1px solid #e2e8f0; outline: none;">
                     </div>
                     <select x-model="status"
-                            @change="$action.post('{{ route('admin.applications.index') }}', { include: ['status','search'] })"
+                            @change="$action.post('{{ route('admin.applications.volunteers.index') }}', { include: ['status','search'] })"
                             class="px-3.5 py-2 rounded-xl text-sm"
                             style="border: 1px solid #e2e8f0; outline: none; color: #374151;">
                         <option value="">Tous les statuts</option>

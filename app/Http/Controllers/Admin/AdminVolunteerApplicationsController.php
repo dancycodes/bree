@@ -3,11 +3,29 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\PartnershipApplication;
 use App\Models\VolunteerApplication;
 use Illuminate\Http\Request;
 
 class AdminVolunteerApplicationsController extends Controller
 {
+    public function hub(): mixed
+    {
+        $this->authorize('applications.view');
+
+        $volunteerPending = VolunteerApplication::where('status', 'pending')->count();
+        $volunteerTotal = VolunteerApplication::count();
+        $partnershipPending = PartnershipApplication::where('status', 'pending')->count();
+        $partnershipTotal = PartnershipApplication::count();
+
+        return gale()->view('admin.applications.index', compact(
+            'volunteerPending',
+            'volunteerTotal',
+            'partnershipPending',
+            'partnershipTotal',
+        ), web: true);
+    }
+
     public function index(Request $request): mixed
     {
         $this->authorize('applications.view');

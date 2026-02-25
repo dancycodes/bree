@@ -8,7 +8,7 @@
 
     {{-- Sub-navigation --}}
     <div class="flex items-center gap-1 mb-6 bg-white rounded-2xl shadow-sm p-1.5" style="border: 1px solid #e2e8f0; width: fit-content;">
-        <a href="{{ route('admin.applications.index') }}"
+        <a href="{{ route('admin.applications.volunteers.index') }}"
            class="px-4 py-2 rounded-xl text-sm font-semibold"
            style="color: #64748b;">
             Bénévoles
