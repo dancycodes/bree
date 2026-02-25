@@ -271,6 +271,11 @@
                            style="color: #c80078; background-color: #c8007808;">
                             Jalons
                         </a>
+                        <a href="{{ route('admin.about.team.index') }}"
+                           class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors"
+                           style="color: #475569;">
+                            Équipe
+                        </a>
                     </div>
                 </div>
 

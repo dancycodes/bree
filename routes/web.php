@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\AdminRecurringDonationsController;
 use App\Http\Controllers\Admin\AdminRolesController;
 use App\Http\Controllers\Admin\AdminSiteSettingsController;
 use App\Http\Controllers\Admin\AdminStatCountersController;
+use App\Http\Controllers\Admin\AdminTeamMembersController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\AdminVolunteerApplicationsController;
 use App\Http\Controllers\Admin\AuthController;
@@ -74,6 +75,15 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/a-propos/jalons', [MilestonesController::class, 'store'])->name('about.milestones.store');
     Route::patch('/a-propos/jalons/{milestone}', [MilestonesController::class, 'update'])->name('about.milestones.update');
     Route::delete('/a-propos/jalons/{milestone}', [MilestonesController::class, 'destroy'])->name('about.milestones.destroy');
+
+    // About — Team Members
+    Route::get('/a-propos/equipe', [AdminTeamMembersController::class, 'index'])->name('about.team.index');
+    Route::post('/a-propos/equipe', [AdminTeamMembersController::class, 'store'])->name('about.team.store');
+    Route::post('/a-propos/equipe/reorder', [AdminTeamMembersController::class, 'reorder'])->name('about.team.reorder');
+    Route::get('/a-propos/equipe/{member}/edit', [AdminTeamMembersController::class, 'edit'])->name('about.team.edit');
+    Route::patch('/a-propos/equipe/{member}', [AdminTeamMembersController::class, 'update'])->name('about.team.update');
+    Route::delete('/a-propos/equipe/{member}', [AdminTeamMembersController::class, 'destroy'])->name('about.team.destroy');
+    Route::post('/a-propos/equipe/{member}/toggle', [AdminTeamMembersController::class, 'togglePublished'])->name('about.team.toggle');
 
     // Programs & Activities
     Route::get('/programmes', [AdminProgramsController::class, 'index'])->name('programs.index');
