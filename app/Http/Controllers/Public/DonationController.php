@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Models\Donation;
 use App\Models\ImpactExample;
+use Flutterwave\Payments\Facades\Flutterwave;
 use Illuminate\Http\Request;
 
 class DonationController extends Controller
@@ -67,5 +69,68 @@ class DonationController extends Controller
             ->state('amountConfirmed', true)
             ->state('confirmedAmount', $amount)
             ->state('confirmedType', $type);
+    }
+
+    public function initPayment(Request $request): mixed
+    {
+        $donorName = trim((string) $request->state('donorName', ''));
+        $donorEmail = trim((string) $request->state('donorEmail', ''));
+        $donorPhone = trim((string) $request->state('donorPhone', ''));
+        $donorCountry = trim((string) $request->state('donorCountry', 'CM'));
+        $confirmedAmount = (float) $request->state('confirmedAmount', 0);
+        $confirmedType = (string) $request->state('confirmedType', 'direct');
+        $programme = (string) $request->state('programme', 'general');
+
+        if (empty($donorName)) {
+            return gale()->messages(['donorName' => [__('donation.donor_name_required')]]);
+        }
+
+        if (empty($donorEmail) || ! filter_var($donorEmail, FILTER_VALIDATE_EMAIL)) {
+            return gale()->messages(['donorEmail' => [__('donation.donor_email_invalid')]]);
+        }
+
+        if ($confirmedAmount < 1) {
+            return gale()->messages(['amount' => [__('donation.amount_error_min')]]);
+        }
+
+        $txRef = Flutterwave::generateTransactionReference();
+
+        $donation = Donation::create([
+            'tx_ref' => $txRef,
+            'amount' => $confirmedAmount,
+            'currency' => 'EUR',
+            'type' => $confirmedType,
+            'programme' => $programme,
+            'donor_name' => $donorName,
+            'donor_email' => $donorEmail,
+            'donor_phone' => $donorPhone ?: null,
+            'donor_country' => strtoupper($donorCountry) ?: 'CM',
+            'status' => 'pending',
+        ]);
+
+        $paymentConfig = Flutterwave::render('inline', [
+            'tx_ref' => $txRef,
+            'amount' => $confirmedAmount,
+            'currency' => 'EUR',
+            'customer' => [
+                'name' => $donorName,
+                'email' => $donorEmail,
+                'phone_number' => $donorPhone ?: '',
+            ],
+            'meta' => [
+                'programme' => $programme,
+                'type' => $confirmedType,
+            ],
+        ]);
+
+        return gale()->state('paymentConfig', $paymentConfig);
+    }
+
+    public function successPage(Request $request): mixed
+    {
+        $txRef = $request->input('tx_ref');
+        $donation = $txRef ? Donation::where('tx_ref', $txRef)->first() : null;
+
+        return gale()->view('public.donation.merci', compact('donation'), web: true);
     }
 }

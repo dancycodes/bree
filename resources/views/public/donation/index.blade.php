@@ -1,11 +1,16 @@
 @extends('layouts.public')
 
+@push('scripts')
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+@endpush
+
 @section('title', __('donation.page_title') . ' — ' . config('app.name'))
 @section('meta_description', __('donation.meta_description'))
 
 @section('content')
 
 <div x-data="{
+    programme: '{{ $programme }}',
     donationType: '',
     selectorVisible: false,
     selectedAmount: 0,
@@ -14,6 +19,11 @@
     amountConfirmed: false,
     confirmedAmount: 0,
     confirmedType: '',
+    donorName: '',
+    donorEmail: '',
+    donorPhone: '',
+    donorCountry: 'CM',
+    paymentConfig: null,
     selectPreset(amount) {
         this.selectedAmount = amount;
         this.showCustom = false;
@@ -23,7 +33,19 @@
         this.selectedAmount = 0;
         this.showCustom = true;
     }
-}">
+}"
+x-init="$watch('paymentConfig', function(cfg) {
+    if (cfg) {
+        const config = JSON.parse(cfg);
+        config.callback = function(response) {
+            if (response.status === 'successful' || response.status === 'completed') {
+                window.location.href = '{{ route('public.donate.merci') }}?tx_ref=' + response.tx_ref;
+            }
+        };
+        config.onclose = function() {};
+        FlutterwaveCheckout(config);
+    }
+})">
 
     {{-- ================================================================
          PAGE HERO
@@ -455,6 +477,143 @@
         </div>
         @endfragment
 
+    </div>
+
+    {{-- ================================================================
+         DONOR INFO FORM (shows after amount confirmed)
+         ================================================================ --}}
+    <div x-show="amountConfirmed"
+         style="display:none;"
+         x-effect="if (amountConfirmed) $nextTick(() => $el.scrollIntoView({ behavior: 'smooth', block: 'start' }))">
+        <section class="py-16 lg:py-20" style="background-color: #143c64;">
+            <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                {{-- Amount summary --}}
+                <div class="flex items-center justify-between mb-8 p-4 rounded-xl"
+                     style="background-color: rgba(255,255,255,0.1);">
+                    <div>
+                        <p class="text-xs font-bold tracking-widest uppercase mb-1"
+                           style="color: rgba(255,255,255,0.6);">
+                            {{ __('donation.donor_amount_summary') }}
+                        </p>
+                        <p class="text-3xl font-bold" style="color: #c8a03c; font-family:'Playfair Display',serif;">
+                            <span x-text="confirmedAmount"></span>€
+                        </p>
+                        <p class="text-xs mt-1" style="color: rgba(255,255,255,0.5);">
+                            <span x-text="confirmedType === 'recurring' ? '{{ __('donation.amount_type_label_recurring') }}' : '{{ __('donation.amount_type_label_direct') }}'"></span>
+                        </p>
+                    </div>
+                    <button type="button"
+                            @click="amountConfirmed = false"
+                            class="text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                            style="color: rgba(255,255,255,0.7); background-color: rgba(255,255,255,0.1);">
+                        {{ __('donation.donor_change_amount') }}
+                    </button>
+                </div>
+
+                {{-- Form heading --}}
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-white"
+                        style="font-family:'Playfair Display',serif;">
+                        {{ __('donation.donor_heading') }}
+                    </h2>
+                    <p class="mt-2 text-sm" style="color: rgba(255,255,255,0.65);">
+                        {{ __('donation.donor_sub') }}
+                    </p>
+                </div>
+
+                {{-- Donor name --}}
+                <div class="mb-5">
+                    <label class="block text-sm font-semibold mb-2" style="color: rgba(255,255,255,0.9);">
+                        {{ __('donation.donor_name_label') }} *
+                    </label>
+                    <input type="text"
+                           x-model="donorName"
+                           placeholder="{{ __('donation.donor_name_placeholder') }}"
+                           class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                           style="border-color: rgba(255,255,255,0.2); background-color: rgba(255,255,255,0.1); color: #ffffff;"
+                           @focus="$el.style.borderColor='#c8a03c'"
+                           @blur="$el.style.borderColor='rgba(255,255,255,0.2)'">
+                    <p x-message="donorName" class="text-xs mt-1.5 font-medium" style="color: #fca5a5;"></p>
+                </div>
+
+                {{-- Donor email --}}
+                <div class="mb-5">
+                    <label class="block text-sm font-semibold mb-2" style="color: rgba(255,255,255,0.9);">
+                        {{ __('donation.donor_email_label') }} *
+                    </label>
+                    <input type="email"
+                           x-model="donorEmail"
+                           placeholder="{{ __('donation.donor_email_placeholder') }}"
+                           class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                           style="border-color: rgba(255,255,255,0.2); background-color: rgba(255,255,255,0.1); color: #ffffff;"
+                           @focus="$el.style.borderColor='#c8a03c'"
+                           @blur="$el.style.borderColor='rgba(255,255,255,0.2)'">
+                    <p x-message="donorEmail" class="text-xs mt-1.5 font-medium" style="color: #fca5a5;"></p>
+                </div>
+
+                {{-- Phone + Country --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" style="color: rgba(255,255,255,0.9);">
+                            {{ __('donation.donor_phone_label') }}
+                        </label>
+                        <input type="tel"
+                               x-model="donorPhone"
+                               placeholder="{{ __('donation.donor_phone_placeholder') }}"
+                               class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                               style="border-color: rgba(255,255,255,0.2); background-color: rgba(255,255,255,0.1); color: #ffffff;"
+                               @focus="$el.style.borderColor='#c8a03c'"
+                               @blur="$el.style.borderColor='rgba(255,255,255,0.2)'">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2" style="color: rgba(255,255,255,0.9);">
+                            {{ __('donation.donor_country_label') }}
+                        </label>
+                        <select x-model="donorCountry"
+                                class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none appearance-none"
+                                style="border-color: rgba(255,255,255,0.2); background-color: rgba(255,255,255,0.1); color: #ffffff;"
+                                @focus="$el.style.borderColor='#c8a03c'"
+                                @blur="$el.style.borderColor='rgba(255,255,255,0.2)'">
+                            <option value="CM" style="color:#000;">Cameroun</option>
+                            <option value="FR" style="color:#000;">France</option>
+                            <option value="BE" style="color:#000;">Belgique</option>
+                            <option value="CH" style="color:#000;">Suisse</option>
+                            <option value="CA" style="color:#000;">Canada</option>
+                            <option value="US" style="color:#000;">États-Unis</option>
+                            <option value="GB" style="color:#000;">Royaume-Uni</option>
+                            <option value="DE" style="color:#000;">Allemagne</option>
+                            <option value="CI" style="color:#000;">Côte d'Ivoire</option>
+                            <option value="SN" style="color:#000;">Sénégal</option>
+                            <option value="OTHER" style="color:#000;">Autre</option>
+                        </select>
+                    </div>
+                </div>
+
+                {{-- Pay button --}}
+                <button type="button"
+                        @click="$action('{{ route('public.donate.initPayment') }}', { include: ['programme', 'donationType', 'confirmedAmount', 'confirmedType', 'donorName', 'donorEmail', 'donorPhone', 'donorCountry'] })"
+                        :disabled="!donorName.trim() || !donorEmail.trim()"
+                        :style="(donorName.trim() && donorEmail.trim())
+                            ? 'background-color:#c8a03c; opacity:1; cursor:pointer;'
+                            : 'background-color:#c8a03c; opacity:0.5; cursor:not-allowed;'"
+                        class="w-full flex items-center justify-center gap-3 py-4 rounded-xl text-sm font-bold text-white transition-all"
+                        style="background-color:#c8a03c; color:#143c64;">
+                    <span x-show="!$fetching()">{{ __('donation.donor_pay_btn') }}</span>
+                    <span x-show="$fetching()">{{ __('donation.donor_paying_btn') }}</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
+                         x-show="!$fetching()">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6.75l4.5 4.5-4.5 4.5M3.75 12h16.5"/>
+                    </svg>
+                </button>
+
+                {{-- Security note --}}
+                <p class="mt-4 text-center text-xs" style="color: rgba(255,255,255,0.4);">
+                    🔒 {{ __('donation.security_note') }}
+                </p>
+
+            </div>
+        </section>
     </div>
 
     {{-- ================================================================

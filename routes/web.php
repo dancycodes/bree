@@ -23,6 +23,7 @@ use App\Http\Controllers\Public\NewsletterController;
 use App\Http\Controllers\Public\PartnersController;
 use App\Http\Controllers\Public\ProgramsController;
 use App\Http\Controllers\Public\VolunteerController;
+use App\Http\Controllers\Public\WebhookController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -146,6 +147,9 @@ Route::get('/programmes', [ProgramsController::class, 'index'])->name('public.pr
 Route::get('/faire-un-don', [DonationController::class, 'index'])->name('public.donate');
 Route::post('/faire-un-don/choisir-montant', [DonationController::class, 'selectAmount'])->name('public.donate.selectAmount');
 Route::post('/faire-un-don/valider-montant', [DonationController::class, 'validateAmount'])->name('public.donate.validateAmount');
+Route::post('/faire-un-don/initier-paiement', [DonationController::class, 'initPayment'])->name('public.donate.initPayment');
+Route::get('/don/merci', [DonationController::class, 'successPage'])->name('public.donate.merci');
+Route::post('/webhook/flutterwave', [WebhookController::class, 'flutterwave'])->name('webhook.flutterwave');
 Route::get('/programmes/{program:slug}', [ProgramsController::class, 'show'])->name('public.programs.show');
 
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'store'])
