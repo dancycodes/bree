@@ -38,6 +38,10 @@ return [
     'founder_label' => 'La Fondatrice',
     'founder_heading' => 'Le visage derrière la mission',
 
+    // Patron section
+    'patron_label' => 'Notre Marraine',
+    'patron_heading' => 'Un soutien institutionnel précieux',
+
     // CTA
     'cta_label' => 'Rejoignez-nous',
     'cta_heading' => 'Ensemble, nous pouvons faire plus',

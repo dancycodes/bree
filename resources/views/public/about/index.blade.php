@@ -301,6 +301,93 @@
     @endif
 
     {{-- ================================================================
+         PATRON PROFILE
+         ================================================================ --}}
+    @if ($patron)
+        <section class="py-24 lg:py-32 overflow-hidden" style="background-color: #ffffff;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+                    {{-- Bio (left) --}}
+                    <div data-animate="fade-right">
+                        <span class="block text-xs font-bold tracking-widest uppercase mb-4"
+                              style="color: #c80078;">
+                            {{ __('about.patron_label') }}
+                        </span>
+                        <h2 class="font-heading font-bold mb-2"
+                            style="font-family: 'Playfair Display', serif;
+                                   font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+                                   color: #002850;">
+                            {{ $patron->name }}
+                        </h2>
+                        <p class="text-sm font-semibold mb-2" style="color: #c80078;">
+                            {{ $patron->title() }}
+                        </p>
+                        <p class="text-xs font-medium mb-8" style="color: #c8a03c;">
+                            {{ $patron->role() }}
+                        </p>
+
+                        @if ($patron->description())
+                            <div class="space-y-4 mb-8">
+                                @foreach (explode("\n\n", $patron->description()) as $paragraph)
+                                    <p class="text-sm leading-relaxed" style="color: #5a6a7a;">
+                                        {{ $paragraph }}
+                                    </p>
+                                @endforeach
+                            </div>
+                        @endif
+
+                        @if ($patron->quote())
+                            <blockquote class="border-l-2 pl-6 italic"
+                                        style="border-color: #c8a03c;
+                                               font-family: 'Playfair Display', serif;
+                                               font-size: 1rem;
+                                               color: #002850;
+                                               line-height: 1.6;">
+                                {{ $patron->quote() }}
+                            </blockquote>
+                        @endif
+                    </div>
+
+                    {{-- Portrait (right) --}}
+                    <div class="flex justify-center lg:justify-start" data-animate="fade-left">
+                        @if ($patron->photo_path)
+                            <div class="relative">
+                                <div class="w-72 h-72 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4"
+                                     style="border-color: #c8a03c;">
+                                    <img src="{{ asset($patron->photo_path) }}"
+                                         alt="{{ $patron->name }}"
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div class="absolute -bottom-3 -left-3 w-24 h-24 rounded-full border-2"
+                                     style="border-color: #c8a03c40;"></div>
+                            </div>
+                        @else
+                            <div class="relative">
+                                <div class="w-72 h-72 lg:w-80 lg:h-80 rounded-full flex items-center justify-center border-4"
+                                     style="border-color: #c8a03c; background-color: rgba(200,160,60,0.06);">
+                                    <div class="text-center">
+                                        <div class="font-heading font-bold text-5xl mb-2"
+                                             style="font-family: 'Playfair Display', serif; color: #c8a03c;">
+                                            {{ mb_strtoupper(mb_substr($patron->name, 0, 2)) }}
+                                        </div>
+                                        <div class="w-8 h-0.5 mx-auto rounded-full" style="background-color: #c8a03c;"></div>
+                                    </div>
+                                </div>
+                                <div class="absolute -bottom-3 -left-3 w-20 h-20 rounded-full border-2"
+                                     style="border-color: #c8a03c30;"></div>
+                            </div>
+                        @endif
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    @endif
+
+    {{-- ================================================================
          5 MISSION COMMITMENTS
          ================================================================ --}}
     <section class="py-24 lg:py-32" style="background-color: #002850;">

@@ -38,6 +38,10 @@ return [
     'founder_label' => 'The Founder',
     'founder_heading' => 'The face behind the mission',
 
+    // Patron section
+    'patron_label' => 'Our Patron',
+    'patron_heading' => 'Precious institutional support',
+
     // CTA
     'cta_label' => 'Join us',
     'cta_heading' => 'Together, we can do more',
