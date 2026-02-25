@@ -35,6 +35,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     // Programs & Activities
     Route::get('/programmes', [AdminProgramsController::class, 'index'])->name('programs.index');
+    Route::get('/programmes/{program:slug}/edit', [AdminProgramsController::class, 'edit'])->name('programs.edit');
+    Route::patch('/programmes/{program:slug}', [AdminProgramsController::class, 'update'])->name('programs.update');
     Route::get('/programmes/{program:slug}/activites', [ProgramActivitiesController::class, 'index'])->name('programs.activities.index');
     Route::post('/programmes/{program:slug}/activites', [ProgramActivitiesController::class, 'store'])->name('programs.activities.store');
     Route::patch('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'update'])->name('programs.activities.update');

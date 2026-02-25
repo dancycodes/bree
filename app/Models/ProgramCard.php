@@ -22,6 +22,8 @@ class ProgramCard extends Model
         'long_description_en',
         'activities_fr',
         'activities_en',
+        'stats_fr',
+        'stats_en',
         'image_path',
         'color',
         'url',
@@ -41,6 +43,8 @@ class ProgramCard extends Model
             'sort_order' => 'integer',
             'activities_fr' => 'array',
             'activities_en' => 'array',
+            'stats_fr' => 'array',
+            'stats_en' => 'array',
         ];
     }
 
@@ -66,6 +70,19 @@ class ProgramCard extends Model
         $locale = app()->getLocale();
 
         return $locale === 'fr' ? ($this->long_description_fr ?? '') : ($this->long_description_en ?? '');
+    }
+
+    /**
+     * Return the program stats in the current locale.
+     * Each stat is ['number' => '1500+', 'label' => 'Bénéficiaires'].
+     *
+     * @return array<int, array{number: string, label: string}>
+     */
+    public function stats(): array
+    {
+        $locale = app()->getLocale();
+
+        return $locale === 'fr' ? ($this->stats_fr ?? []) : ($this->stats_en ?? []);
     }
 
     public function programActivities(): HasMany

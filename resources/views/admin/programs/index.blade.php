@@ -12,7 +12,7 @@
                 Les 3 programmes de la Fondation BREE
             </h2>
             <p class="text-xs mt-1" style="color: #94a3b8;">
-                Cliquez sur un programme pour gérer ses activités.
+                Modifiez le contenu ou gérez les activités de chaque programme.
             </p>
         </div>
 
@@ -46,13 +46,21 @@
 
                     {{-- Actions --}}
                     <div class="flex items-center gap-2 flex-shrink-0">
+                        <a href="{{ route('admin.programs.edit', $program) }}"
+                           class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-opacity hover:opacity-80"
+                           style="background-color: #f1f5f9; color: #475569;">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/>
+                            </svg>
+                            Modifier
+                        </a>
                         <a href="{{ route('admin.programs.activities.index', $program) }}"
-                           class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-opacity hover:opacity-80"
+                           class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-opacity hover:opacity-80"
                            style="background-color: {{ $program->color }}1a; color: {{ $program->color }};">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/>
                             </svg>
-                            Gérer les activités
+                            Activités
                         </a>
                         <a href="{{ route('public.programs.show', $program) }}"
                            target="_blank"

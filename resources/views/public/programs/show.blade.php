@@ -123,6 +123,33 @@
     </section>
 
     {{-- ================================================================
+         IMPACT STATS (only when stats exist)
+         ================================================================ --}}
+    @php $stats = $program->stats(); @endphp
+    @if (count($stats) > 0)
+        <section class="py-16" style="background-color: #f8f5f0;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-{{ min(count($stats), 4) }} gap-6" data-stagger="0.08">
+                    @foreach ($stats as $stat)
+                        <div class="text-center" data-animate="fade-up">
+                            <div class="font-heading font-bold"
+                                 style="font-family: 'Playfair Display', serif;
+                                        font-size: clamp(2rem, 4vw, 3rem);
+                                        color: {{ $program->color }};"
+                                 data-counter="{{ $stat['number'] }}">
+                                {{ $stat['number'] }}
+                            </div>
+                            <div class="mt-2 text-sm font-medium" style="color: #5a6a7a;">
+                                {{ $stat['label'] }}
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
+    {{-- ================================================================
          IMPACT HIGHLIGHT
          Big number / quote block with program color accent
          ================================================================ --}}
