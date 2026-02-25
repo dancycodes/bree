@@ -206,6 +206,24 @@
     </div>
 </div>
 
+{{-- Global Toast Notifications --}}
+<div
+    x-data="{ show: false, message: '', type: 'success' }"
+    @toast.window="message = $event.detail.message; type = $event.detail.type || 'success'; show = true; setTimeout(() => show = false, 4000)"
+    :style="`display:${show ? 'flex' : 'none'}; background-color:${type === 'success' ? '#16a34a' : '#ef4444'}`"
+    class="fixed bottom-5 right-5 z-50 items-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold text-white shadow-xl"
+    style="display: none;">
+    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+        <template x-if="type === 'success'">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+        </template>
+        <template x-if="type !== 'success'">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </template>
+    </svg>
+    <span x-text="message"></span>
+</div>
+
 @stack('scripts')
 </body>
 </html>

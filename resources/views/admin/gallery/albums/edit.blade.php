@@ -94,13 +94,13 @@
                                 {{ $album->photos()->count() }} photo(s) dans cet album
                             </p>
                             <p class="text-xs mt-0.5" style="color: #94a3b8;">
-                                Gérez les photos depuis la section Photos de l'album.
+                                Ajoutez, réordonnez et légendez les photos.
                             </p>
                         </div>
-                        <a href="{{ route('admin.gallery.albums.index') }}"
+                        <a href="{{ route('admin.gallery.albums.photos.index', $album) }}"
                            class="text-xs font-semibold px-3 py-2 rounded-lg transition-colors hover:bg-slate-50"
-                           style="color: #64748b;">
-                            Voir tous les albums
+                           style="color: #c80078;">
+                            Gérer les photos →
                         </a>
                     </div>
                 </div>
