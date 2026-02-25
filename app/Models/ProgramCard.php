@@ -90,6 +90,11 @@ class ProgramCard extends Model
         return $this->hasMany(ProgramActivity::class);
     }
 
+    public function stories(): HasMany
+    {
+        return $this->hasMany(BeneficiaryStory::class)->orderBy('sort_order');
+    }
+
     /**
      * Return the activities list in the current locale.
      * Uses ProgramActivity relation if populated, otherwise falls back to JSON.

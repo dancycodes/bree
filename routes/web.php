@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminStatCountersController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\AdminVolunteerApplicationsController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BeneficiaryStoriesController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventsController as AdminEventsController;
 use App\Http\Controllers\Admin\FounderProfileController;
@@ -82,6 +83,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::patch('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'update'])->name('programs.activities.update');
     Route::delete('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'destroy'])->name('programs.activities.destroy');
     Route::post('/programmes/{program:slug}/activites/reorder', [ProgramActivitiesController::class, 'reorder'])->name('programs.activities.reorder');
+    Route::get('/programmes/{program:slug}/temoignages', [BeneficiaryStoriesController::class, 'index'])->name('programs.stories.index');
+    Route::post('/programmes/{program:slug}/temoignages', [BeneficiaryStoriesController::class, 'store'])->name('programs.stories.store');
+    Route::patch('/programmes/temoignages/{story}', [BeneficiaryStoriesController::class, 'update'])->name('programs.stories.update');
+    Route::delete('/programmes/temoignages/{story}', [BeneficiaryStoriesController::class, 'destroy'])->name('programs.stories.destroy');
 
     // Gallery Albums
     Route::get('/galerie/albums', [GalleryAlbumsController::class, 'index'])->name('gallery.albums.index');
