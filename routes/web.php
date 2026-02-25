@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminPartnersController;
 use App\Http\Controllers\Admin\AdminPartnershipApplicationsController;
 use App\Http\Controllers\Admin\AdminRecurringDonationsController;
 use App\Http\Controllers\Admin\AdminRolesController;
+use App\Http\Controllers\Admin\AdminSiteSettingsController;
 use App\Http\Controllers\Admin\AdminUsersController;
 use App\Http\Controllers\Admin\AdminVolunteerApplicationsController;
 use App\Http\Controllers\Admin\AuthController;
@@ -161,6 +162,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/messages', [AdminContactMessagesController::class, 'index'])->name('messages.index');
     Route::post('/messages/{message}', [AdminContactMessagesController::class, 'show'])->name('messages.show');
     Route::delete('/messages/{message}', [AdminContactMessagesController::class, 'destroy'])->name('messages.destroy');
+
+    // Site Settings
+    Route::get('/parametres', [AdminSiteSettingsController::class, 'index'])->name('settings.index');
+    Route::patch('/parametres', [AdminSiteSettingsController::class, 'update'])->name('settings.update');
 
     // Partners
     Route::get('/partenaires', [AdminPartnersController::class, 'index'])->name('partners.index');
