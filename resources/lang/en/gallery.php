@@ -10,4 +10,5 @@ return [
     'view_album' => 'View album',
     'empty_heading' => 'Gallery coming soon',
     'empty_sub' => 'Our photo albums will be published soon.',
+    'back_to_gallery' => 'Back to gallery',
 ];

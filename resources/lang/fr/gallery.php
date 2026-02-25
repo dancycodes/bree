@@ -10,4 +10,5 @@ return [
     'view_album' => 'Voir l\'album',
     'empty_heading' => 'La galerie sera bientôt disponible',
     'empty_sub' => 'Nos albums photos seront publiés prochainement.',
+    'back_to_gallery' => 'Retour à la galerie',
 ];
