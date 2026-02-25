@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminContactMessagesController;
 use App\Http\Controllers\Admin\AdminDonationsController;
+use App\Http\Controllers\Admin\AdminHeroContentController;
 use App\Http\Controllers\Admin\AdminNewsletterController;
 use App\Http\Controllers\Admin\AdminPartnersController;
 use App\Http\Controllers\Admin\AdminPartnershipApplicationsController;
@@ -176,6 +177,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::patch('/partenaires/{partner}', [AdminPartnersController::class, 'update'])->name('partners.update');
     Route::delete('/partenaires/{partner}', [AdminPartnersController::class, 'destroy'])->name('partners.destroy');
     Route::post('/partenaires/reorder', [AdminPartnersController::class, 'reorder'])->name('partners.reorder');
+
+    // Hero & Donation CTA Content
+    Route::get('/contenu/hero', [AdminHeroContentController::class, 'index'])->name('hero.index');
+    Route::patch('/contenu/hero', [AdminHeroContentController::class, 'updateHero'])->name('hero.update');
+    Route::patch('/contenu/hero/cta', [AdminHeroContentController::class, 'updateCta'])->name('hero.cta.update');
 
     // Impact Stats
     Route::get('/statistiques', [AdminStatCountersController::class, 'index'])->name('stats.index');
