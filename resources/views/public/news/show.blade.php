@@ -2,6 +2,7 @@
 
 @section('title', $article->title() . ' — ' . config('app.name'))
 @section('meta_description', $article->excerpt() ?: Str::limit(strip_tags($article->content_fr ?? ''), 160))
+@section('og_image', $article->thumbnail_path ? asset($article->thumbnail_path) : asset('images/logo.png'))
 
 @section('content')
 

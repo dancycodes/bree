@@ -37,6 +37,7 @@ use App\Http\Controllers\Public\NewsController;
 use App\Http\Controllers\Public\NewsletterController;
 use App\Http\Controllers\Public\PartnersController;
 use App\Http\Controllers\Public\ProgramsController;
+use App\Http\Controllers\Public\SitemapController;
 use App\Http\Controllers\Public\VolunteerController;
 use App\Http\Controllers\Public\WebhookController;
 use Illuminate\Support\Facades\Route;
@@ -219,6 +220,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 | Public Routes placeholder (home needed for logo link)
 |--------------------------------------------------------------------------
 */
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/', [HomeController::class, 'index'])->name('public.home');
 Route::get('/a-propos', [AboutController::class, 'index'])->name('public.about');
 Route::get('/actualites', [NewsController::class, 'index'])->name('public.news');

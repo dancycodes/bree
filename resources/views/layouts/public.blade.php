@@ -3,15 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="@yield('meta_description', __('meta.default_description'))">
-    <title>@yield('title', config('app.name') . ' — ' . __('meta.tagline'))</title>
 
-    {{-- Open Graph --}}
-    <meta property="og:title" content="@yield('og_title', config('app.name'))">
-    <meta property="og:description" content="@yield('og_description', __('meta.default_description'))">
-    <meta property="og:image" content="@yield('og_image', asset('images/logo.png'))">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:type" content="website">
+    @php
+        $__seoTitle = trim($__env->yieldContent('title'))
+            ?: config('app.name') . ' — ' . __('meta.tagline');
+        $__seoDesc  = trim($__env->yieldContent('meta_description'))
+            ?: __('meta.default_description');
+        $__seoImage = trim($__env->yieldContent('og_image'))
+            ?: asset('images/logo.png');
+    @endphp
+    <x-seo :title="$__seoTitle" :description="$__seoDesc" :image="$__seoImage" :url="url()->current()" />
 
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
