@@ -771,6 +771,66 @@
          no photo uploaded. Playfair Display quotes in italic.
          ================================================================ --}}
     {{-- ================================================================
+         PARTNERS LOGO STRIP (F-024)
+         Off-white background. Greyscale logos, full color on hover.
+         Section hidden when no published partners.
+         ================================================================ --}}
+    @if ($partners->isNotEmpty())
+        <section class="py-14" style="background-color: #f8fafc;">
+            <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+
+                <p class="text-center text-xs font-bold tracking-widest uppercase mb-8" style="color: #143c64;" data-animate>
+                    {{ __('home.our_partners') }}
+                </p>
+
+                <div class="flex flex-wrap items-center justify-center gap-8 lg:gap-12" data-animate>
+                    @foreach ($partners as $partner)
+                        @php $logoSrc = $partner->logo_path ? asset($partner->logo_path) : null; @endphp
+
+                        @if ($partner->website_url)
+                            <a href="{{ $partner->website_url }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               title="{{ $partner->name }}"
+                               class="flex items-center justify-center transition-all duration-300"
+                               style="filter: grayscale(100%); opacity: 0.6;"
+                               onmouseover="this.style.filter='grayscale(0%)'; this.style.opacity='1';"
+                               onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.6';">
+                                @if ($logoSrc)
+                                    <img src="{{ $logoSrc }}"
+                                         alt="{{ $partner->name }}"
+                                         class="h-10 sm:h-12 w-auto object-contain max-w-[120px]"
+                                         loading="lazy"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                                    <span class="hidden text-sm font-semibold" style="color: #143c64;">{{ $partner->name }}</span>
+                                @else
+                                    <span class="text-sm font-semibold" style="color: #143c64;">{{ $partner->name }}</span>
+                                @endif
+                            </a>
+                        @else
+                            <div class="flex items-center justify-center transition-all duration-300"
+                                 style="filter: grayscale(100%); opacity: 0.6;"
+                                 title="{{ $partner->name }}">
+                                @if ($logoSrc)
+                                    <img src="{{ $logoSrc }}"
+                                         alt="{{ $partner->name }}"
+                                         class="h-10 sm:h-12 w-auto object-contain max-w-[120px]"
+                                         loading="lazy"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                                    <span class="hidden text-sm font-semibold" style="color: #143c64;">{{ $partner->name }}</span>
+                                @else
+                                    <span class="text-sm font-semibold" style="color: #143c64;">{{ $partner->name }}</span>
+                                @endif
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+
+            </div>
+        </section>
+    @endif
+
+    {{-- ================================================================
          NEWSLETTER SUBSCRIPTION SECTION (F-025)
          Off-white background. Single email field + subscribe button.
          Gale-powered: validateState, toast on success, clear on done.

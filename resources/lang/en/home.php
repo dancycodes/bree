@@ -25,6 +25,7 @@ return [
     'newsletter_success' => 'Thank you for subscribing!',
     'donate_now' => 'Make a Donation',
     'pledge_donation' => 'Make a Pledge',
+    'our_partners' => 'Our Partners',
     'gallery_eyebrow' => 'Photo Gallery',
     'gallery_title' => 'Our Activities in Pictures',
     'gallery_cta' => 'View the full gallery',

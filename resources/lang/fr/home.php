@@ -25,6 +25,7 @@ return [
     'newsletter_success' => 'Merci pour votre abonnement !',
     'donate_now' => 'Faire un Don',
     'pledge_donation' => 'Faire une Promesse de Don',
+    'our_partners' => 'Nos Partenaires',
     'gallery_eyebrow' => 'Galerie Photos',
     'gallery_title' => 'Nos Activités en Images',
     'gallery_cta' => 'Voir toute la galerie',

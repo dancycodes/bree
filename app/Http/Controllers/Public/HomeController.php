@@ -10,6 +10,7 @@ use App\Models\GalleryPhoto;
 use App\Models\HeroSection;
 use App\Models\MissionSection;
 use App\Models\NewsArticle;
+use App\Models\Partner;
 use App\Models\ProgramCard;
 use App\Models\StatCounter;
 
@@ -30,7 +31,8 @@ class HomeController extends Controller
             ->orderByDesc('created_at')
             ->limit(8)
             ->get();
+        $partners = Partner::published()->get();
 
-        return gale()->view('public.home', compact('hero', 'counters', 'mission', 'programs', 'latestNews', 'founders', 'upcomingEvents', 'donationCta', 'galleryPhotos'), web: true);
+        return gale()->view('public.home', compact('hero', 'counters', 'mission', 'programs', 'latestNews', 'founders', 'upcomingEvents', 'donationCta', 'galleryPhotos', 'partners'), web: true);
     }
 }
