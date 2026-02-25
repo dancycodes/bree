@@ -225,5 +225,14 @@
 </div>
 
 @stack('scripts')
+
+@if(session('success'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    window.dispatchEvent(new CustomEvent('toast', { detail: { message: @json(session('success')), type: 'success' } }));
+});
+</script>
+@endif
+
 </body>
 </html>

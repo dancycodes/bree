@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminPartnersController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventsController as AdminEventsController;
@@ -99,6 +100,15 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/actualites/{article:slug}/modifier', [NewsArticlesController::class, 'edit'])->name('news.edit');
     Route::patch('/actualites/{article:slug}', [NewsArticlesController::class, 'update'])->name('news.update');
     Route::delete('/actualites/{article:slug}', [NewsArticlesController::class, 'destroy'])->name('news.destroy');
+
+    // Partners
+    Route::get('/partenaires', [AdminPartnersController::class, 'index'])->name('partners.index');
+    Route::get('/partenaires/creer', [AdminPartnersController::class, 'create'])->name('partners.create');
+    Route::post('/partenaires', [AdminPartnersController::class, 'store'])->name('partners.store');
+    Route::get('/partenaires/{partner}/modifier', [AdminPartnersController::class, 'edit'])->name('partners.edit');
+    Route::patch('/partenaires/{partner}', [AdminPartnersController::class, 'update'])->name('partners.update');
+    Route::delete('/partenaires/{partner}', [AdminPartnersController::class, 'destroy'])->name('partners.destroy');
+    Route::post('/partenaires/reorder', [AdminPartnersController::class, 'reorder'])->name('partners.reorder');
 
     // News Categories
     Route::get('/actualites/categories', [NewsCategoriesController::class, 'index'])->name('news.categories.index');
