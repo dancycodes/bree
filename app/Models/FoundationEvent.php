@@ -23,6 +23,7 @@ class FoundationEvent extends Model
         'event_time',
         'thumbnail_path',
         'is_published',
+        'program_slug',
     ];
 
     public function getActivitylogOptions(): LogOptions

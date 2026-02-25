@@ -159,6 +159,82 @@
     </section>
 
     {{-- ================================================================
+         UPCOMING PROGRAM EVENTS (only when tagged events exist)
+         ================================================================ --}}
+    @if ($programEvents->count() > 0)
+        <section class="py-20" style="background-color: #ffffff;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="mb-12" data-animate="fade-up">
+                    <span class="block text-xs font-bold tracking-widest uppercase mb-3"
+                          style="color: {{ $program->color }};">
+                        {{ __('programs.program_events_label') }}
+                    </span>
+                    <h2 class="font-heading font-bold"
+                        style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.5rem, 3vw, 2rem);
+                               color: #002850;">
+                        {{ __('programs.upcoming_events') }}
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    @foreach ($programEvents as $event)
+                        <div class="rounded-2xl overflow-hidden border"
+                             style="border-color: {{ $program->color }}26;"
+                             data-animate="fade-up">
+
+                            {{-- Date strip --}}
+                            <div class="px-6 py-4 flex items-center gap-4"
+                                 style="background-color: {{ $program->color }}0d;">
+                                <div class="text-center leading-none">
+                                    <span class="block text-2xl font-bold"
+                                          style="color: {{ $program->color }};">
+                                        {{ $event->event_date->format('d') }}
+                                    </span>
+                                    <span class="block text-xs font-semibold uppercase mt-0.5"
+                                          style="color: {{ $program->color }};">
+                                        {{ $event->event_date->translatedFormat('M') }}
+                                    </span>
+                                    <span class="block text-xs mt-0.5" style="color: #5a6a7a;">
+                                        {{ $event->event_date->format('Y') }}
+                                    </span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-semibold text-sm leading-snug truncate"
+                                       style="color: #002850;">
+                                        {{ $event->title() }}
+                                    </p>
+                                    @if ($event->event_time)
+                                        <p class="text-xs mt-1" style="color: #5a6a7a;">
+                                            {{ \Carbon\Carbon::parse($event->event_time)->format('H:i') }}
+                                        </p>
+                                    @endif
+                                </div>
+                            </div>
+
+                            {{-- Location --}}
+                            <div class="px-6 py-4 flex items-center gap-2">
+                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor"
+                                     viewBox="0 0 24 24" stroke-width="1.5"
+                                     style="color: {{ $program->color }};" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+                                </svg>
+                                <span class="text-sm" style="color: #5a6a7a;">{{ $event->location() }}</span>
+                            </div>
+
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
+        </section>
+    @endif
+
+    {{-- ================================================================
          OTHER PROGRAMS
          Compact cards to discover the other two programs
          ================================================================ --}}

@@ -9,4 +9,6 @@ return [
     'our_actions' => 'Our Actions',
     'donate_for_program' => 'Support :name',
     'other_programs' => 'Our Other Programs',
+    'upcoming_events' => 'Upcoming Events',
+    'program_events_label' => 'Programme agenda',
 ];
