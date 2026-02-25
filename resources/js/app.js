@@ -1,5 +1,5 @@
 import './bootstrap';
-import { initAnimations, killAnimations, pageTransitionIn, playHeroEntrance, gsap } from './animations';
+import { initAnimations, killAnimations, pageTransitionIn, playHeroEntrance, gsap, ScrollTrigger, animateCounter } from './animations';
 
 // Register Service Worker for PWA
 if ('serviceWorker' in navigator) {
@@ -32,10 +32,32 @@ function initHeroEntrance() {
     }
 }
 
+/**
+ * Initialize scroll-triggered counter animations.
+ * Counters animate from 0 to their target value once, on first scroll-into-view.
+ */
+function initCounters() {
+    document.querySelectorAll('[data-counter]').forEach(el => {
+        const target = parseInt(el.getAttribute('data-counter'), 10);
+        if (isNaN(target)) return;
+
+        // Reset to 0 for Gale re-navigation
+        el.textContent = '0';
+
+        ScrollTrigger.create({
+            trigger: el,
+            start: 'top 90%',
+            once: true,
+            onEnter: () => animateCounter(el, target, 2),
+        });
+    });
+}
+
 // Initialize animations on first page load
 document.addEventListener('DOMContentLoaded', () => {
     initAnimations();
     initHeroEntrance();
+    initCounters();
 });
 
 // Hook into Gale navigation lifecycle
@@ -43,6 +65,7 @@ document.addEventListener('gale:navigated', () => {
     initAnimations();
     pageTransitionIn();
     initHeroEntrance();
+    initCounters();
 });
 
 document.addEventListener('gale:navigating', () => {

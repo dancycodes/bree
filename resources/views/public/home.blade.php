@@ -115,4 +115,67 @@
 
     @endif
 
+
+    {{-- ================================================================
+         IMPACT STATISTICS SECTION (F-017)
+         Animated counters: scroll-triggered GSAP number counting.
+         Off-white background, 4-col desktop / 2x2 mobile grid.
+         ================================================================ --}}
+    @if ($counters->isNotEmpty())
+        <section class="py-20 lg:py-28" style="background-color: #f8f5f0;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                {{-- Section Label --}}
+                <div class="text-center mb-14" data-animate="fade-up">
+                    <span class="text-xs font-bold tracking-widest uppercase" style="color: #c8a03c;">
+                        {{ __('home.our_impact') }}
+                    </span>
+                </div>
+
+                {{-- Counters Grid: 2-col mobile, 4-col desktop --}}
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8" data-stagger="0.1">
+                    @foreach ($counters as $counter)
+                        <div class="text-center" data-animate="fade-up">
+
+                            {{-- Gold SVG Icon --}}
+                            <div class="flex justify-center mb-5">
+                                <div class="w-14 h-14 rounded-full flex items-center justify-center"
+                                     style="background-color: rgba(200,160,60,0.1);">
+                                    <svg
+                                        class="w-7 h-7"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="1.5"
+                                        style="color: #c8a03c;"
+                                        aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="{{ $counter->icon_svg }}"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            {{-- Animated Number --}}
+                            <div
+                                class="font-heading font-bold leading-none mb-3"
+                                style="font-family: 'Playfair Display', serif;
+                                       font-size: clamp(2.5rem, 5vw, 3.75rem);
+                                       color: #c80078;"
+                                data-counter="{{ $counter->number }}">
+                                0
+                            </div>
+
+                            {{-- Label --}}
+                            <p class="text-sm lg:text-base font-medium leading-snug"
+                               style="color: #143c64;">
+                                {{ $counter->label() }}
+                            </p>
+
+                        </div>
+                    @endforeach
+                </div>
+
+            </div>
+        </section>
+    @endif
+
 @endsection
