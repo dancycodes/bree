@@ -10,4 +10,7 @@ return [
     'read_more' => 'Read more',
     'all_news' => 'View all news',
     'no_news' => 'No news articles yet',
+    'our_leadership' => 'Our Leadership',
+    'founder_label' => 'Founder',
+    'patron_label' => 'Patron',
 ];

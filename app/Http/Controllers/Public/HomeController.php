@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
+use App\Models\FounderSection;
 use App\Models\HeroSection;
 use App\Models\MissionSection;
 use App\Models\NewsArticle;
@@ -18,7 +19,8 @@ class HomeController extends Controller
         $mission = MissionSection::active();
         $programs = ProgramCard::active()->get();
         $latestNews = NewsArticle::published()->limit(3)->get();
+        $founders = FounderSection::active();
 
-        return gale()->view('public.home', compact('hero', 'counters', 'mission', 'programs', 'latestNews'), web: true);
+        return gale()->view('public.home', compact('hero', 'counters', 'mission', 'programs', 'latestNews', 'founders'), web: true);
     }
 }

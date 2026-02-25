@@ -10,4 +10,7 @@ return [
     'read_more' => 'Lire la suite',
     'all_news' => 'Voir toutes les actualités',
     'no_news' => 'Aucune actualité pour le moment',
+    'our_leadership' => 'Notre Équipe Dirigeante',
+    'founder_label' => 'Fondatrice',
+    'patron_label' => 'Marraine',
 ];
