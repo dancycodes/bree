@@ -100,6 +100,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::patch('/programmes/temoignages/{story}', [BeneficiaryStoriesController::class, 'update'])->name('programs.stories.update');
     Route::delete('/programmes/temoignages/{story}', [BeneficiaryStoriesController::class, 'destroy'])->name('programs.stories.destroy');
 
+    // Gallery — redirect hub to albums list
+    Route::get('/galerie', fn () => redirect()->route('admin.gallery.albums.index'))->name('gallery.index');
+
     // Gallery Albums
     Route::get('/galerie/albums', [GalleryAlbumsController::class, 'index'])->name('gallery.albums.index');
     Route::get('/galerie/albums/creer', [GalleryAlbumsController::class, 'create'])->name('gallery.albums.create');
@@ -166,8 +169,11 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::delete('/newsletter/{subscriber}', [AdminNewsletterController::class, 'destroy'])->name('newsletter.destroy');
     Route::get('/newsletter/export', [AdminNewsletterController::class, 'exportCsv'])->name('newsletter.export');
 
+    // Applications Hub
+    Route::get('/candidatures', [AdminVolunteerApplicationsController::class, 'hub'])->name('applications.index');
+
     // Volunteer Applications
-    Route::match(['GET', 'POST'], '/candidatures/benevoles', [AdminVolunteerApplicationsController::class, 'index'])->name('applications.index');
+    Route::match(['GET', 'POST'], '/candidatures/benevoles', [AdminVolunteerApplicationsController::class, 'index'])->name('applications.volunteers.index');
     Route::post('/candidatures/benevoles/{application}', [AdminVolunteerApplicationsController::class, 'show'])->name('applications.show');
     Route::patch('/candidatures/benevoles/{application}/statut', [AdminVolunteerApplicationsController::class, 'updateStatus'])->name('applications.status');
     Route::get('/candidatures/benevoles/exporter', [AdminVolunteerApplicationsController::class, 'exportCsv'])->name('applications.export');

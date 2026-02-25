@@ -59,61 +59,130 @@
                 $navUnreadMessages = auth()->check() && auth()->user()?->can('messages.view')
                     ? \App\Models\ContactMessage::where('status', 'new')->count()
                     : 0;
-                $adminNav = [
-                    ['label' => 'Tableau de bord', 'route' => 'admin.dashboard', 'icon' => 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6', 'permission' => null],
-                    ['label' => 'Actualités', 'route' => 'admin.news.index', 'icon' => 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z', 'permission' => 'news.view'],
-                    ['label' => 'Événements', 'route' => 'admin.events.index', 'icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', 'permission' => 'events.view'],
-                    ['label' => 'Galerie', 'route' => 'admin.gallery.index', 'icon' => 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z', 'permission' => 'gallery.view'],
-                    ['label' => 'Programmes', 'route' => 'admin.programs.index', 'icon' => 'M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7', 'permission' => 'programs.view'],
-                    ['label' => 'Partenaires', 'route' => 'admin.partners.index', 'icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z', 'permission' => 'partners.view'],
-                    ['label' => 'Statistiques', 'route' => 'admin.stats.index', 'icon' => 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', 'permission' => 'stats.view'],
-                    ['label' => 'Hero / CTA', 'route' => 'admin.hero.index', 'icon' => 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z', 'permission' => 'content.edit'],
-                    ['label' => 'Dons', 'route' => 'admin.donations.index', 'icon' => 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z', 'permission' => 'donations.view'],
-                    ['label' => 'Candidatures', 'route' => 'admin.applications.index', 'icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4', 'permission' => 'applications.view'],
-                    ['label' => 'Messages', 'route' => 'admin.messages.index', 'icon' => 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', 'permission' => 'messages.view', 'badge' => $navUnreadMessages],
-                    ['label' => 'Newsletter', 'route' => 'admin.newsletter.index', 'icon' => 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9', 'permission' => 'newsletter.view'],
-                    ['label' => 'Utilisateurs', 'route' => 'admin.users.index', 'icon' => 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z', 'permission' => 'users.view'],
-                    ['label' => 'Rôles', 'route' => 'admin.roles.index', 'icon' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z', 'permission' => 'roles.view'],
-                    ['label' => 'Paramètres', 'route' => 'admin.settings.index', 'icon' => 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z', 'permission' => 'settings.manage'],
+                $navPendingApplications = auth()->check() && auth()->user()?->can('applications.view')
+                    ? \App\Models\VolunteerApplication::where('status', 'pending')->count()
+                      + \App\Models\PartnershipApplication::where('status', 'pending')->count()
+                    : 0;
+
+                $adminNavGroups = [
+                    // ── Top-level (no group heading) ──
+                    [
+                        'heading' => null,
+                        'items' => [
+                            ['label' => 'Tableau de bord', 'route' => 'admin.dashboard', 'active' => 'admin.dashboard*', 'icon' => 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6', 'permission' => null],
+                        ],
+                    ],
+
+                    // ── Contenu ──
+                    [
+                        'heading' => 'Contenu',
+                        'items' => [
+                            ['label' => 'Actualites', 'route' => 'admin.news.index', 'active' => 'admin.news.*', 'icon' => 'M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z', 'permission' => 'news.view'],
+                            ['label' => 'Evenements', 'route' => 'admin.events.index', 'active' => 'admin.events.*', 'icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', 'permission' => 'events.view'],
+                            ['label' => 'Galerie', 'route' => 'admin.gallery.index', 'active' => 'admin.gallery.*', 'icon' => 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z', 'permission' => 'gallery.view'],
+                            ['label' => 'Programmes', 'route' => 'admin.programs.index', 'active' => 'admin.programs.*', 'icon' => 'M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7', 'permission' => 'programs.view'],
+                            ['label' => 'Hero / CTA', 'route' => 'admin.hero.index', 'active' => 'admin.hero.*', 'icon' => 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z', 'permission' => 'content.edit'],
+                            ['label' => 'Statistiques', 'route' => 'admin.stats.index', 'active' => 'admin.stats.*', 'icon' => 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', 'permission' => 'stats.view'],
+                        ],
+                    ],
+
+                    // ── A propos ──
+                    [
+                        'heading' => 'A propos',
+                        'items' => [
+                            ['label' => 'Fondatrice', 'route' => 'admin.about.founder.edit', 'active' => 'admin.about.founder.*', 'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', 'permission' => 'about.edit'],
+                            ['label' => 'Marraine', 'route' => 'admin.about.patron.edit', 'active' => 'admin.about.patron.*', 'icon' => 'M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4', 'permission' => 'about.edit'],
+                            ['label' => 'Jalons', 'route' => 'admin.about.milestones.index', 'active' => 'admin.about.milestones.*', 'icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2', 'permission' => 'about.edit'],
+                            ['label' => 'Equipe', 'route' => 'admin.about.team.index', 'active' => 'admin.about.team.*', 'icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z', 'permission' => 'about.view'],
+                        ],
+                    ],
+
+                    // ── Relations ──
+                    [
+                        'heading' => 'Relations',
+                        'items' => [
+                            ['label' => 'Partenaires', 'route' => 'admin.partners.index', 'active' => 'admin.partners.*', 'icon' => 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', 'permission' => 'partners.view'],
+                            ['label' => 'Candidatures', 'route' => 'admin.applications.index', 'active' => ['admin.applications.*', 'admin.partnerships.*'], 'icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4', 'permission' => 'applications.view', 'badge' => $navPendingApplications],
+                            ['label' => 'Messages', 'route' => 'admin.messages.index', 'active' => 'admin.messages.*', 'icon' => 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z', 'permission' => 'messages.view', 'badge' => $navUnreadMessages],
+                            ['label' => 'Newsletter', 'route' => 'admin.newsletter.index', 'active' => 'admin.newsletter.*', 'icon' => 'M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9', 'permission' => 'newsletter.view'],
+                        ],
+                    ],
+
+                    // ── Finances ──
+                    [
+                        'heading' => 'Finances',
+                        'items' => [
+                            ['label' => 'Dons', 'route' => 'admin.donations.index', 'active' => 'admin.donations.*', 'icon' => 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z', 'permission' => 'donations.view'],
+                        ],
+                    ],
+
+                    // ── Systeme ──
+                    [
+                        'heading' => 'Systeme',
+                        'items' => [
+                            ['label' => 'Utilisateurs', 'route' => 'admin.users.index', 'active' => 'admin.users.*', 'icon' => 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z', 'permission' => 'users.view'],
+                            ['label' => 'Roles', 'route' => 'admin.roles.index', 'active' => 'admin.roles.*', 'icon' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z', 'permission' => 'roles.view'],
+                            ['label' => 'Parametres', 'route' => 'admin.settings.index', 'active' => 'admin.settings.*', 'icon' => 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z', 'permission' => 'settings.manage'],
+                        ],
+                    ],
                 ];
             @endphp
 
-            @foreach ($adminNav as $item)
-                @if ($item['permission'] === null || auth()->user()?->can($item['permission']))
-                    @if (Route::has($item['route']))
-                        <a href="{{ route($item['route']) }}"
-                           class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium mb-0.5 transition-all duration-150 relative group"
-                           style="{{ request()->routeIs($item['route']) ? 'background-color: rgba(200,0,120,0.15); color: white;' : 'color: rgba(255,255,255,0.65);' }}"
-                           @mouseover="if (!{{ request()->routeIs($item['route']) ? 'true' : 'false' }}) $el.style.backgroundColor='rgba(255,255,255,0.06)'"
-                           @mouseout="if (!{{ request()->routeIs($item['route']) ? 'true' : 'false' }}) $el.style.backgroundColor='transparent'">
+            @foreach ($adminNavGroups as $group)
+                @php
+                    $visibleItems = collect($group['items'])->filter(fn ($item) =>
+                        $item['permission'] === null || auth()->user()?->can($item['permission'])
+                    );
+                @endphp
 
-                            {{-- Active indicator bar --}}
-                            @if (request()->routeIs($item['route']))
-                                <span class="absolute left-0 inset-y-1 w-1 rounded-r-full" style="background-color: #c80078;"></span>
-                            @endif
-
-                            {{-- Icon --}}
-                            <svg class="w-5 h-5 flex-shrink-0 {{ request()->routeIs($item['route']) ? '' : 'opacity-60' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}"/>
-                            </svg>
-
-                            <span>{{ $item['label'] }}</span>
-                            @if (!empty($item['badge']))
-                                <span class="ml-auto inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-xs font-bold"
-                                      style="background-color: #c80078; color: #ffffff;">
-                                    {{ $item['badge'] }}
-                                </span>
-                            @endif
-                        </a>
-                    @else
-                        <div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium mb-0.5 cursor-not-allowed"
-                             style="color: rgba(255,255,255,0.3);">
-                            <svg class="w-5 h-5 flex-shrink-0 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}"/>
-                            </svg>
-                            <span>{{ $item['label'] }}</span>
-                        </div>
+                @if ($visibleItems->isNotEmpty())
+                    {{-- Group heading --}}
+                    @if ($group['heading'])
+                        <p class="px-3 pt-4 pb-1.5 text-xs font-semibold uppercase tracking-wider" style="color: rgba(255,255,255,0.3);">
+                            {{ $group['heading'] }}
+                        </p>
                     @endif
+
+                    @foreach ($visibleItems as $item)
+                        @php
+                            $activePatterns = is_array($item['active']) ? $item['active'] : [$item['active']];
+                            $isActive = request()->routeIs(...$activePatterns);
+                        @endphp
+                        @if (Route::has($item['route']))
+                            <a href="{{ route($item['route']) }}"
+                               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium mb-0.5 transition-all duration-150 relative group"
+                               style="{{ $isActive ? 'background-color: rgba(200,0,120,0.15); color: white;' : 'color: rgba(255,255,255,0.65);' }}"
+                               @mouseover="if (!{{ $isActive ? 'true' : 'false' }}) $el.style.backgroundColor='rgba(255,255,255,0.06)'"
+                               @mouseout="if (!{{ $isActive ? 'true' : 'false' }}) $el.style.backgroundColor='transparent'">
+
+                                {{-- Active indicator bar --}}
+                                @if ($isActive)
+                                    <span class="absolute left-0 inset-y-1 w-1 rounded-r-full" style="background-color: #c80078;"></span>
+                                @endif
+
+                                {{-- Icon --}}
+                                <svg class="w-5 h-5 flex-shrink-0 {{ $isActive ? '' : 'opacity-60' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}"/>
+                                </svg>
+
+                                <span>{{ $item['label'] }}</span>
+                                @if (!empty($item['badge']))
+                                    <span class="ml-auto inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-xs font-bold"
+                                          style="background-color: #c80078; color: #ffffff;">
+                                        {{ $item['badge'] }}
+                                    </span>
+                                @endif
+                            </a>
+                        @else
+                            <div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium mb-0.5 cursor-not-allowed"
+                                 style="color: rgba(255,255,255,0.3);">
+                                <svg class="w-5 h-5 flex-shrink-0 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.75">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}"/>
+                                </svg>
+                                <span>{{ $item['label'] }}</span>
+                            </div>
+                        @endif
+                    @endforeach
                 @endif
             @endforeach
         </nav>
