@@ -110,6 +110,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     // Users
     Route::get('/utilisateurs', [AdminUsersController::class, 'index'])->name('users.index');
+    Route::get('/utilisateurs/creer', [AdminUsersController::class, 'create'])->name('users.create');
+    Route::post('/utilisateurs', [AdminUsersController::class, 'store'])->name('users.store');
+    Route::get('/utilisateurs/{user}/modifier', [AdminUsersController::class, 'edit'])->name('users.edit');
+    Route::patch('/utilisateurs/{user}', [AdminUsersController::class, 'update'])->name('users.update');
     Route::post('/utilisateurs/{user}/desactiver', [AdminUsersController::class, 'disable'])->name('users.disable');
     Route::post('/utilisateurs/{user}/activer', [AdminUsersController::class, 'enable'])->name('users.enable');
     Route::delete('/utilisateurs/{user}', [AdminUsersController::class, 'destroy'])->name('users.destroy');

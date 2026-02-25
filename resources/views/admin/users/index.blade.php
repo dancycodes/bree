@@ -8,6 +8,20 @@
 
     <div x-data="{ search: '' }">
 
+        {{-- Header --}}
+        <div class="mb-4 flex items-center justify-between gap-3">
+            @can('users.create')
+                <a href="{{ route('admin.users.create') }}"
+                   class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white flex-shrink-0"
+                   style="background-color: #143c64;">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Nouvel utilisateur
+                </a>
+            @endcan
+        </div>
+
         {{-- Search --}}
         <div class="mb-4 flex items-center gap-3">
             <div class="relative flex-1 max-w-sm">
