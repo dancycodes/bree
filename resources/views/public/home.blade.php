@@ -882,6 +882,7 @@
                             x-name="newsletter_email"
                             x-model="newsletter_email"
                             placeholder="{{ __('home.newsletter_placeholder') }}"
+                            aria-label="{{ __('home.newsletter_placeholder') }}"
                             autocomplete="email"
                             class="w-full px-5 py-3.5 rounded-xl border text-sm focus:outline-none"
                             style="border-color: rgba(0,40,80,0.15);

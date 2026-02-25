@@ -37,6 +37,16 @@
 <body class="antialiased min-h-screen flex flex-col" style="font-family: 'Inter', sans-serif; color: #1a1a2e; background-color: #ffffff;">
 
     {{-- ================================================================
+         SKIP TO CONTENT (keyboard / screen reader accessibility)
+         ================================================================ --}}
+    <a href="#main-content" class="skip-to-content">Aller au contenu principal</a>
+
+    {{-- ================================================================
+         ARIA LIVE REGION for dynamic Gale fragment updates / toasts
+         ================================================================ --}}
+    <div aria-live="polite" aria-atomic="true" class="sr-only" id="aria-announcer"></div>
+
+    {{-- ================================================================
          GLOBAL NAV LOADER (Gale navigation indicator)
          ================================================================ --}}
     <div
@@ -115,14 +125,16 @@
                     {{-- Language Switcher --}}
                     <div class="flex items-center gap-0.5 text-xs font-semibold tracking-widest" style="color: #143c64;">
                         <a href="{{ route('lang.switch', 'fr') }}"
+                           aria-label="Passer au français"
                            class="px-2 py-1 rounded transition-colors duration-150"
                            style="{{ app()->getLocale() === 'fr' ? 'color: #c80078;' : 'color: #143c64; opacity: 0.5;' }}"
                            @mouseover="$el.style.opacity='1'"
                            @mouseout="$el.style.opacity='{{ app()->getLocale() === 'fr' ? '1' : '0.5' }}'">
                             FR
                         </a>
-                        <span style="color: #143c64; opacity: 0.3;">|</span>
+                        <span style="color: #143c64; opacity: 0.3;" aria-hidden="true">|</span>
                         <a href="{{ route('lang.switch', 'en') }}"
+                           aria-label="Switch to English"
                            class="px-2 py-1 rounded transition-colors duration-150"
                            style="{{ app()->getLocale() === 'en' ? 'color: #c80078;' : 'color: #143c64; opacity: 0.5;' }}"
                            @mouseover="$el.style.opacity='1'"
@@ -194,11 +206,13 @@
             {{-- Mobile Language Switcher --}}
             <div class="mt-10 flex items-center gap-4">
                 <a href="{{ route('lang.switch', 'fr') }}"
+                   aria-label="Passer au français"
                    class="text-sm font-bold tracking-widest transition-colors px-3 py-1.5 rounded-md"
                    style="{{ app()->getLocale() === 'fr' ? 'color: #c8a03c; background: rgba(200,160,60,0.15);' : 'color: rgba(255,255,255,0.4);' }}">
                     FR
                 </a>
                 <a href="{{ route('lang.switch', 'en') }}"
+                   aria-label="Switch to English"
                    class="text-sm font-bold tracking-widest transition-colors px-3 py-1.5 rounded-md"
                    style="{{ app()->getLocale() === 'en' ? 'color: #c8a03c; background: rgba(200,160,60,0.15);' : 'color: rgba(255,255,255,0.4);' }}">
                     EN
