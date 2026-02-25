@@ -23,4 +23,6 @@ return [
     'newsletter_subscribe' => 'Subscribe',
     'newsletter_no_spam' => 'No spam, easy unsubscribe.',
     'newsletter_success' => 'Thank you for subscribing!',
+    'donate_now' => 'Make a Donation',
+    'pledge_donation' => 'Make a Pledge',
 ];

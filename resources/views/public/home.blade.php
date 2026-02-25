@@ -848,4 +848,82 @@
         </section>
     @endif
 
+
+    {{-- ================================================================
+         DONATION CALL-TO-ACTION SECTION (F-026)
+         Full-width Navy bg + donate.jpg image with solid dark overlay.
+         Admin-managed headline + copy. Two CTAs: Magenta "Faire un Don"
+         + white outline "Promesse de Don". No CSS gradients (BR-003).
+         ================================================================ --}}
+    @if ($donationCta)
+        <section
+            class="relative py-28 lg:py-36 overflow-hidden"
+            style="background-color: #002850;">
+
+            {{-- Background image --}}
+            <div
+                class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style="background-image: url('{{ asset($donationCta->bg_image_path) }}');"></div>
+
+            {{-- Solid dark overlay — NO gradient (BR-003) --}}
+            <div class="absolute inset-0" style="background-color: rgba(0, 20, 60, 0.78);"></div>
+
+            {{-- Content --}}
+            <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+                {{-- Gold accent decoration --}}
+                <div class="flex justify-center mb-8" data-animate="fade-up">
+                    <div class="h-px w-16" style="background-color: #c8a03c;"></div>
+                </div>
+
+                {{-- Headline --}}
+                <h2
+                    class="font-heading font-bold mb-6"
+                    style="font-family: 'Playfair Display', serif;
+                           font-size: clamp(2rem, 5vw, 3.5rem);
+                           color: #ffffff;
+                           line-height: 1.15;"
+                    data-animate="fade-up">
+                    {{ $donationCta->headline() }}
+                </h2>
+
+                {{-- Gold underline accent --}}
+                <div class="flex justify-center mb-8" data-animate="fade-up">
+                    <div class="h-0.5 w-20" style="background-color: #c8a03c;"></div>
+                </div>
+
+                {{-- Copy --}}
+                <p
+                    class="text-base sm:text-lg leading-relaxed mb-12 mx-auto"
+                    style="color: rgba(255,255,255,0.82); max-width: 560px;"
+                    data-animate="fade-up">
+                    {{ $donationCta->copy() }}
+                </p>
+
+                {{-- CTAs --}}
+                <div class="flex flex-col sm:flex-row gap-4 items-center justify-center" data-animate="fade-up">
+
+                    {{-- Primary: filled Magenta --}}
+                    <a
+                        href="/faire-un-don"
+                        class="btn-primary text-base font-semibold px-10 py-4 rounded-xl w-full sm:w-auto text-center"
+                        style="min-width: 220px;">
+                        {{ __('home.donate_now') }}
+                    </a>
+
+                    {{-- Secondary: white outline --}}
+                    <a
+                        href="/faire-un-don#promesse"
+                        class="btn-secondary text-base font-semibold px-10 py-4 rounded-xl w-full sm:w-auto text-center"
+                        style="min-width: 220px;">
+                        {{ __('home.pledge_donation') }}
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+    @endif
+
 @endsection

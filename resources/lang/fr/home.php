@@ -23,4 +23,6 @@ return [
     'newsletter_subscribe' => 'S\'abonner',
     'newsletter_no_spam' => 'Pas de spam, désinscription facile.',
     'newsletter_success' => 'Merci pour votre abonnement !',
+    'donate_now' => 'Faire un Don',
+    'pledge_donation' => 'Faire une Promesse de Don',
 ];
