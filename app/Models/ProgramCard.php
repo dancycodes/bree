@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -67,14 +68,27 @@ class ProgramCard extends Model
         return $locale === 'fr' ? ($this->long_description_fr ?? '') : ($this->long_description_en ?? '');
     }
 
+    public function programActivities(): HasMany
+    {
+        return $this->hasMany(ProgramActivity::class);
+    }
+
     /**
      * Return the activities list in the current locale.
+     * Uses ProgramActivity relation if populated, otherwise falls back to JSON.
      *
      * @return array<int, string>
      */
     public function activities(): array
     {
         $locale = app()->getLocale();
+        $dbActivities = $this->relationLoaded('programActivities')
+            ? $this->programActivities->where('is_active', true)->sortBy('sort_order')
+            : $this->programActivities()->ordered()->get();
+
+        if ($dbActivities->isNotEmpty()) {
+            return $dbActivities->map(fn (ProgramActivity $a) => $locale === 'fr' ? $a->name_fr : $a->name_en)->values()->toArray();
+        }
 
         return $locale === 'fr' ? ($this->activities_fr ?? []) : ($this->activities_en ?? []);
     }

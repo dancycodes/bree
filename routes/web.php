@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProgramActivitiesController;
+use App\Http\Controllers\Admin\ProgramsController as AdminProgramsController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\NewsletterController;
 use App\Http\Controllers\Public\ProgramsController;
@@ -30,6 +32,14 @@ Route::prefix('admin')->name('admin.')->middleware('guest')->group(function () {
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Programs & Activities
+    Route::get('/programmes', [AdminProgramsController::class, 'index'])->name('programs.index');
+    Route::get('/programmes/{program:slug}/activites', [ProgramActivitiesController::class, 'index'])->name('programs.activities.index');
+    Route::post('/programmes/{program:slug}/activites', [ProgramActivitiesController::class, 'store'])->name('programs.activities.store');
+    Route::patch('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'update'])->name('programs.activities.update');
+    Route::delete('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'destroy'])->name('programs.activities.destroy');
+    Route::post('/programmes/{program:slug}/activites/reorder', [ProgramActivitiesController::class, 'reorder'])->name('programs.activities.reorder');
 });
 
 /*
