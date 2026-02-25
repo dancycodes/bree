@@ -39,6 +39,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 */
 Route::get('/', [HomeController::class, 'index'])->name('public.home');
 Route::get('/programmes', [ProgramsController::class, 'index'])->name('public.programs');
+Route::get('/programmes/{program:slug}', [ProgramsController::class, 'show'])->name('public.programs.show');
 
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'store'])
     ->name('newsletter.subscribe')

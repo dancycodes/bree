@@ -13,4 +13,11 @@ class ProgramsController extends Controller
 
         return gale()->view('public.programs.index', compact('programs'), web: true);
     }
+
+    public function show(ProgramCard $program): mixed
+    {
+        $otherPrograms = ProgramCard::active()->where('slug', '!=', $program->slug)->get();
+
+        return gale()->view('public.programs.show', compact('program', 'otherPrograms'), web: true);
+    }
 }
