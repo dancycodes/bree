@@ -267,4 +267,94 @@
         </section>
     @endif
 
+
+    {{-- ================================================================
+         PROGRAMS PREVIEW SECTION (F-019)
+         3 signature programs: BREE PROTÈGE / ÉLÈVE / RESPIRE.
+         White background, 3-col desktop / 1-col mobile.
+         Each card: colored top border, image, name, description, CTA.
+         Hover: translateY(-4px) + deeper shadow.
+         ================================================================ --}}
+    @if ($programs->isNotEmpty())
+        <section class="py-20 lg:py-28" style="background-color: #ffffff;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                {{-- Section Header --}}
+                <div class="text-center mb-14" data-animate="fade-up">
+                    <span class="block text-xs font-bold tracking-widest uppercase mb-4"
+                          style="color: #c8a03c;">
+                        {{ __('home.our_programs') }}
+                    </span>
+                    <h2 class="font-heading"
+                        style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.75rem, 4vw, 2.75rem);
+                               color: #002850;
+                               font-weight: 700;">
+                        {{ config('app.name') }}
+                    </h2>
+                </div>
+
+                {{-- Programs Grid: 1-col mobile, 3-col desktop --}}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-stagger="0.15">
+                    @foreach ($programs as $program)
+                        <article
+                            class="group rounded-2xl overflow-hidden flex flex-col program-card"
+                            style="background-color: #ffffff;
+                                   box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+                                   transition: transform 0.3s ease, box-shadow 0.3s ease;
+                                   border-top: 4px solid {{ $program->color }};"
+                            data-animate="fade-up">
+
+                            {{-- Program Image --}}
+                            <div class="overflow-hidden" style="height: 220px;">
+                                <img
+                                    src="{{ asset($program->image_path) }}"
+                                    alt="{{ $program->name() }}"
+                                    class="w-full h-full object-cover"
+                                    style="transition: transform 0.5s ease;"
+                                    loading="lazy">
+                            </div>
+
+                            {{-- Card Body --}}
+                            <div class="flex flex-col flex-1 p-7">
+
+                                {{-- Program Name --}}
+                                <h3 class="font-heading font-bold mb-3"
+                                    style="font-family: 'Playfair Display', serif;
+                                           font-size: 1.25rem;
+                                           color: {{ $program->color }};">
+                                    {{ $program->name() }}
+                                </h3>
+
+                                {{-- Description --}}
+                                <p class="text-sm leading-relaxed flex-1 mb-6"
+                                   style="color: #5a6a7a;">
+                                    {{ $program->description() }}
+                                </p>
+
+                                {{-- CTA Link --}}
+                                <a
+                                    href="{{ $program->url }}"
+                                    class="inline-flex items-center gap-2 text-sm font-semibold"
+                                    style="color: {{ $program->color }};">
+                                    {{ __('home.learn_more') }}
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                         viewBox="0 0 24 24" stroke-width="2"
+                                         style="transition: transform 0.2s ease;"
+                                         aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                                    </svg>
+                                </a>
+
+                            </div>
+
+                        </article>
+                    @endforeach
+                </div>
+
+            </div>
+        </section>
+    @endif
+
 @endsection
