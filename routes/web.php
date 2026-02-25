@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminContactMessagesController;
+use App\Http\Controllers\Admin\AdminDonationsController;
 use App\Http\Controllers\Admin\AdminNewsletterController;
 use App\Http\Controllers\Admin\AdminPartnersController;
 use App\Http\Controllers\Admin\AdminRolesController;
@@ -109,6 +110,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::patch('/actualites/{article:slug}', [NewsArticlesController::class, 'update'])->name('news.update');
     Route::delete('/actualites/{article:slug}', [NewsArticlesController::class, 'destroy'])->name('news.destroy');
 
+    // Donations
+    Route::match(['GET', 'POST'], '/dons', [AdminDonationsController::class, 'index'])->name('donations.index');
+
     // Roles
     Route::get('/roles', [AdminRolesController::class, 'index'])->name('roles.index');
     Route::get('/roles/creer', [AdminRolesController::class, 'create'])->name('roles.create');
@@ -118,7 +122,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::delete('/roles/{role}', [AdminRolesController::class, 'destroy'])->name('roles.destroy');
 
     // Users
-    Route::get('/utilisateurs', [AdminUsersController::class, 'index'])->name('users.index');
+    Route::match(['GET', 'POST'], '/utilisateurs', [AdminUsersController::class, 'index'])->name('users.index');
     Route::get('/utilisateurs/creer', [AdminUsersController::class, 'create'])->name('users.create');
     Route::post('/utilisateurs', [AdminUsersController::class, 'store'])->name('users.store');
     Route::get('/utilisateurs/{user}/modifier', [AdminUsersController::class, 'edit'])->name('users.edit');
