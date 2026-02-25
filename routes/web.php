@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FounderProfileController;
+use App\Http\Controllers\Admin\MilestonesController;
 use App\Http\Controllers\Admin\PatronProfileController;
 use App\Http\Controllers\Admin\ProgramActivitiesController;
 use App\Http\Controllers\Admin\ProgramsController as AdminProgramsController;
@@ -41,6 +42,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::patch('/a-propos/fondatrice', [FounderProfileController::class, 'update'])->name('about.founder.update');
     Route::get('/a-propos/marraine', [PatronProfileController::class, 'edit'])->name('about.patron.edit');
     Route::patch('/a-propos/marraine', [PatronProfileController::class, 'update'])->name('about.patron.update');
+    Route::get('/a-propos/jalons', [MilestonesController::class, 'index'])->name('about.milestones.index');
+    Route::post('/a-propos/jalons', [MilestonesController::class, 'store'])->name('about.milestones.store');
+    Route::patch('/a-propos/jalons/{milestone}', [MilestonesController::class, 'update'])->name('about.milestones.update');
+    Route::delete('/a-propos/jalons/{milestone}', [MilestonesController::class, 'destroy'])->name('about.milestones.destroy');
 
     // Programs & Activities
     Route::get('/programmes', [AdminProgramsController::class, 'index'])->name('programs.index');
