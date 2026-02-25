@@ -112,6 +112,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     // Donations
     Route::match(['GET', 'POST'], '/dons', [AdminDonationsController::class, 'index'])->name('donations.index');
+    Route::get('/dons/promesses/{pledge}', [AdminDonationsController::class, 'showPledge'])->name('donations.pledge.show');
+    Route::patch('/dons/promesses/{pledge}/statut', [AdminDonationsController::class, 'updatePledgeStatus'])->name('donations.pledge.status');
+    Route::get('/dons/nature/{inkind}', [AdminDonationsController::class, 'showInKind'])->name('donations.inkind.show');
+    Route::patch('/dons/nature/{inkind}/statut', [AdminDonationsController::class, 'updateInKindStatus'])->name('donations.inkind.status');
 
     // Roles
     Route::get('/roles', [AdminRolesController::class, 'index'])->name('roles.index');

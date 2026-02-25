@@ -40,6 +40,98 @@ class AdminDonationsController extends Controller
         return gale()->view('admin.donations.index', ['donations' => $paginated], web: true);
     }
 
+    public function showPledge(DonationPledge $pledge): mixed
+    {
+        $this->authorize('donations.view');
+
+        $activity = \Spatie\Activitylog\Models\Activity::where('subject_type', DonationPledge::class)
+            ->where('subject_id', $pledge->id)
+            ->latest()
+            ->get();
+
+        return gale()->view('admin.donations.pledge', compact('pledge', 'activity'), web: true);
+    }
+
+    public function updatePledgeStatus(Request $request, DonationPledge $pledge): mixed
+    {
+        $this->authorize('donations.edit');
+
+        $request->validate([
+            'status' => 'required|in:pending,confirmed,fulfilled',
+            'admin_notes' => 'nullable|string|max:2000',
+        ]);
+
+        $oldStatus = $pledge->status;
+        $pledge->update([
+            'status' => $request->input('status'),
+            'admin_notes' => $request->input('admin_notes', $pledge->admin_notes),
+        ]);
+
+        activity('admin')
+            ->causedBy(auth()->user())
+            ->performedOn($pledge)
+            ->log("Statut changé de {$oldStatus} à {$pledge->status}");
+
+        $statusLabels = [
+            'confirmed' => 'Promesse confirmée',
+            'fulfilled' => 'Promesse honorée',
+            'pending' => 'Remis en attente',
+        ];
+
+        return gale()
+            ->state('status', $pledge->status)
+            ->dispatch('toast', [
+                'message' => $statusLabels[$pledge->status] ?? 'Statut mis à jour',
+                'type' => 'success',
+            ]);
+    }
+
+    public function showInKind(InKindDonation $inkind): mixed
+    {
+        $this->authorize('donations.view');
+
+        $activity = \Spatie\Activitylog\Models\Activity::where('subject_type', InKindDonation::class)
+            ->where('subject_id', $inkind->id)
+            ->latest()
+            ->get();
+
+        return gale()->view('admin.donations.inkind', compact('inkind', 'activity'), web: true);
+    }
+
+    public function updateInKindStatus(Request $request, InKindDonation $inkind): mixed
+    {
+        $this->authorize('donations.edit');
+
+        $request->validate([
+            'status' => 'required|in:pending_review,accepted,declined',
+            'admin_notes' => 'nullable|string|max:2000',
+        ]);
+
+        $oldStatus = $inkind->status;
+        $inkind->update([
+            'status' => $request->input('status'),
+            'admin_notes' => $request->input('admin_notes', $inkind->admin_notes),
+        ]);
+
+        activity('admin')
+            ->causedBy(auth()->user())
+            ->performedOn($inkind)
+            ->log("Statut changé de {$oldStatus} à {$inkind->status}");
+
+        $statusLabels = [
+            'accepted' => 'Don en nature accepté',
+            'declined' => 'Don en nature refusé',
+            'pending_review' => 'Remis en révision',
+        ];
+
+        return gale()
+            ->state('status', $inkind->status)
+            ->dispatch('toast', [
+                'message' => $statusLabels[$inkind->status] ?? 'Statut mis à jour',
+                'type' => 'success',
+            ]);
+    }
+
     /** @return Collection<int, array<string, mixed>> */
     private function buildUnified(string $type, string $status, string $search): Collection
     {
@@ -57,7 +149,9 @@ class AdminDonationsController extends Controller
                 });
             }
             $results = $results->merge($query->get()->map(fn (Donation $d) => [
+                'id' => $d->id,
                 'type' => 'direct',
+                'detail_url' => null,
                 'donor_name' => $d->donor_name,
                 'donor_email' => $d->donor_email,
                 'amount' => $d->amount,
@@ -80,7 +174,9 @@ class AdminDonationsController extends Controller
                 });
             }
             $results = $results->merge($query->get()->map(fn (RecurringDonation $d) => [
+                'id' => $d->id,
                 'type' => 'recurring',
+                'detail_url' => null,
                 'donor_name' => $d->donor_name,
                 'donor_email' => $d->donor_email,
                 'amount' => $d->amount,
@@ -104,7 +200,9 @@ class AdminDonationsController extends Controller
                 });
             }
             $results = $results->merge($query->get()->map(fn (DonationPledge $d) => [
+                'id' => $d->id,
                 'type' => 'pledge',
+                'detail_url' => route('admin.donations.pledge.show', $d),
                 'donor_name' => $d->first_name.' '.$d->last_name,
                 'donor_email' => $d->email,
                 'amount' => $d->amount,
@@ -127,7 +225,9 @@ class AdminDonationsController extends Controller
                 });
             }
             $results = $results->merge($query->get()->map(fn (InKindDonation $d) => [
+                'id' => $d->id,
                 'type' => 'inkind',
+                'detail_url' => route('admin.donations.inkind.show', $d),
                 'donor_name' => $d->donor_name,
                 'donor_email' => $d->email,
                 'amount' => $d->estimated_value,

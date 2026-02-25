@@ -22,6 +22,7 @@ class DonationPledge extends Model
         'programme',
         'message',
         'status',
+        'admin_notes',
     ];
 
     protected function casts(): array

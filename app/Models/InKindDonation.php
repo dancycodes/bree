@@ -21,6 +21,7 @@ class InKindDonation extends Model
         'programme',
         'availability',
         'status',
+        'admin_notes',
     ];
 
     protected function casts(): array

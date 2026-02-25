@@ -101,7 +101,8 @@
                                         $typeMeta = $typeLabels[$donation['type']] ?? ['label' => $donation['type'], 'bg' => '#f1f5f9', 'color' => '#64748b'];
                                         $statusMeta = $statusLabels[$donation['status']] ?? ['label' => $donation['status'], 'bg' => '#f1f5f9', 'color' => '#64748b'];
                                     @endphp
-                                    <tr style="border-bottom: 1px solid #f8fafc;">
+                                    <tr style="border-bottom: 1px solid #f8fafc;{{ $donation['detail_url'] ? ' cursor: pointer;' : '' }}"
+                                        @if ($donation['detail_url']) onclick="window.location='{{ $donation['detail_url'] }}'" @endif>
                                         <td class="px-4 py-3">
                                             <p class="font-medium" style="color: #1e293b;">{{ $donation['donor_name'] ?: '—' }}</p>
                                             <p class="text-xs mt-0.5" style="color: #94a3b8;">{{ $donation['donor_email'] ?: '—' }}</p>
