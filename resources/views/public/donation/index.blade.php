@@ -897,6 +897,228 @@
     </div>
 
     {{-- ================================================================
+         PLEDGE FORM
+         ================================================================ --}}
+    <section id="promesse-don" class="py-16 lg:py-24" style="background-color: #f8f5f0;"
+             x-data="{
+                 pledgeFirstName: '',
+                 pledgeLastName: '',
+                 pledgeAddress: '',
+                 pledgePhone: '',
+                 pledgeEmail: '',
+                 pledgeAmount: '',
+                 pledgeNature: 'monetary',
+                 pledgeProgramme: '',
+                 pledgeMessage: '',
+                 pledgeSubmitted: false
+             }"
+             x-sync="['pledgeFirstName','pledgeLastName','pledgeAddress','pledgePhone','pledgeEmail','pledgeAmount','pledgeNature','pledgeProgramme','pledgeMessage','pledgeSubmitted']">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            {{-- Section header --}}
+            <div class="text-center mb-10" data-animate="fade-up">
+                <p class="text-xs font-bold tracking-widest uppercase mb-2" style="color: #c8a03c;">
+                    {{ __('donation.type_pledge_title') }}
+                </p>
+                <h2 class="text-2xl lg:text-3xl font-bold mb-3"
+                    style="color: #143c64; font-family: 'Playfair Display', serif;">
+                    {{ __('donation.pledge_section_heading') }}
+                </h2>
+                <p class="text-sm max-w-xl mx-auto" style="color: #64748b; line-height: 1.7;">
+                    {{ __('donation.pledge_section_sub') }}
+                </p>
+            </div>
+
+            {{-- Success state --}}
+            <div x-show="pledgeSubmitted" style="display:none;" class="text-center py-12" data-animate="fade-up">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"
+                     style="background-color: #f0fdf4;">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" style="color: #16a34a;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2" style="color: #143c64; font-family: 'Playfair Display', serif;">
+                    {{ __('donation.pledge_success_heading') }}
+                </h3>
+                <p class="text-sm mb-6" style="color: #64748b;">{{ __('donation.pledge_success_sub') }}</p>
+                <button type="button"
+                        @click="pledgeSubmitted = false"
+                        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-opacity hover:opacity-80"
+                        style="background-color: #143c64; color: #ffffff;">
+                    {{ __('donation.pledge_new_btn') }}
+                </button>
+            </div>
+
+            {{-- Form --}}
+            <div x-show="!pledgeSubmitted" style="display:block;"
+                 class="rounded-3xl p-8 lg:p-10"
+                 style="background-color: #ffffff; border: 1px solid #e2e8f0;">
+
+                <form @submit.prevent="$action('{{ route('public.donate.pledge') }}', { include: ['pledgeFirstName','pledgeLastName','pledgeAddress','pledgePhone','pledgeEmail','pledgeAmount','pledgeNature','pledgeProgramme','pledgeMessage'] })">
+                    @honeypot
+
+                    {{-- Name row --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                                {{ __('donation.pledge_firstname_label') }} *
+                            </label>
+                            <input type="text"
+                                   x-model="pledgeFirstName"
+                                   placeholder="{{ __('donation.pledge_firstname_placeholder') }}"
+                                   class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                                   style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                   @focus="$el.style.borderColor='#c80078'"
+                                   @blur="$el.style.borderColor='#e2e8f0'">
+                            <p x-message="pledgeFirstName" class="text-xs mt-1.5 font-medium" style="color: #dc2626;"></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                                {{ __('donation.pledge_lastname_label') }} *
+                            </label>
+                            <input type="text"
+                                   x-model="pledgeLastName"
+                                   placeholder="{{ __('donation.pledge_lastname_placeholder') }}"
+                                   class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                                   style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                   @focus="$el.style.borderColor='#c80078'"
+                                   @blur="$el.style.borderColor='#e2e8f0'">
+                            <p x-message="pledgeLastName" class="text-xs mt-1.5 font-medium" style="color: #dc2626;"></p>
+                        </div>
+                    </div>
+
+                    {{-- Email + Phone row --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                                {{ __('donation.pledge_email_label') }} *
+                            </label>
+                            <input type="email"
+                                   x-model="pledgeEmail"
+                                   placeholder="{{ __('donation.pledge_email_placeholder') }}"
+                                   class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                                   style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                   @focus="$el.style.borderColor='#c80078'"
+                                   @blur="$el.style.borderColor='#e2e8f0'">
+                            <p x-message="pledgeEmail" class="text-xs mt-1.5 font-medium" style="color: #dc2626;"></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                                {{ __('donation.pledge_phone_label') }}
+                            </label>
+                            <input type="tel"
+                                   x-model="pledgePhone"
+                                   placeholder="{{ __('donation.pledge_phone_placeholder') }}"
+                                   class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                                   style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                   @focus="$el.style.borderColor='#c80078'"
+                                   @blur="$el.style.borderColor='#e2e8f0'">
+                        </div>
+                    </div>
+
+                    {{-- Address --}}
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                            {{ __('donation.pledge_address_label') }}
+                        </label>
+                        <input type="text"
+                               x-model="pledgeAddress"
+                               placeholder="{{ __('donation.pledge_address_placeholder') }}"
+                               class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                               style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                               @focus="$el.style.borderColor='#c80078'"
+                               @blur="$el.style.borderColor='#e2e8f0'">
+                    </div>
+
+                    {{-- Nature + Amount row --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                                {{ __('donation.pledge_nature_label') }}
+                            </label>
+                            <select x-model="pledgeNature"
+                                    class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none appearance-none"
+                                    style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                    @focus="$el.style.borderColor='#c80078'"
+                                    @blur="$el.style.borderColor='#e2e8f0'">
+                                <option value="monetary">{{ __('donation.pledge_nature_monetary') }}</option>
+                                <option value="in_kind">{{ __('donation.pledge_nature_inkind') }}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                                {{ __('donation.pledge_amount_label') }}
+                            </label>
+                            <div class="relative">
+                                <input type="text"
+                                       x-model="pledgeAmount"
+                                       @input="pledgeAmount = $el.value.replace(/[^0-9,\.]/g, '')"
+                                       placeholder="{{ __('donation.pledge_amount_placeholder') }}"
+                                       class="w-full px-4 py-3 pr-10 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                                       style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                       @focus="$el.style.borderColor='#c80078'"
+                                       @blur="$el.style.borderColor='#e2e8f0'">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold" style="color: #94a3b8;">€</span>
+                            </div>
+                            <p class="text-xs mt-1" style="color: #94a3b8;">{{ __('donation.pledge_amount_hint') }}</p>
+                            <p x-message="pledgeAmount" class="text-xs mt-1 font-medium" style="color: #dc2626;"></p>
+                        </div>
+                    </div>
+
+                    {{-- Programme --}}
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                            {{ __('donation.pledge_programme_label') }}
+                        </label>
+                        <select x-model="pledgeProgramme"
+                                class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none appearance-none"
+                                style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                @focus="$el.style.borderColor='#c80078'"
+                                @blur="$el.style.borderColor='#e2e8f0'">
+                            <option value="">{{ __('donation.pledge_programme_none') }}</option>
+                            <option value="bree-protege">{{ __('donation.programme_protege') }}</option>
+                            <option value="bree-eleve">{{ __('donation.programme_eleve') }}</option>
+                            <option value="bree-respire">{{ __('donation.programme_respire') }}</option>
+                        </select>
+                    </div>
+
+                    {{-- Message --}}
+                    <div class="mb-8">
+                        <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                            {{ __('donation.pledge_message_label') }}
+                        </label>
+                        <textarea x-model="pledgeMessage"
+                                  rows="3"
+                                  placeholder="{{ __('donation.pledge_message_placeholder') }}"
+                                  class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none resize-none"
+                                  style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                  @focus="$el.style.borderColor='#c80078'"
+                                  @blur="$el.style.borderColor='#e2e8f0'"></textarea>
+                    </div>
+
+                    {{-- Submit --}}
+                    <button type="submit"
+                            :disabled="!pledgeFirstName.trim() || !pledgeLastName.trim() || !pledgeEmail.trim()"
+                            :style="(pledgeFirstName.trim() && pledgeLastName.trim() && pledgeEmail.trim())
+                                ? 'background-color:#c80078; opacity:1; cursor:pointer;'
+                                : 'background-color:#c80078; opacity:0.4; cursor:not-allowed;'"
+                            class="w-full flex items-center justify-center gap-3 py-4 rounded-xl text-sm font-bold text-white transition-all"
+                            style="background-color:#c80078;">
+                        <span x-show="!$fetching()">{{ __('donation.pledge_submit_btn') }}</span>
+                        <span x-show="$fetching()">{{ __('donation.pledge_submitting_btn') }}</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
+                             x-show="!$fetching()">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6.75l4.5 4.5-4.5 4.5M3.75 12h16.5"/>
+                        </svg>
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    {{-- ================================================================
          SECONDARY CTA — VOLUNTEER / PARTNER
          ================================================================ --}}
     <section class="py-12 lg:py-16" style="background-color: #ffffff;">

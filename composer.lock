@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "19aa95ba8410647066d00f5d65c0ba36",
+    "content-hash": "03f5cb6f829047f31e365c59d7ad7755",
     "packages": [
         {
             "name": "abraham-flutterwave/laravel-payment",

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Mail\DonationConfirmation;
+use App\Mail\PledgeAdminNotification;
 use App\Models\Donation;
+use App\Models\DonationPledge;
 use App\Models\ImpactExample;
 use App\Models\RecurringDonation;
 use App\Services\FlutterwaveDirectCharge;
@@ -297,6 +299,74 @@ class DonationController extends Controller
         }
 
         return redirect()->route('public.donate.merci', array_filter(['tx_ref' => $txRef]));
+    }
+
+    public function storePledge(Request $request): mixed
+    {
+        $request->validateState([
+            'pledgeFirstName' => ['required', 'string', 'max:100'],
+            'pledgeLastName' => ['required', 'string', 'max:100'],
+            'pledgeEmail' => ['required', 'email'],
+            'pledgePhone' => ['nullable', 'string', 'max:30'],
+            'pledgeAddress' => ['nullable', 'string', 'max:255'],
+            'pledgeNature' => ['nullable', 'string', 'in:monetary,in_kind'],
+            'pledgeAmount' => ['nullable', 'numeric', 'min:0'],
+            'pledgeProgramme' => ['nullable', 'string', 'in:general,bree-protege,bree-eleve,bree-respire'],
+            'pledgeMessage' => ['nullable', 'string', 'max:1000'],
+        ], [
+            'pledgeFirstName.required' => __('donation.pledge_firstname_required'),
+            'pledgeLastName.required' => __('donation.pledge_lastname_required'),
+            'pledgeEmail.required' => __('donation.pledge_email_invalid'),
+            'pledgeEmail.email' => __('donation.pledge_email_invalid'),
+            'pledgeAmount.numeric' => __('donation.pledge_amount_invalid'),
+        ]);
+
+        $nature = (string) $request->state('pledgeNature', 'monetary');
+        $programme = (string) $request->state('pledgeProgramme', '');
+        $rawAmount = (string) $request->state('pledgeAmount', '');
+
+        $amount = null;
+        if ($nature === 'monetary' && ! empty($rawAmount)) {
+            $amount = (float) str_replace(',', '.', $rawAmount);
+        }
+
+        $validProgrammes = ['bree-protege', 'bree-eleve', 'bree-respire', 'general'];
+        if (! in_array($programme, $validProgrammes, true)) {
+            $programme = null;
+        }
+
+        $pledge = DonationPledge::create([
+            'first_name' => (string) $request->state('pledgeFirstName'),
+            'last_name' => (string) $request->state('pledgeLastName'),
+            'address' => ($v = trim((string) $request->state('pledgeAddress', ''))) ? $v : null,
+            'phone' => ($v = trim((string) $request->state('pledgePhone', ''))) ? $v : null,
+            'email' => (string) $request->state('pledgeEmail'),
+            'amount' => $amount,
+            'currency' => 'EUR',
+            'nature' => in_array($nature, ['monetary', 'in_kind'], true) ? $nature : 'monetary',
+            'programme' => $programme,
+            'message' => ($v = trim((string) $request->state('pledgeMessage', ''))) ? $v : null,
+            'status' => 'pending',
+        ]);
+
+        $adminEmail = config('mail.from.address');
+        Mail::to($adminEmail)->queue(new PledgeAdminNotification($pledge));
+
+        return gale()
+            ->state('pledgeSubmitted', true)
+            ->state('pledgeFirstName', '')
+            ->state('pledgeLastName', '')
+            ->state('pledgeAddress', '')
+            ->state('pledgePhone', '')
+            ->state('pledgeEmail', '')
+            ->state('pledgeAmount', '')
+            ->state('pledgeNature', 'monetary')
+            ->state('pledgeProgramme', '')
+            ->state('pledgeMessage', '')
+            ->dispatch('toast', [
+                'type' => 'success',
+                'message' => __('donation.pledge_success_toast'),
+            ]);
     }
 
     public function successPage(Request $request): mixed
