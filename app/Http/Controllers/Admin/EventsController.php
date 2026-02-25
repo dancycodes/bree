@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FoundationEvent;
 use App\Models\ProgramCard;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EventsController extends Controller
 {
@@ -14,6 +15,8 @@ class EventsController extends Controller
         $this->authorize('events.view');
 
         $status = $request->input('status', 'all');
+        $time = $request->input('time', 'all');
+        $programFilter = $request->input('program', '');
         $search = trim((string) $request->input('search', ''));
 
         $query = FoundationEvent::withCount('registrations')->orderByDesc('event_date');
@@ -24,6 +27,16 @@ class EventsController extends Controller
             $query->where('is_published', false);
         }
 
+        if ($time === 'upcoming') {
+            $query->where('event_date', '>=', now()->toDateString());
+        } elseif ($time === 'past') {
+            $query->where('event_date', '<', now()->toDateString());
+        }
+
+        if ($programFilter !== '') {
+            $query->where('program_slug', $programFilter);
+        }
+
         if ($search !== '') {
             $query->where(function ($q) use ($search) {
                 $q->where('title_fr', 'ilike', "%{$search}%")
@@ -32,6 +45,7 @@ class EventsController extends Controller
         }
 
         $events = $query->paginate(20)->withQueryString();
+        $programs = ProgramCard::active()->get();
 
         $counts = [
             'all' => FoundationEvent::count(),
@@ -39,11 +53,42 @@ class EventsController extends Controller
             'draft' => FoundationEvent::where('is_published', false)->count(),
         ];
 
+        $data = compact('events', 'status', 'time', 'programFilter', 'search', 'counts', 'programs');
+
         if ($request->isGaleNavigate('events-table')) {
-            return gale()->fragment('admin.events.index', 'events-table', compact('events', 'status', 'search', 'counts'));
+            return gale()->fragment('admin.events.index', 'events-table', $data);
         }
 
-        return gale()->view('admin.events.index', compact('events', 'status', 'search', 'counts'), web: true);
+        return gale()->view('admin.events.index', $data, web: true);
+    }
+
+    public function registrations(FoundationEvent $event): mixed
+    {
+        $this->authorize('events.view');
+
+        $registrations = $event->registrations()->orderByDesc('created_at')->get();
+
+        return gale()->view('admin.events.registrations', compact('event', 'registrations'), web: true);
+    }
+
+    public function exportRegistrations(FoundationEvent $event): StreamedResponse
+    {
+        $this->authorize('events.view');
+
+        $registrations = $event->registrations()->orderByDesc('created_at')->get();
+
+        return response()->streamDownload(function () use ($registrations) {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['Nom', 'Email', "Date d'inscription"]);
+            foreach ($registrations as $reg) {
+                fputcsv($handle, [
+                    $reg->name,
+                    $reg->email,
+                    $reg->created_at->format('d/m/Y H:i'),
+                ]);
+            }
+            fclose($handle);
+        }, "inscriptions-{$event->slug}.csv", ['Content-Type' => 'text/csv']);
     }
 
     public function create(): mixed
@@ -171,7 +216,10 @@ class EventsController extends Controller
         $event->delete();
 
         $status = 'all';
+        $time = 'all';
+        $programFilter = '';
         $search = '';
+        $programs = ProgramCard::active()->get();
         $events = FoundationEvent::withCount('registrations')->orderByDesc('event_date')->paginate(20)->withQueryString();
         $counts = [
             'all' => FoundationEvent::count(),
@@ -180,7 +228,7 @@ class EventsController extends Controller
         ];
 
         return gale()
-            ->fragment('admin.events.index', 'events-table', compact('events', 'status', 'search', 'counts'))
+            ->fragment('admin.events.index', 'events-table', compact('events', 'status', 'time', 'programFilter', 'search', 'counts', 'programs'))
             ->dispatch('toast', ['message' => 'Événement supprimé', 'type' => 'success']);
     }
 }

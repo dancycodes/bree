@@ -12,7 +12,7 @@
 
         {{-- Header --}}
         <div class="flex items-center justify-between mb-6">
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 flex-wrap">
                 {{-- Status filter tabs --}}
                 <div class="flex items-center gap-1 p-1 rounded-xl" style="background-color: #f1f5f9;">
                     @foreach ([
@@ -20,14 +20,32 @@
                         'published' => ['label' => 'Publiés', 'count' => $counts['published']],
                         'draft' => ['label' => 'Brouillons', 'count' => $counts['draft']],
                     ] as $tab => $info)
-                        <a href="{{ route('admin.events.index', array_merge(request()->only('search'), ['status' => $tab])) }}"
-                           @click.prevent="$navigate('{{ route('admin.events.index', array_merge(request()->only('search'), ['status' => $tab])) }}', { key: 'events-table', replace: true })"
+                        <a href="{{ route('admin.events.index', array_merge(request()->only('search', 'time', 'program'), ['status' => $tab])) }}"
+                           @click.prevent="$navigate('{{ route('admin.events.index', array_merge(request()->only('search', 'time', 'program'), ['status' => $tab])) }}', { key: 'events-table', replace: true })"
                            class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
                            style="{{ $status === $tab
                                ? 'background-color: #ffffff; color: #1e293b; box-shadow: 0 1px 3px rgba(0,0,0,0.08);'
                                : 'color: #64748b;' }}">
                             {{ $info['label'] }}
                             <span class="ml-1 text-xs {{ $status === $tab ? '' : 'opacity-60' }}">{{ $info['count'] }}</span>
+                        </a>
+                    @endforeach
+                </div>
+
+                {{-- Time filter --}}
+                <div class="flex items-center gap-1 p-1 rounded-xl" style="background-color: #f1f5f9;">
+                    @foreach ([
+                        'all' => 'Toutes dates',
+                        'upcoming' => 'À venir',
+                        'past' => 'Passés',
+                    ] as $t => $label)
+                        <a href="{{ route('admin.events.index', array_merge(request()->only('search', 'status', 'program'), ['time' => $t])) }}"
+                           @click.prevent="$navigate('{{ route('admin.events.index', array_merge(request()->only('search', 'status', 'program'), ['time' => $t])) }}', { key: 'events-table', replace: true })"
+                           class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+                           style="{{ $time === $t
+                               ? 'background-color: #ffffff; color: #1e293b; box-shadow: 0 1px 3px rgba(0,0,0,0.08);'
+                               : 'color: #64748b;' }}">
+                            {{ $label }}
                         </a>
                     @endforeach
                 </div>
@@ -42,9 +60,9 @@
             </a>
         </div>
 
-        {{-- Search --}}
-        <div class="mb-4">
-            <div class="relative max-w-sm">
+        {{-- Search + Program filter --}}
+        <div class="mb-4 flex items-center gap-3 flex-wrap">
+            <div class="relative max-w-sm flex-1">
                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" fill="none" stroke="currentColor"
                      viewBox="0 0 24 24" stroke-width="1.75" style="color: #94a3b8;">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -54,10 +72,24 @@
                     x-model="search"
                     type="text"
                     placeholder="Rechercher par titre…"
-                    @input.debounce.400ms="$navigate('{{ route('admin.events.index') }}' + '?status={{ $status }}&search=' + encodeURIComponent($event.target.value), { key: 'events-table', replace: true })"
+                    @input.debounce.400ms="$navigate('{{ route('admin.events.index') }}' + '?status={{ $status }}&time={{ $time }}&program={{ $programFilter }}&search=' + encodeURIComponent($event.target.value), { key: 'events-table', replace: true })"
                     class="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl border focus:outline-none"
                     style="border-color: #e2e8f0; color: #1e293b;">
             </div>
+
+            @if ($programs->isNotEmpty())
+                <select
+                    onchange="window.location.href='{{ route('admin.events.index') }}?status={{ $status }}&time={{ $time }}&search={{ urlencode($search) }}&program=' + this.value"
+                    class="text-sm px-3 py-2.5 rounded-xl border focus:outline-none"
+                    style="border-color: #e2e8f0; color: #475569;">
+                    <option value="">Tous les programmes</option>
+                    @foreach ($programs as $prog)
+                        <option value="{{ $prog->slug }}" {{ $programFilter === $prog->slug ? 'selected' : '' }}>
+                            {{ $prog->name_fr }}
+                        </option>
+                    @endforeach
+                </select>
+            @endif
         </div>
 
         @fragment('events-table')
@@ -99,6 +131,11 @@
                         </thead>
                         <tbody class="divide-y" style="border-color: #f8fafc;">
                             @foreach ($events as $event)
+                                @php
+                                    $deleteMsg = $event->registration_required && $event->registrations_count > 0
+                                        ? 'Supprimer cet événement ? ' . $event->registrations_count . ' inscription(s) sera(ont) perdue(s).'
+                                        : 'Supprimer cet événement ?';
+                                @endphp
                                 <tr class="hover:bg-slate-50 transition-colors">
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-3">
@@ -151,10 +188,14 @@
                                     </td>
                                     <td class="px-4 py-4 text-xs hidden lg:table-cell" style="color: #475569;">
                                         @if ($event->registration_required)
-                                            {{ $event->registrations_count }}
-                                            @if ($event->max_capacity)
-                                                / {{ $event->max_capacity }}
-                                            @endif
+                                            <a href="{{ route('admin.events.registrations', $event) }}"
+                                               class="font-semibold hover:underline"
+                                               style="color: #c80078;">
+                                                {{ $event->registrations_count }}
+                                                @if ($event->max_capacity)
+                                                    / {{ $event->max_capacity }}
+                                                @endif
+                                            </a>
                                         @else
                                             <span style="color: #cbd5e1;">—</span>
                                         @endif
@@ -170,6 +211,17 @@
                                                           d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/>
                                                 </svg>
                                             </a>
+                                            @if ($event->registration_required)
+                                                <a href="{{ route('admin.events.registrations', $event) }}"
+                                                   class="p-1.5 rounded-lg transition-colors hover:bg-slate-100"
+                                                   style="color: #64748b;" title="Voir les inscriptions">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                         viewBox="0 0 24 24" stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                              d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/>
+                                                    </svg>
+                                                </a>
+                                            @endif
                                             @if ($event->is_published)
                                                 <a href="{{ route('public.events.show', $event) }}"
                                                    target="_blank"
@@ -183,7 +235,7 @@
                                                 </a>
                                             @endif
                                             <button
-                                                @click="if (confirm('Supprimer cet événement ?')) $action.delete('{{ route('admin.events.destroy', $event) }}')"
+                                                @click="if (confirm({{ Js::from($deleteMsg) }})) $action.delete('{{ route('admin.events.destroy', $event) }}')"
                                                 class="p-1.5 rounded-lg transition-colors hover:bg-red-50"
                                                 style="color: #ef4444;" title="Supprimer">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor"

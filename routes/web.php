@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EventsController as AdminEventsController;
 use App\Http\Controllers\Admin\FounderProfileController;
 use App\Http\Controllers\Admin\MilestonesController;
 use App\Http\Controllers\Admin\NewsArticlesController;
@@ -60,6 +61,16 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::patch('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'update'])->name('programs.activities.update');
     Route::delete('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'destroy'])->name('programs.activities.destroy');
     Route::post('/programmes/{program:slug}/activites/reorder', [ProgramActivitiesController::class, 'reorder'])->name('programs.activities.reorder');
+
+    // Events
+    Route::get('/evenements', [AdminEventsController::class, 'index'])->name('events.index');
+    Route::get('/evenements/creer', [AdminEventsController::class, 'create'])->name('events.create');
+    Route::post('/evenements', [AdminEventsController::class, 'store'])->name('events.store');
+    Route::get('/evenements/{event:slug}/modifier', [AdminEventsController::class, 'edit'])->name('events.edit');
+    Route::patch('/evenements/{event:slug}', [AdminEventsController::class, 'update'])->name('events.update');
+    Route::delete('/evenements/{event:slug}', [AdminEventsController::class, 'destroy'])->name('events.destroy');
+    Route::get('/evenements/{event:slug}/inscriptions', [AdminEventsController::class, 'registrations'])->name('events.registrations');
+    Route::get('/evenements/{event:slug}/inscriptions/export', [AdminEventsController::class, 'exportRegistrations'])->name('events.registrations.export');
 
     // News Articles
     Route::get('/actualites', [NewsArticlesController::class, 'index'])->name('news.index');
