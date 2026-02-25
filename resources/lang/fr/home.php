@@ -13,4 +13,8 @@ return [
     'our_leadership' => 'Notre Équipe Dirigeante',
     'founder_label' => 'Fondatrice',
     'patron_label' => 'Marraine',
+    'upcoming_events' => 'Événements à Venir',
+    'see_event' => 'Voir l\'événement',
+    'all_events' => 'Tous les événements',
+    'no_events' => 'Aucun événement à venir',
 ];

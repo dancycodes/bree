@@ -397,6 +397,129 @@
         </div>
     </section>
 
+    {{-- ================================================================
+         UPCOMING EVENTS PREVIEW SECTION (F-022)
+         Off-white background. Max 3 future events, soonest first.
+         Card: large day (Magenta) + month (Navy) + title + location.
+         Empty state if no upcoming events.
+         ================================================================ --}}
+    <section class="py-20 lg:py-28" style="background-color: #ffffff;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            {{-- Section Header --}}
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-14 gap-4">
+                <div data-animate="fade-right">
+                    <span class="block text-xs font-bold tracking-widest uppercase mb-3"
+                          style="color: #c8a03c;">
+                        {{ __('home.upcoming_events') }}
+                    </span>
+                    <h2 class="font-heading"
+                        style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.75rem, 4vw, 2.75rem);
+                               color: #002850;
+                               font-weight: 700;">
+                        {{ config('app.name') }}
+                    </h2>
+                </div>
+                <a
+                    href="/evenements"
+                    class="btn-outline text-sm font-semibold px-6 py-3 rounded-xl self-start sm:self-auto whitespace-nowrap"
+                    data-animate="fade-left">
+                    {{ __('home.all_events') }}
+                </a>
+            </div>
+
+            @if ($upcomingEvents->isNotEmpty())
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-stagger="0.12">
+                    @foreach ($upcomingEvents as $event)
+                        <article
+                            class="rounded-2xl overflow-hidden flex gap-5 items-start p-6"
+                            style="background-color: #f8f5f0; box-shadow: 0 2px 12px rgba(0,0,0,0.05);"
+                            data-animate="fade-up">
+
+                            {{-- Date Block --}}
+                            <div class="flex-shrink-0 flex flex-col items-center justify-center rounded-xl w-16 py-3 text-center"
+                                 style="background-color: #ffffff; box-shadow: 0 1px 6px rgba(0,0,0,0.07);">
+                                <span class="font-heading font-bold leading-none"
+                                      style="font-family: 'Playfair Display', serif;
+                                             font-size: 2rem;
+                                             color: #c80078;">
+                                    {{ $event->event_date->format('d') }}
+                                </span>
+                                <span class="text-xs font-bold tracking-widest uppercase mt-1"
+                                      style="color: #143c64;">
+                                    {{ $event->event_date->translatedFormat('M') }}
+                                </span>
+                                <span class="text-xs mt-0.5" style="color: #9aacbb;">
+                                    {{ $event->event_date->format('Y') }}
+                                </span>
+                            </div>
+
+                            {{-- Event Info --}}
+                            <div class="flex flex-col flex-1 min-w-0">
+
+                                {{-- Title --}}
+                                <h3 class="font-heading font-bold leading-snug mb-2"
+                                    style="font-family: 'Playfair Display', serif;
+                                           font-size: 1rem;
+                                           color: #002850;">
+                                    <a href="/evenements/{{ $event->slug }}"
+                                       class="hover:underline underline-offset-2">
+                                        {{ $event->title() }}
+                                    </a>
+                                </h3>
+
+                                {{-- Location --}}
+                                @if ($event->location())
+                                    <div class="flex items-center gap-1.5 mb-4">
+                                        <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor"
+                                             viewBox="0 0 24 24" stroke-width="2"
+                                             style="color: #c8a03c;" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+                                        </svg>
+                                        <span class="text-xs truncate" style="color: #5a6a7a;">
+                                            {{ $event->location() }}
+                                        </span>
+                                    </div>
+                                @endif
+
+                                {{-- CTA --}}
+                                <a
+                                    href="/evenements/{{ $event->slug }}"
+                                    class="inline-flex items-center gap-1.5 text-xs font-semibold mt-auto"
+                                    style="color: #c80078;">
+                                    {{ __('home.see_event') }}
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
+                                         viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                                    </svg>
+                                </a>
+
+                            </div>
+
+                        </article>
+                    @endforeach
+                </div>
+
+            @else
+
+                {{-- Empty State --}}
+                <div class="text-center py-20" data-animate="fade-up">
+                    <p class="text-base" style="color: #9aacbb;">
+                        {{ __('home.no_events') }}
+                    </p>
+                </div>
+
+            @endif
+
+        </div>
+    </section>
+
     @if ($programs->isNotEmpty())
         <section class="py-20 lg:py-28" style="background-color: #ffffff;">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

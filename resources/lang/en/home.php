@@ -13,4 +13,8 @@ return [
     'our_leadership' => 'Our Leadership',
     'founder_label' => 'Founder',
     'patron_label' => 'Patron',
+    'upcoming_events' => 'Upcoming Events',
+    'see_event' => 'View event',
+    'all_events' => 'All events',
+    'no_events' => 'No upcoming events',
 ];
