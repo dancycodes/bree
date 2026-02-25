@@ -9,19 +9,19 @@ class HeroSectionSeeder extends Seeder
 {
     public function run(): void
     {
-        HeroSection::firstOrCreate(
+        HeroSection::updateOrCreate(
             ['id' => 1],
             [
-                'tagline_fr' => 'Protéger. Élever. Inspirer.',
-                'tagline_en' => 'Protect. Elevate. Inspire.',
-                'subtitle_fr' => 'La Fondation BREE œuvre pour la protection et l\'épanouissement des femmes et des enfants vulnérables en Afrique.',
-                'subtitle_en' => 'The BREE Foundation works for the protection and flourishing of vulnerable women and children in Africa.',
-                'cta1_label_fr' => 'Découvrir nos programmes',
-                'cta1_label_en' => 'Discover our programmes',
-                'cta1_url' => '/programmes',
-                'cta2_label_fr' => 'Faire un Don',
-                'cta2_label_en' => 'Make a Donation',
-                'cta2_url' => '/don',
+                'tagline_fr' => 'Agir aujourd\'hui pour transformer les rêves en réalités de demain.',
+                'tagline_en' => 'Act today to transform dreams into tomorrow\'s realities.',
+                'subtitle_fr' => 'Protéger. Élever. Inspirer. Pour un avenir plus humain.',
+                'subtitle_en' => 'Protect. Elevate. Inspire. For a more human future.',
+                'cta1_label_fr' => 'Faire un don',
+                'cta1_label_en' => 'Make a Donation',
+                'cta1_url' => '/faire-un-don',
+                'cta2_label_fr' => 'Nos programmes',
+                'cta2_label_en' => 'Our Programs',
+                'cta2_url' => '/programmes',
                 'bg_image_path' => 'images/sections/hero.jpg',
                 'is_active' => true,
             ]
