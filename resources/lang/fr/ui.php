@@ -37,4 +37,6 @@ return [
     'upload' => 'Téléverser',
     'fr' => 'FR',
     'en' => 'EN',
+    'scroll' => 'Défiler',
+    'content_coming_soon' => 'Contenu en cours de construction...',
 ];

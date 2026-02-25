@@ -37,4 +37,6 @@ return [
     'upload' => 'Upload',
     'fr' => 'FR',
     'en' => 'EN',
+    'scroll' => 'Scroll',
+    'content_coming_soon' => 'Content coming soon...',
 ];
