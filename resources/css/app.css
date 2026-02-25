@@ -177,3 +177,22 @@ h1, h2, h3, h4, h5, h6 {
 [data-animate].animated {
     opacity: 1;
 }
+
+/* ============================================================
+   Micro-interaction Polish — Card Hover Lift
+   Applied to article cards inside stagger-animated grids.
+   Respects prefers-reduced-motion.
+   ============================================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+    [data-stagger] article,
+    .card-lift {
+        transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+
+    [data-stagger] article:hover,
+    .card-lift:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.10);
+    }
+}

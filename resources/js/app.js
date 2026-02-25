@@ -1,5 +1,5 @@
 import './bootstrap';
-import { initAnimations, killAnimations, pageTransitionIn, playHeroEntrance, gsap, ScrollTrigger, animateCounter, playConfetti } from './animations';
+import { initAnimations, killAnimations, pageTransitionIn, pageTransitionOut, playHeroEntrance, gsap, ScrollTrigger, animateCounter, playConfetti } from './animations';
 
 // Register Service Worker for PWA
 if ('serviceWorker' in navigator) {
@@ -81,4 +81,5 @@ document.addEventListener('gale:navigated', () => {
 
 document.addEventListener('gale:navigating', () => {
     killAnimations();
+    pageTransitionOut(() => {});
 });
