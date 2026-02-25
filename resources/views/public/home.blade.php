@@ -915,7 +915,7 @@
         </div>
     </section>
 
-    @if ($founders)
+    @if ($founder || $patron)
         <section class="py-20 lg:py-28" style="background-color: #002850;">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -931,16 +931,17 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
                     {{-- ── Founder ── --}}
+                    @if ($founder)
                     <div class="flex flex-col items-center text-center" data-animate="fade-right">
 
                         {{-- Portrait Circle --}}
                         <div class="relative mb-8">
                             <div class="w-44 h-44 rounded-full overflow-hidden"
                                  style="border: 3px solid #c8a03c; padding: 3px; background-color: #002850;">
-                                @if ($founders->founder_photo_path)
+                                @if ($founder->photo_path)
                                     <img
-                                        src="{{ asset($founders->founder_photo_path) }}"
-                                        alt="{{ $founders->founder_name }}"
+                                        src="{{ asset($founder->photo_path) }}"
+                                        alt="{{ $founder->name }}"
                                         class="w-full h-full rounded-full object-cover object-top">
                                 @else
                                     {{-- Monogram placeholder --}}
@@ -950,7 +951,7 @@
                                               style="font-family: 'Playfair Display', serif;
                                                      font-size: 2.5rem;
                                                      color: #c80078;">
-                                            {{ \App\Models\FounderSection::initials($founders->founder_name) }}
+                                            {{ \App\Models\FounderProfile::initials($founder->name) }}
                                         </span>
                                     </div>
                                 @endif
@@ -968,16 +969,16 @@
                             style="font-family: 'Playfair Display', serif;
                                    font-size: 1.5rem;
                                    color: #ffffff;">
-                            {{ $founders->founder_name }}
+                            {{ $founder->name }}
                         </h3>
 
                         {{-- Title --}}
                         <p class="text-xs font-semibold tracking-wider uppercase mb-6"
                            style="color: #c8a03c;">
-                            {{ $founders->founderTitle() }}
+                            {{ $founder->title() }}
                         </p>
 
-                        {{-- Quote --}}
+                        {{-- Quote / Message --}}
                         <blockquote
                             class="font-heading relative"
                             style="font-family: 'Playfair Display', serif;
@@ -989,25 +990,27 @@
                             <span class="absolute -top-6 -left-2 text-5xl leading-none select-none"
                                   aria-hidden="true"
                                   style="color: rgba(200,160,60,0.3); font-family: 'Playfair Display', serif;">"</span>
-                            {{ $founders->founderQuote() }}
+                            {{ $founder->message() }}
                         </blockquote>
 
                         {{-- Gold divider --}}
                         <div class="mt-8 h-px w-12 mx-auto" style="background-color: rgba(200,160,60,0.4);"></div>
 
                     </div>
+                    @endif
 
                     {{-- ── Patron ── --}}
+                    @if ($patron)
                     <div class="flex flex-col items-center text-center" data-animate="fade-left">
 
                         {{-- Portrait Circle --}}
                         <div class="relative mb-8">
                             <div class="w-44 h-44 rounded-full overflow-hidden"
                                  style="border: 3px solid #c8a03c; padding: 3px; background-color: #002850;">
-                                @if ($founders->patron_photo_path)
+                                @if ($patron->photo_path)
                                     <img
-                                        src="{{ asset($founders->patron_photo_path) }}"
-                                        alt="{{ $founders->patron_name }}"
+                                        src="{{ asset($patron->photo_path) }}"
+                                        alt="{{ $patron->name }}"
                                         class="w-full h-full rounded-full object-cover object-top">
                                 @else
                                     {{-- Monogram placeholder --}}
@@ -1017,7 +1020,7 @@
                                               style="font-family: 'Playfair Display', serif;
                                                      font-size: 2.5rem;
                                                      color: #c8a03c;">
-                                            {{ \App\Models\FounderSection::initials($founders->patron_name) }}
+                                            {{ \App\Models\PatronProfile::initials($patron->name) }}
                                         </span>
                                     </div>
                                 @endif
@@ -1035,13 +1038,13 @@
                             style="font-family: 'Playfair Display', serif;
                                    font-size: 1.5rem;
                                    color: #ffffff;">
-                            {{ $founders->patron_name }}
+                            {{ $patron->name }}
                         </h3>
 
                         {{-- Title --}}
                         <p class="text-xs font-semibold tracking-wider uppercase mb-6"
                            style="color: #c8a03c;">
-                            {{ $founders->patronTitle() }}
+                            {{ $patron->title() }}
                         </p>
 
                         {{-- Quote --}}
@@ -1056,13 +1059,14 @@
                             <span class="absolute -top-6 -left-2 text-5xl leading-none select-none"
                                   aria-hidden="true"
                                   style="color: rgba(200,160,60,0.3); font-family: 'Playfair Display', serif;">"</span>
-                            {{ $founders->patronQuote() }}
+                            {{ $patron->quote() }}
                         </blockquote>
 
                         {{-- Gold divider --}}
                         <div class="mt-8 h-px w-12 mx-auto" style="background-color: rgba(200,160,60,0.4);"></div>
 
                     </div>
+                    @endif
 
                 </div>
 
