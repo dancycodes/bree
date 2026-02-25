@@ -60,4 +60,12 @@ class FoundationEvent extends Model
             ->where('event_date', '>=', now()->toDateString())
             ->orderBy('event_date');
     }
+
+    /** Scope: past (before today) published events ordered DESC. */
+    public function scopePast(Builder $query): Builder
+    {
+        return $query->where('is_published', true)
+            ->where('event_date', '<', now()->toDateString())
+            ->orderByDesc('event_date');
+    }
 }

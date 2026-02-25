@@ -49,6 +49,33 @@ class FoundationEventSeeder extends Seeder
                 'thumbnail_path' => 'images/sections/events-placeholder.jpg',
                 'is_published' => true,
             ],
+            // Past events
+            [
+                'slug' => 'atelier-sante-feminine-decembre-2025',
+                'title_fr' => 'Atelier Santé Féminine & Droits Reproductifs',
+                'title_en' => 'Women\'s Health & Reproductive Rights Workshop',
+                'description_fr' => 'Atelier de sensibilisation destiné aux femmes rurales sur la santé reproductive, organisé en partenariat avec le Ministère de la Santé.',
+                'description_en' => 'Awareness workshop for rural women on reproductive health, organized in partnership with the Ministry of Health.',
+                'location_fr' => 'Bafoussam, Cameroun',
+                'location_en' => 'Bafoussam, Cameroon',
+                'event_date' => '2025-12-10',
+                'event_time' => '09:00:00',
+                'thumbnail_path' => 'images/sections/events-placeholder.jpg',
+                'is_published' => true,
+            ],
+            [
+                'slug' => 'ceremonie-remise-bourses-novembre-2025',
+                'title_fr' => 'Cérémonie de Remise des Bourses BREE ÉLÈVE',
+                'title_en' => 'BREE EDUCATES Scholarship Award Ceremony',
+                'description_fr' => 'Remise officielle des bourses scolaires à 48 jeunes filles issues de familles vulnérables, en présence de partenaires institutionnels.',
+                'description_en' => 'Official presentation of school scholarships to 48 girls from vulnerable families, in the presence of institutional partners.',
+                'location_fr' => 'Yaoundé, Cameroun',
+                'location_en' => 'Yaoundé, Cameroon',
+                'event_date' => '2025-11-15',
+                'event_time' => '10:30:00',
+                'thumbnail_path' => 'images/sections/events-placeholder.jpg',
+                'is_published' => true,
+            ],
         ];
 
         foreach ($events as $event) {
