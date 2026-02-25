@@ -18,6 +18,7 @@ use App\Http\Controllers\Public\GalleryController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\NewsController;
 use App\Http\Controllers\Public\NewsletterController;
+use App\Http\Controllers\Public\PartnersController;
 use App\Http\Controllers\Public\ProgramsController;
 use Illuminate\Support\Facades\Route;
 
@@ -121,6 +122,7 @@ Route::post('/evenements/{event:slug}/inscription', [EventsController::class, 'r
     ->middleware(\Spatie\Honeypot\ProtectAgainstSpam::class);
 Route::get('/galerie', [GalleryController::class, 'index'])->name('public.gallery');
 Route::get('/galerie/{album:slug}', [GalleryController::class, 'show'])->name('public.gallery.show');
+Route::get('/partenaires', [PartnersController::class, 'index'])->name('public.partners');
 Route::get('/programmes', [ProgramsController::class, 'index'])->name('public.programs');
 Route::get('/programmes/{program:slug}', [ProgramsController::class, 'show'])->name('public.programs.show');
 
