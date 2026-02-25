@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ProgramActivitiesController;
 use App\Http\Controllers\Admin\ProgramsController as AdminProgramsController;
 use App\Http\Controllers\Public\AboutController;
 use App\Http\Controllers\Public\EventsController;
+use App\Http\Controllers\Public\GalleryController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\NewsController;
 use App\Http\Controllers\Public\NewsletterController;
@@ -101,6 +102,8 @@ Route::get('/evenements/{event:slug}', [EventsController::class, 'show'])->name(
 Route::post('/evenements/{event:slug}/inscription', [EventsController::class, 'register'])
     ->name('public.events.register')
     ->middleware(\Spatie\Honeypot\ProtectAgainstSpam::class);
+Route::get('/galerie', [GalleryController::class, 'index'])->name('public.gallery');
+Route::get('/galerie/{album:slug}', [GalleryController::class, 'show'])->name('public.gallery.show');
 Route::get('/programmes', [ProgramsController::class, 'index'])->name('public.programs');
 Route::get('/programmes/{program:slug}', [ProgramsController::class, 'show'])->name('public.programs.show');
 
