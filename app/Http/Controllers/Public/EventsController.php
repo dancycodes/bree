@@ -25,16 +25,17 @@ class EventsController extends Controller
         }
 
         $isPast = $event->event_date->isPast();
+        $isFull = $event->isFull();
         $program = $event->program_slug
             ? ProgramCard::where('slug', $event->program_slug)->first()
             : null;
 
-        return gale()->view('public.events.show', compact('event', 'isPast', 'program'), web: true);
+        return gale()->view('public.events.show', compact('event', 'isPast', 'isFull', 'program'), web: true);
     }
 
     public function register(Request $request, FoundationEvent $event): mixed
     {
-        if (! $event->is_published || ! $event->registration_required || $event->event_date->isPast()) {
+        if (! $event->is_published || ! $event->registration_required || $event->event_date->isPast() || $event->isFull()) {
             abort(404);
         }
 

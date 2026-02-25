@@ -26,6 +26,9 @@ class FoundationEvent extends Model
         'is_published',
         'program_slug',
         'registration_required',
+        'max_capacity',
+        'end_date',
+        'end_time',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -39,7 +42,18 @@ class FoundationEvent extends Model
             'event_date' => 'date',
             'is_published' => 'boolean',
             'registration_required' => 'boolean',
+            'end_date' => 'date',
         ];
+    }
+
+    /** Whether registrations are full. */
+    public function isFull(): bool
+    {
+        if (! $this->registration_required || ! $this->max_capacity) {
+            return false;
+        }
+
+        return $this->registrations()->count() >= $this->max_capacity;
     }
 
     public function registrations(): HasMany

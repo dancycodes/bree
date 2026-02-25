@@ -26,6 +26,7 @@
                 bg_image_path: {{ Js::from($hero->bg_image_path) }},
                 activeLang: 'fr'
             }"
+            
             x-sync="['tagline_fr','tagline_en','subtitle_fr','subtitle_en','cta1_label_fr','cta1_label_en','cta1_url','cta2_label_fr','cta2_label_en','cta2_url','bg_image_path']">
 
             {{-- Card header --}}

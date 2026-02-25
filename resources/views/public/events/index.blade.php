@@ -156,7 +156,7 @@
                                     </div>
 
                                     <div class="mt-4">
-                                        <a href="{{ '#' }}"
+                                        <a href="{{ route('public.events.show', $event) }}"
                                            class="inline-flex items-center gap-1.5 text-xs font-semibold transition-opacity hover:opacity-75"
                                            style="color: #c80078;">
                                             {{ __('events.view_event') }}
@@ -233,7 +233,7 @@
                                     </p>
                                 @endif
 
-                                <a href="{{ '#' }}"
+                                <a href="{{ route('public.events.show', $event) }}"
                                    class="inline-flex items-center gap-1 text-xs font-semibold transition-opacity hover:opacity-75"
                                    style="color: #143c64;">
                                     {{ __('events.view_event') }}

@@ -84,14 +84,14 @@
             <div class="flex items-center justify-between h-18 lg:h-20" style="height: 4.5rem;">
 
                 {{-- Logo --}}
-                <a href="{{ route('public.home') }}" class="flex items-center flex-shrink-0" wire:navigate>
+                <a href="{{ route('public.home') }}" class="flex items-center flex-shrink-0">
                     <img src="{{ asset('images/logo.png') }}"
                          alt="{{ config('app.name') }}"
                          class="h-12 w-auto lg:h-14 object-contain">
                 </a>
 
                 {{-- Desktop Navigation --}}
-                <nav class="hidden lg:flex items-center gap-1" x-navigate>
+                <nav class="hidden lg:flex items-center gap-1">
                     @php
                         $navLinks = [
                             ['route' => 'public.home',     'label' => __('nav.home')],
@@ -180,7 +180,7 @@
         style="background-color:#002850; top:4.5rem; display:none;">
 
         <div class="flex flex-col justify-center px-8 py-12 min-h-full">
-            <nav class="flex flex-col gap-1" x-navigate>
+            <nav class="flex flex-col gap-1">
                 @foreach ($navLinks as $link)
                     @if (Route::has($link['route']))
                         <a href="{{ route($link['route']) }}"
