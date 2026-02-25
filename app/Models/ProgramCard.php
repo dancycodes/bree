@@ -17,6 +17,10 @@ class ProgramCard extends Model
         'name_en',
         'description_fr',
         'description_en',
+        'long_description_fr',
+        'long_description_en',
+        'activities_fr',
+        'activities_en',
         'image_path',
         'color',
         'url',
@@ -34,6 +38,8 @@ class ProgramCard extends Model
         return [
             'is_active' => 'boolean',
             'sort_order' => 'integer',
+            'activities_fr' => 'array',
+            'activities_en' => 'array',
         ];
     }
 
@@ -45,12 +51,32 @@ class ProgramCard extends Model
         return $locale === 'fr' ? $this->name_fr : $this->name_en;
     }
 
-    /** Return the description in the current locale. */
+    /** Return the short description in the current locale. */
     public function description(): string
     {
         $locale = app()->getLocale();
 
         return $locale === 'fr' ? $this->description_fr : $this->description_en;
+    }
+
+    /** Return the long description in the current locale. */
+    public function longDescription(): string
+    {
+        $locale = app()->getLocale();
+
+        return $locale === 'fr' ? ($this->long_description_fr ?? '') : ($this->long_description_en ?? '');
+    }
+
+    /**
+     * Return the activities list in the current locale.
+     *
+     * @return array<int, string>
+     */
+    public function activities(): array
+    {
+        $locale = app()->getLocale();
+
+        return $locale === 'fr' ? ($this->activities_fr ?? []) : ($this->activities_en ?? []);
     }
 
     /** Scope: only active records, ordered by sort_order. */
