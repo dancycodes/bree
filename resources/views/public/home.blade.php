@@ -178,4 +178,93 @@
         </section>
     @endif
 
+    {{-- ================================================================
+         MISSION & VISION SECTION (F-018)
+         Navy background. Left: vision pullquote (Playfair italic).
+         Right: 5 mission items with gold icons, stagger animation.
+         ================================================================ --}}
+    @if ($mission)
+        <section class="py-20 lg:py-28" style="background-color: #002850;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
+
+                    {{-- Left: Vision Pullquote --}}
+                    <div data-animate="fade-right" class="relative">
+
+                        {{-- Decorative opening quote mark --}}
+                        <div class="absolute -top-4 -left-2 select-none"
+                             aria-hidden="true"
+                             style="font-family: 'Playfair Display', serif; font-size: 8rem; line-height: 1; color: rgba(200,160,60,0.2); font-style: italic;">
+                            "
+                        </div>
+
+                        {{-- Section Label --}}
+                        <span class="block text-xs font-bold tracking-widest uppercase mb-6 relative z-10"
+                              style="color: #c8a03c;">
+                            {{ __('home.our_vision') }}
+                        </span>
+
+                        {{-- Vision Text --}}
+                        <blockquote
+                            class="font-heading relative z-10"
+                            style="font-family: 'Playfair Display', serif;
+                                   font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+                                   font-style: italic;
+                                   line-height: 1.6;
+                                   color: rgba(255,255,255,0.92);">
+                            {{ $mission->vision() }}
+                        </blockquote>
+
+                        {{-- Gold divider line --}}
+                        <div class="mt-8 h-0.5 w-16" style="background-color: #c8a03c;"></div>
+
+                    </div>
+
+                    {{-- Right: 5 Mission Items --}}
+                    <div>
+
+                        {{-- Section Label --}}
+                        <span class="block text-xs font-bold tracking-widest uppercase mb-8"
+                              style="color: #c8a03c;">
+                            {{ __('home.our_missions') }}
+                        </span>
+
+                        <ul class="space-y-6" data-stagger="0.1">
+                            @foreach ($mission->missions() as $item)
+                                <li class="flex items-start gap-4" data-animate="fade-left">
+
+                                    {{-- Gold Icon Circle --}}
+                                    <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center mt-0.5"
+                                         style="background-color: rgba(200,160,60,0.12);">
+                                        <svg
+                                            class="w-5 h-5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            style="color: #c8a03c;"
+                                            aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="{{ $item['icon'] }}"/>
+                                        </svg>
+                                    </div>
+
+                                    {{-- Mission Text --}}
+                                    <p class="text-base leading-relaxed pt-1.5"
+                                       style="color: rgba(255,255,255,0.85);">
+                                        {{ $item['text'] }}
+                                    </p>
+
+                                </li>
+                            @endforeach
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    @endif
+
 @endsection
