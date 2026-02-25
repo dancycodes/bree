@@ -9,65 +9,70 @@ class PartnerSeeder extends Seeder
 {
     public function run(): void
     {
-        $partners = [
+        foreach ($this->partners() as $partner) {
+            Partner::updateOrCreate(
+                ['name' => $partner['name']],
+                $partner
+            );
+        }
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function partners(): array
+    {
+        return [
             [
-                'name' => 'Ministère de la Femme et de la Famille',
-                'description_fr' => 'Partenaire institutionnel engagé dans la promotion des droits des femmes et la protection de la famille au Cameroun.',
-                'description_en' => 'Institutional partner committed to promoting women\'s rights and family protection in Cameroon.',
+                'name' => 'Ministère de la Santé Publique du Cameroun',
+                'description_fr' => 'Partenaire institutionnel pour les campagnes de santé publique.',
+                'description_en' => 'Institutional partner for public health campaigns.',
                 'website_url' => null,
+                'logo_path' => 'images/partners/minsante.png',
                 'type' => 'institutional',
                 'is_published' => true,
                 'sort_order' => 1,
             ],
             [
-                'name' => 'UNICEF Cameroun',
-                'description_fr' => 'Partenaire international dédié à la protection et au bien-être des enfants à travers le monde.',
-                'description_en' => 'International partner dedicated to the protection and well-being of children worldwide.',
-                'website_url' => 'https://www.unicef.org/cameroon',
+                'name' => 'Hôpital Jamot de Yaoundé',
+                'description_fr' => 'Partenaire médical pour la Conférence Santé Mentale et les campagnes de santé.',
+                'description_en' => 'Medical partner for the Mental Health Conference and health campaigns.',
+                'website_url' => null,
+                'logo_path' => 'images/partners/hopital-jamot.png',
                 'type' => 'institutional',
                 'is_published' => true,
                 'sort_order' => 2,
             ],
             [
-                'name' => 'Orange Cameroun',
-                'description_fr' => 'Partenaire financier soutenant nos programmes d\'accès au numérique pour les jeunes filles.',
-                'description_en' => 'Financial partner supporting our digital access programs for young girls.',
-                'website_url' => null,
-                'type' => 'financial',
-                'is_published' => true,
-                'sort_order' => 1,
-            ],
-            [
-                'name' => 'Fondation Française pour la Femme',
-                'description_fr' => 'Partenaire financier contribuant au financement de nos bourses d\'études.',
-                'description_en' => 'Financial partner contributing to the funding of our scholarships.',
-                'website_url' => null,
-                'type' => 'financial',
-                'is_published' => true,
-                'sort_order' => 2,
-            ],
-            [
-                'name' => 'École Polytechnique de Yaoundé',
-                'description_fr' => 'Partenaire technique offrant des formations et du mentorat en STEM pour les bénéficiaires de nos programmes.',
-                'description_en' => 'Technical partner offering STEM training and mentoring for our program beneficiaries.',
-                'website_url' => null,
+                'name' => 'Helvetas Swiss Intercooperation',
+                'description_fr' => 'Partenaire technique suisse pour les programmes d\'alphabétisation.',
+                'description_en' => 'Swiss technical partner for literacy programs.',
+                'website_url' => 'https://www.helvetas.org',
+                'logo_path' => 'images/partners/helvetas.png',
                 'type' => 'technical',
                 'is_published' => true,
-                'sort_order' => 1,
+                'sort_order' => 3,
             ],
             [
-                'name' => 'Cabinet PsyAfrique',
-                'description_fr' => 'Partenaire technique fournissant un soutien psychologique professionnel à nos bénéficiaires.',
-                'description_en' => 'Technical partner providing professional psychological support to our beneficiaries.',
+                'name' => 'Rotary Club de Genève',
+                'description_fr' => 'Partenaire financier pour les bourses scolaires BREE ÉLÈVE.',
+                'description_en' => 'Financial partner for BREE ÉLÈVE scholarships.',
                 'website_url' => null,
+                'logo_path' => 'images/partners/rotary.png',
+                'type' => 'financial',
+                'is_published' => true,
+                'sort_order' => 4,
+            ],
+            [
+                'name' => 'Centre d\'Ecologie Appliquée (CEA) Cameroun',
+                'description_fr' => 'Partenaire environnemental pour les programmes BREE RESPIRE.',
+                'description_en' => 'Environmental partner for BREE RESPIRE programs.',
+                'website_url' => null,
+                'logo_path' => 'images/partners/cea.png',
                 'type' => 'technical',
                 'is_published' => true,
-                'sort_order' => 2,
+                'sort_order' => 5,
             ],
         ];
-
-        foreach ($partners as $partner) {
-            Partner::create($partner);
-        }
     }
 }
