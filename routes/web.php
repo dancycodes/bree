@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminPartnersController;
 use App\Http\Controllers\Admin\AdminRecurringDonationsController;
 use App\Http\Controllers\Admin\AdminRolesController;
 use App\Http\Controllers\Admin\AdminUsersController;
+use App\Http\Controllers\Admin\AdminVolunteerApplicationsController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EventsController as AdminEventsController;
@@ -142,6 +143,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/newsletter', [AdminNewsletterController::class, 'index'])->name('newsletter.index');
     Route::delete('/newsletter/{subscriber}', [AdminNewsletterController::class, 'destroy'])->name('newsletter.destroy');
     Route::get('/newsletter/export', [AdminNewsletterController::class, 'exportCsv'])->name('newsletter.export');
+
+    // Volunteer Applications
+    Route::match(['GET', 'POST'], '/candidatures/benevoles', [AdminVolunteerApplicationsController::class, 'index'])->name('applications.index');
+    Route::post('/candidatures/benevoles/{application}', [AdminVolunteerApplicationsController::class, 'show'])->name('applications.show');
+    Route::patch('/candidatures/benevoles/{application}/statut', [AdminVolunteerApplicationsController::class, 'updateStatus'])->name('applications.status');
+    Route::get('/candidatures/benevoles/exporter', [AdminVolunteerApplicationsController::class, 'exportCsv'])->name('applications.export');
 
     // Contact Messages
     Route::get('/messages', [AdminContactMessagesController::class, 'index'])->name('messages.index');
