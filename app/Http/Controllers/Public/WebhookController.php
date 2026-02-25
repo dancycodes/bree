@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Mail\DonationConfirmation;
 use App\Models\Donation;
+use App\Models\RecurringDonation;
 use Flutterwave\Payments\Facades\Flutterwave;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,8 +25,13 @@ class WebhookController extends Controller
         }
 
         $hookData = $webhook->getHook();
+        $event = json_decode($body, true)['event'] ?? '';
         $txRef = $hookData['tx_ref'] ?? null;
         $flutterwaveId = (string) ($hookData['id'] ?? '');
+
+        if (str_starts_with($event, 'subscription.')) {
+            return $this->handleRecurringWebhook($hookData, $event);
+        }
 
         if (! $txRef) {
             Log::channel('flutterwave')->warning('Webhook received without tx_ref');
@@ -65,5 +71,35 @@ class WebhookController extends Controller
         }
 
         return response()->json(['status' => 'success', 'message' => 'Webhook processed']);
+    }
+
+    private function handleRecurringWebhook(array $hookData, string $event): JsonResponse
+    {
+        $txRef = $hookData['tx_ref'] ?? null;
+        $subscriptionId = (string) ($hookData['id'] ?? '');
+
+        if (! $txRef) {
+            return response()->json(['status' => 'ok', 'message' => 'Missing tx_ref'], 200);
+        }
+
+        $recurringDonation = RecurringDonation::where('tx_ref', $txRef)->first();
+
+        if (! $recurringDonation) {
+            Log::channel('flutterwave')->warning("Recurring webhook for unknown tx_ref: {$txRef}");
+
+            return response()->json(['status' => 'ok', 'message' => 'Unknown recurring donation'], 200);
+        }
+
+        if ($recurringDonation->isActive()) {
+            return response()->json(['status' => 'ok', 'message' => 'Already active'], 200);
+        }
+
+        $recurringDonation->update([
+            'flutterwave_subscription_id' => $subscriptionId,
+            'status' => 'active',
+            'flutterwave_data' => $hookData,
+        ]);
+
+        return response()->json(['status' => 'success', 'message' => 'Recurring donation activated']);
     }
 }

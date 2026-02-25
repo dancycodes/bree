@@ -12,6 +12,7 @@
 <div x-data="{
     programme: '{{ $programme }}',
     donationType: '',
+    frequency: 'monthly',
     selectorVisible: false,
     selectedAmount: 0,
     customAmount: '',
@@ -19,6 +20,7 @@
     amountConfirmed: false,
     confirmedAmount: 0,
     confirmedType: '',
+    confirmedFrequency: 'monthly',
     donorName: '',
     donorEmail: '',
     donorPhone: '',
@@ -372,6 +374,35 @@ x-init="$watch('paymentConfig', function(cfg) {
                         </button>
                     </div>
 
+                    {{-- Frequency toggle (recurring only) --}}
+                    @if ($amountSelectorType === 'recurring')
+                    <div class="mb-8 p-5 rounded-2xl" style="background-color: #f0f4ff; border: 1px solid #dbeafe;">
+                        <p class="text-xs font-bold tracking-widest uppercase mb-3" style="color: #143c64;">
+                            {{ __('donation.recurring_frequency_label') }}
+                        </p>
+                        <div class="inline-flex rounded-xl overflow-hidden" style="border: 2px solid #143c64;">
+                            <button type="button"
+                                    @click="frequency = 'monthly'"
+                                    :style="frequency === 'monthly'
+                                        ? 'background-color:#143c64; color:#ffffff;'
+                                        : 'background-color:#ffffff; color:#143c64;'"
+                                    class="px-6 py-2.5 text-sm font-bold transition-all cursor-pointer">
+                                {{ __('donation.recurring_monthly') }}
+                                <span class="text-xs font-normal ml-1 opacity-70">{{ __('donation.recurring_min_note_monthly') }}</span>
+                            </button>
+                            <button type="button"
+                                    @click="frequency = 'yearly'"
+                                    :style="frequency === 'yearly'
+                                        ? 'background-color:#143c64; color:#ffffff;'
+                                        : 'background-color:#ffffff; color:#143c64;'"
+                                    class="px-6 py-2.5 text-sm font-bold transition-all cursor-pointer">
+                                {{ __('donation.recurring_yearly') }}
+                                <span class="text-xs font-normal ml-1 opacity-70">{{ __('donation.recurring_min_note_yearly') }}</span>
+                            </button>
+                        </div>
+                    </div>
+                    @endif
+
                     {{-- Preset amount tiles --}}
                     <div class="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-3">
                         @foreach ($impactExamples as $example)
@@ -450,7 +481,7 @@ x-init="$watch('paymentConfig', function(cfg) {
                     {{-- Continue button --}}
                     <div class="flex items-center justify-end pt-4" style="border-top:1px solid #f0e8f0;">
                         <button type="button"
-                                @click="$action('{{ route('public.donate.validateAmount') }}', { include: ['donationType', 'selectedAmount', 'customAmount', 'showCustom'] })"
+                                @click="$action('{{ route('public.donate.validateAmount') }}', { include: ['donationType', 'frequency', 'selectedAmount', 'customAmount', 'showCustom'] })"
                                 :disabled="!showCustom ? selectedAmount <= 0 : (parseFloat(customAmount.replace(',','.')) || 0) < 1"
                                 :style="(!showCustom ? selectedAmount > 0 : (parseFloat(customAmount.replace(',','.')) || 0) >= 1)
                                     ? 'background-color:#c80078; opacity:1; cursor:pointer;'
@@ -500,7 +531,9 @@ x-init="$watch('paymentConfig', function(cfg) {
                             <span x-text="confirmedAmount"></span>€
                         </p>
                         <p class="text-xs mt-1" style="color: rgba(255,255,255,0.5);">
-                            <span x-text="confirmedType === 'recurring' ? '{{ __('donation.amount_type_label_recurring') }}' : '{{ __('donation.amount_type_label_direct') }}'"></span>
+                            <span x-show="confirmedType !== 'recurring'">{{ __('donation.amount_type_label_direct') }}</span>
+                            <span x-show="confirmedType === 'recurring' && confirmedFrequency === 'monthly'">{{ __('donation.recurring_monthly') }}</span>
+                            <span x-show="confirmedType === 'recurring' && confirmedFrequency === 'yearly'">{{ __('donation.recurring_yearly') }}</span>
                         </p>
                     </div>
                     <button type="button"
@@ -592,14 +625,15 @@ x-init="$watch('paymentConfig', function(cfg) {
 
                 {{-- Pay button --}}
                 <button type="button"
-                        @click="$action('{{ route('public.donate.initPayment') }}', { include: ['programme', 'donationType', 'confirmedAmount', 'confirmedType', 'donorName', 'donorEmail', 'donorPhone', 'donorCountry'] })"
+                        @click="$action('{{ route('public.donate.initPayment') }}', { include: ['programme', 'donationType', 'frequency', 'confirmedAmount', 'confirmedType', 'confirmedFrequency', 'donorName', 'donorEmail', 'donorPhone', 'donorCountry'] })"
                         :disabled="!donorName.trim() || !donorEmail.trim()"
                         :style="(donorName.trim() && donorEmail.trim())
                             ? 'background-color:#c8a03c; opacity:1; cursor:pointer;'
                             : 'background-color:#c8a03c; opacity:0.5; cursor:not-allowed;'"
                         class="w-full flex items-center justify-center gap-3 py-4 rounded-xl text-sm font-bold text-white transition-all"
                         style="background-color:#c8a03c; color:#143c64;">
-                    <span x-show="!$fetching()">{{ __('donation.donor_pay_btn') }}</span>
+                    <span x-show="!$fetching() && confirmedType !== 'recurring'">{{ __('donation.donor_pay_btn') }}</span>
+                    <span x-show="!$fetching() && confirmedType === 'recurring'">{{ __('donation.recurring_confirm_btn') }}</span>
                     <span x-show="$fetching()">{{ __('donation.donor_paying_btn') }}</span>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
                          x-show="!$fetching()">
