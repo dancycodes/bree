@@ -29,5 +29,6 @@ class DatabaseSeeder extends Seeder
         $this->call(HeroSectionSeeder::class);
         $this->call(MissionSectionSeeder::class);
         $this->call(FoundationMilestoneSeeder::class);
+        $this->call(ProgramCardSeeder::class);
     }
 }
