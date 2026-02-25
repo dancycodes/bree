@@ -60,4 +60,20 @@ class PatronProfile extends Model
     {
         return static::where('is_active', true)->first();
     }
+
+    /**
+     * Return initials from a full name (max 2 chars).
+     *
+     * @return non-empty-string
+     */
+    public static function initials(string $name): string
+    {
+        $parts = explode(' ', trim($name));
+        $initials = '';
+        foreach (array_slice($parts, 0, 2) as $part) {
+            $initials .= mb_strtoupper(mb_substr($part, 0, 1));
+        }
+
+        return $initials ?: '?';
+    }
 }
