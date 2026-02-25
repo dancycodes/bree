@@ -9,13 +9,39 @@ use Illuminate\Http\Request;
 
 class NewsArticlesController extends Controller
 {
-    public function index(): mixed
+    public function index(Request $request): mixed
     {
         $this->authorize('news.view');
 
-        $articles = NewsArticle::orderByDesc('created_at')->paginate(20);
+        $status = $request->input('status', 'all');
+        $search = trim((string) $request->input('search', ''));
 
-        return gale()->view('admin.news.index', compact('articles'), web: true);
+        $query = NewsArticle::orderByDesc('created_at');
+
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        if ($search !== '') {
+            $query->where(function ($q) use ($search) {
+                $q->where('title_fr', 'ilike', "%{$search}%")
+                    ->orWhere('title_en', 'ilike', "%{$search}%");
+            });
+        }
+
+        $articles = $query->paginate(20)->withQueryString();
+
+        $counts = [
+            'all' => NewsArticle::count(),
+            'published' => NewsArticle::where('status', 'published')->count(),
+            'draft' => NewsArticle::where('status', 'draft')->count(),
+        ];
+
+        if ($request->isGaleNavigate('articles-table')) {
+            return gale()->fragment('admin.news.index', 'articles-table', compact('articles', 'status', 'search', 'counts'));
+        }
+
+        return gale()->view('admin.news.index', compact('articles', 'status', 'search', 'counts'), web: true);
     }
 
     public function create(): mixed
@@ -160,6 +186,17 @@ class NewsArticlesController extends Controller
 
         $article->delete();
 
-        return gale()->redirect(route('admin.news.index'));
+        $status = 'all';
+        $search = '';
+        $articles = NewsArticle::orderByDesc('created_at')->paginate(20)->withQueryString();
+        $counts = [
+            'all' => NewsArticle::count(),
+            'published' => NewsArticle::where('status', 'published')->count(),
+            'draft' => NewsArticle::where('status', 'draft')->count(),
+        ];
+
+        return gale()
+            ->fragment('admin.news.index', 'articles-table', compact('articles', 'status', 'search', 'counts'))
+            ->dispatch('toast', ['message' => 'Article supprimé', 'type' => 'success']);
     }
 }
