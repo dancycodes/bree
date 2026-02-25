@@ -9,13 +9,13 @@ class DonationCtaSectionSeeder extends Seeder
 {
     public function run(): void
     {
-        DonationCtaSection::firstOrCreate(
+        DonationCtaSection::updateOrCreate(
             ['id' => 1],
             [
-                'headline_fr' => 'Votre Générosité Change des Vies',
-                'headline_en' => 'Your Generosity Changes Lives',
-                'copy_fr' => 'Chaque don, grand ou petit, permet à la Fondation BREE de protéger des femmes, d\'éduquer des enfants et de préserver notre planète. Agissez aujourd\'hui.',
-                'copy_en' => 'Every donation, big or small, enables Fondation BREE to protect women, educate children, and preserve our planet. Act today.',
+                'headline_fr' => 'Chaque geste compte',
+                'headline_en' => 'Every gesture counts',
+                'copy_fr' => 'Votre don, aussi petit soit-il, transforme des vies. Rejoignez des centaines de donateurs qui croient en un avenir meilleur pour les femmes et les enfants.',
+                'copy_en' => 'Your donation, however small, transforms lives. Join hundreds of donors who believe in a better future for women and children.',
                 'bg_image_path' => 'images/sections/donate.jpg',
                 'is_active' => true,
             ]

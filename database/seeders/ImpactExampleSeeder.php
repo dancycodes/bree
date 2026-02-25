@@ -12,43 +12,46 @@ class ImpactExampleSeeder extends Seeder
         $examples = [
             [
                 'amount' => 10,
-                'description_fr' => 'offre des fournitures scolaires à un enfant pour un trimestre',
-                'description_en' => 'provides school supplies to a child for one term',
+                'description_fr' => 'un kit scolaire complet',
+                'description_en' => 'a complete school kit',
                 'icon' => 'book',
                 'sort_order' => 1,
+                'is_published' => true,
             ],
             [
                 'amount' => 25,
-                'description_fr' => 'finance une consultation médicale pour une femme en difficulté',
-                'description_en' => 'funds a medical consultation for a woman in need',
+                'description_fr' => 'un repas chaud pour 5 enfants',
+                'description_en' => 'a hot meal for 5 children',
                 'icon' => 'heart',
                 'sort_order' => 2,
+                'is_published' => true,
             ],
             [
                 'amount' => 50,
-                'description_fr' => 'soutient un mois d\'accompagnement psychologique pour une victime',
-                'description_en' => 'supports one month of psychological support for a victim',
+                'description_fr' => 'une consultation médicale',
+                'description_en' => 'a medical consultation',
                 'icon' => 'shield',
                 'sort_order' => 3,
+                'is_published' => true,
             ],
             [
                 'amount' => 100,
-                'description_fr' => 'finance une bourse scolaire complète pour un trimestre',
-                'description_en' => 'funds a full school scholarship for one term',
-                'icon' => 'book',
+                'description_fr' => 'une bourse scolaire mensuelle',
+                'description_en' => 'a monthly scholarship',
+                'icon' => 'graduation-cap',
                 'sort_order' => 4,
-            ],
-            [
-                'amount' => 250,
-                'description_fr' => 'finance la formation professionnelle d\'une femme entrepreneur',
-                'description_en' => 'finances professional training for a women entrepreneur',
-                'icon' => 'leaf',
-                'sort_order' => 5,
+                'is_published' => true,
             ],
         ];
 
         foreach ($examples as $example) {
-            ImpactExample::firstOrCreate(['amount' => $example['amount']], $example);
+            ImpactExample::updateOrCreate(
+                ['amount' => $example['amount']],
+                $example
+            );
         }
+
+        // Remove the 250 CHF tier that is not part of the production spec
+        ImpactExample::where('amount', 250)->delete();
     }
 }
