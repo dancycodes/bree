@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FounderProfileController;
 use App\Http\Controllers\Admin\MilestonesController;
+use App\Http\Controllers\Admin\NewsCategoriesController;
 use App\Http\Controllers\Admin\PatronProfileController;
 use App\Http\Controllers\Admin\ProgramActivitiesController;
 use App\Http\Controllers\Admin\ProgramsController as AdminProgramsController;
@@ -57,6 +58,12 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::patch('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'update'])->name('programs.activities.update');
     Route::delete('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'destroy'])->name('programs.activities.destroy');
     Route::post('/programmes/{program:slug}/activites/reorder', [ProgramActivitiesController::class, 'reorder'])->name('programs.activities.reorder');
+
+    // News Categories
+    Route::get('/actualites/categories', [NewsCategoriesController::class, 'index'])->name('news.categories.index');
+    Route::post('/actualites/categories', [NewsCategoriesController::class, 'store'])->name('news.categories.store');
+    Route::patch('/actualites/categories/{category}', [NewsCategoriesController::class, 'update'])->name('news.categories.update');
+    Route::delete('/actualites/categories/{category}', [NewsCategoriesController::class, 'destroy'])->name('news.categories.destroy');
 });
 
 /*
