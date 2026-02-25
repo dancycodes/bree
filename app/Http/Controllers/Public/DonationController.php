@@ -280,11 +280,16 @@ class DonationController extends Controller
 
             if ($donation) {
                 if ($isRecurring) {
+                    $newStatus = $txStatus === 'successful' ? 'active' : 'failed';
                     $donation->update([
                         'flutterwave_subscription_id' => (string) ($data['id'] ?? ''),
-                        'status' => $txStatus === 'successful' ? 'active' : 'failed',
+                        'status' => $newStatus,
                         'flutterwave_data' => $data ?: null,
                     ]);
+
+                    if ($newStatus === 'failed') {
+                        return redirect()->route('public.donate.echec', array_filter(['tx_ref' => $txRef]));
+                    }
                 } else {
                     $newStatus = $txStatus === 'successful' ? 'completed' : 'failed';
                     $donation->update([
@@ -292,6 +297,10 @@ class DonationController extends Controller
                         'status' => $newStatus,
                         'flutterwave_data' => $data ?: null,
                     ]);
+
+                    if ($newStatus === 'failed') {
+                        return redirect()->route('public.donate.echec', array_filter(['tx_ref' => $txRef]));
+                    }
 
                     if ($newStatus === 'completed') {
                         Mail::to($donation->donor_email)->queue(new DonationConfirmation($donation));
@@ -434,6 +443,20 @@ class DonationController extends Controller
             ]);
     }
 
+    public function failurePage(Request $request): mixed
+    {
+        $txRef = $request->input('tx_ref');
+        $reason = $request->input('reason', '');
+
+        $donation = null;
+        if ($txRef) {
+            $donation = Donation::where('tx_ref', $txRef)->first()
+                ?? RecurringDonation::where('tx_ref', $txRef)->first();
+        }
+
+        return gale()->view('public.donation.echec', compact('donation', 'txRef', 'reason'), web: true);
+    }
+
     public function successPage(Request $request): mixed
     {
         $txRef = $request->input('tx_ref');
@@ -513,7 +536,18 @@ class DonationController extends Controller
         if ($status === 'error' || $status === 'failed') {
             Log::channel('flutterwave')->error('Direct charge error', ['result' => $result, 'txRef' => $txRef]);
 
-            return gale()->messages(['cardNumber' => [$result['message'] ?? __('donation.payment_error_generic')]]);
+            $donation = $isRecurring
+                ? RecurringDonation::where('tx_ref', $txRef)->first()
+                : Donation::where('tx_ref', $txRef)->first();
+
+            if ($donation) {
+                $donation->update(['status' => 'failed']);
+            }
+
+            return gale()->redirect(route('public.donate.echec', array_filter([
+                'tx_ref' => $txRef,
+                'reason' => $result['message'] ?? '',
+            ])));
         }
 
         if ($status === 'success') {

@@ -246,6 +246,7 @@ Route::post('/faire-un-don/initier-paiement', [DonationController::class, 'initP
 Route::post('/faire-un-don/charger-carte', [DonationController::class, 'chargeCard'])->name('public.donate.chargeCard');
 Route::post('/faire-un-don/authentifier', [DonationController::class, 'authenticateCharge'])->name('public.donate.authenticateCharge');
 Route::get('/don/merci', [DonationController::class, 'successPage'])->name('public.donate.merci');
+Route::get('/don/echec', [DonationController::class, 'failurePage'])->name('public.donate.echec');
 Route::get('/don/callback-3ds', [DonationController::class, 'verifyPayment'])->name('public.donate.verify3ds');
 Route::post('/faire-un-don/promesse', [DonationController::class, 'storePledge'])
     ->name('public.donate.pledge')
