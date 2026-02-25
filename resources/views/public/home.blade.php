@@ -275,6 +275,128 @@
          Each card: colored top border, image, name, description, CTA.
          Hover: translateY(-4px) + deeper shadow.
          ================================================================ --}}
+    {{-- ================================================================
+         LATEST NEWS PREVIEW SECTION (F-020)
+         3 most recent published articles. White background.
+         Card: thumbnail, category badge (Magenta), date, title (Navy).
+         Empty state if no published articles.
+         ================================================================ --}}
+    <section class="py-20 lg:py-28" style="background-color: #f8f5f0;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            {{-- Section Header --}}
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-14 gap-4">
+                <div data-animate="fade-right">
+                    <span class="block text-xs font-bold tracking-widest uppercase mb-3"
+                          style="color: #c8a03c;">
+                        {{ __('home.latest_news') }}
+                    </span>
+                    <h2 class="font-heading"
+                        style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.75rem, 4vw, 2.75rem);
+                               color: #002850;
+                               font-weight: 700;">
+                        {{ config('app.name') }}
+                    </h2>
+                </div>
+                <a
+                    href="/actualites"
+                    class="btn-outline text-sm font-semibold px-6 py-3 rounded-xl self-start sm:self-auto whitespace-nowrap"
+                    data-animate="fade-left">
+                    {{ __('home.all_news') }}
+                </a>
+            </div>
+
+            @if ($latestNews->isNotEmpty())
+
+                {{-- 3 Article Cards --}}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-stagger="0.12">
+                    @foreach ($latestNews as $article)
+                        <article
+                            class="rounded-2xl overflow-hidden flex flex-col"
+                            style="background-color: #ffffff; box-shadow: 0 2px 16px rgba(0,0,0,0.06);"
+                            data-animate="fade-up">
+
+                            {{-- Thumbnail --}}
+                            <a href="/actualites/{{ $article->slug }}" class="block overflow-hidden" style="height: 200px;">
+                                @if ($article->thumbnail_path)
+                                    <img
+                                        src="{{ asset($article->thumbnail_path) }}"
+                                        alt="{{ $article->title() }}"
+                                        class="w-full h-full object-cover"
+                                        style="transition: transform 0.5s ease;"
+                                        loading="lazy">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center"
+                                         style="background-color: rgba(200,0,120,0.08);">
+                                        <svg class="w-10 h-10" fill="none" stroke="currentColor"
+                                             viewBox="0 0 24 24" stroke-width="1.5"
+                                             style="color: rgba(200,0,120,0.3);" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9H3.375A1.125 1.125 0 002.25 8.25v8.625c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V7.5a1.125 1.125 0 00-1.125-1.125H15"/>
+                                        </svg>
+                                    </div>
+                                @endif
+                            </a>
+
+                            {{-- Card Body --}}
+                            <div class="flex flex-col flex-1 p-6">
+
+                                {{-- Category + Date --}}
+                                <div class="flex items-center gap-3 mb-4">
+                                    <span class="inline-block text-xs font-bold tracking-wider uppercase px-2.5 py-1 rounded-full"
+                                          style="background-color: rgba(200,0,120,0.1); color: #c80078;">
+                                        {{ $article->category() }}
+                                    </span>
+                                    <span class="text-xs" style="color: #9aacbb;">
+                                        {{ $article->published_at->translatedFormat('d M Y') }}
+                                    </span>
+                                </div>
+
+                                {{-- Title --}}
+                                <h3 class="font-heading font-bold leading-snug mb-4 flex-1"
+                                    style="font-family: 'Playfair Display', serif;
+                                           font-size: 1.1rem;
+                                           color: #002850;">
+                                    <a href="/actualites/{{ $article->slug }}"
+                                       class="hover:underline underline-offset-2">
+                                        {{ $article->title() }}
+                                    </a>
+                                </h3>
+
+                                {{-- Read more --}}
+                                <a
+                                    href="/actualites/{{ $article->slug }}"
+                                    class="inline-flex items-center gap-2 text-sm font-semibold mt-auto"
+                                    style="color: #c80078;">
+                                    {{ __('home.read_more') }}
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                         viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                                    </svg>
+                                </a>
+
+                            </div>
+
+                        </article>
+                    @endforeach
+                </div>
+
+            @else
+
+                {{-- Empty State --}}
+                <div class="text-center py-20" data-animate="fade-up">
+                    <p class="text-base" style="color: #9aacbb;">
+                        {{ __('home.no_news') }}
+                    </p>
+                </div>
+
+            @endif
+
+        </div>
+    </section>
+
     @if ($programs->isNotEmpty())
         <section class="py-20 lg:py-28" style="background-color: #ffffff;">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
