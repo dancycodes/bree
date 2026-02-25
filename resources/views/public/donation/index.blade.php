@@ -1119,6 +1119,249 @@
     </section>
 
     {{-- ================================================================
+         IN-KIND DONATION FORM
+         ================================================================ --}}
+    <section id="don-nature" class="py-16 lg:py-24" style="background-color: #f0fdf4;"
+             x-data="{
+                 inkindDonorName: '',
+                 inkindOrganization: '',
+                 inkindEmail: '',
+                 inkindPhone: '',
+                 inkindType: 'goods',
+                 inkindDescription: '',
+                 inkindEstimatedValue: '',
+                 inkindProgramme: '',
+                 inkindAvailability: '',
+                 inkindSubmitted: false
+             }"
+             x-sync="['inkindDonorName','inkindOrganization','inkindEmail','inkindPhone','inkindType','inkindDescription','inkindEstimatedValue','inkindProgramme','inkindAvailability','inkindSubmitted']">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            {{-- Heading --}}
+            <div class="text-center mb-10" data-animate="fade-up">
+                <p class="text-xs font-bold uppercase tracking-widest mb-2" style="color: #16a34a;">
+                    {{ __('donation.type_inkind_title') }}
+                </p>
+                <h2 class="text-2xl lg:text-3xl font-bold mb-3"
+                    style="color: #143c64; font-family: 'Playfair Display', serif;">
+                    {{ __('donation.inkind_section_heading') }}
+                </h2>
+                <p class="text-sm max-w-lg mx-auto" style="color: #64748b; line-height: 1.7;">
+                    {{ __('donation.inkind_section_sub') }}
+                </p>
+            </div>
+
+            {{-- Success state --}}
+            <div x-show="inkindSubmitted" style="display:none;" class="text-center py-12" data-animate="fade-up">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"
+                     style="background-color: #dcfce7;">
+                    <svg class="w-8 h-8" fill="none" stroke="#16a34a" viewBox="0 0 24 24" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-3" style="color: #143c64; font-family: 'Playfair Display', serif;">
+                    {{ __('donation.inkind_success_heading') }}
+                </h3>
+                <p class="text-sm mb-6" style="color: #64748b;">{{ __('donation.inkind_success_sub') }}</p>
+                <button type="button"
+                        @click="inkindSubmitted = false"
+                        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-opacity hover:opacity-80"
+                        style="background-color: #16a34a; color: #ffffff;">
+                    {{ __('donation.inkind_new_btn') }}
+                </button>
+            </div>
+
+            {{-- Form --}}
+            <div x-show="!inkindSubmitted" style="display:block;"
+                 class="rounded-3xl p-8 lg:p-10"
+                 style="background-color: #ffffff; border: 1px solid #bbf7d0;">
+
+                <form @submit.prevent="$action('{{ route('public.donate.inkind') }}', { include: ['inkindDonorName','inkindOrganization','inkindEmail','inkindPhone','inkindType','inkindDescription','inkindEstimatedValue','inkindProgramme','inkindAvailability'] })">
+                    @honeypot
+
+                    {{-- Name + Organisation --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                                {{ __('donation.inkind_name_label') }}
+                            </label>
+                            <input type="text"
+                                   x-model="inkindDonorName"
+                                   placeholder="{{ __('donation.inkind_name_placeholder') }}"
+                                   class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                                   style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                   @focus="$el.style.borderColor='#16a34a'"
+                                   @blur="$el.style.borderColor='#e2e8f0'">
+                            <p x-message="inkindDonorName" class="text-xs mt-1.5 font-medium" style="color: #dc2626;"></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                                {{ __('donation.inkind_org_label') }}
+                            </label>
+                            <input type="text"
+                                   x-model="inkindOrganization"
+                                   placeholder="{{ __('donation.inkind_org_placeholder') }}"
+                                   class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                                   style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                   @focus="$el.style.borderColor='#16a34a'"
+                                   @blur="$el.style.borderColor='#e2e8f0'">
+                        </div>
+                    </div>
+
+                    {{-- Email + Phone --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                                {{ __('donation.inkind_email_label') }}
+                            </label>
+                            <input type="email"
+                                   x-model="inkindEmail"
+                                   placeholder="{{ __('donation.inkind_email_placeholder') }}"
+                                   class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                                   style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                   @focus="$el.style.borderColor='#16a34a'"
+                                   @blur="$el.style.borderColor='#e2e8f0'">
+                            <p x-message="inkindEmail" class="text-xs mt-1.5 font-medium" style="color: #dc2626;"></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                                {{ __('donation.inkind_phone_label') }}
+                            </label>
+                            <input type="tel"
+                                   x-model="inkindPhone"
+                                   placeholder="{{ __('donation.inkind_phone_placeholder') }}"
+                                   class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                                   style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                   @focus="$el.style.borderColor='#16a34a'"
+                                   @blur="$el.style.borderColor='#e2e8f0'">
+                        </div>
+                    </div>
+
+                    {{-- Type of contribution — card-based --}}
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold mb-3" style="color: #143c64;">
+                            {{ __('donation.inkind_type_label') }}
+                        </label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            @foreach ([
+                                ['goods', 'donation.inkind_type_goods', 'donation.inkind_type_goods_desc', 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4'],
+                                ['services', 'donation.inkind_type_services', 'donation.inkind_type_services_desc', 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'],
+                                ['expertise', 'donation.inkind_type_expertise', 'donation.inkind_type_expertise_desc', 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z'],
+                                ['other', 'donation.inkind_type_other', 'donation.inkind_type_other_desc', 'M12 6v6m0 0v6m0-6h6m-6 0H6'],
+                            ] as [$value, $titleKey, $descKey, $iconPath])
+                            <button type="button"
+                                    @click="inkindType = '{{ $value }}'"
+                                    :style="inkindType === '{{ $value }}'
+                                        ? 'border-color:#16a34a; background-color:#f0fdf4;'
+                                        : 'border-color:#e2e8f0; background-color:#ffffff;'"
+                                    class="flex flex-col items-center text-center p-4 rounded-2xl border-2 transition-all cursor-pointer">
+                                <svg class="w-6 h-6 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"
+                                     :style="inkindType === '{{ $value }}' ? 'color:#16a34a' : 'color:#94a3b8'">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="{{ $iconPath }}"/>
+                                </svg>
+                                <span class="text-xs font-bold mb-0.5"
+                                      :style="inkindType === '{{ $value }}' ? 'color:#143c64' : 'color:#64748b'">
+                                    {{ __($titleKey) }}
+                                </span>
+                                <span class="text-xs leading-tight" style="color: #94a3b8;">
+                                    {{ __($descKey) }}
+                                </span>
+                            </button>
+                            @endforeach
+                        </div>
+                        <p x-message="inkindType" class="text-xs mt-2 font-medium" style="color: #dc2626;"></p>
+                    </div>
+
+                    {{-- Description --}}
+                    <div class="mb-5">
+                        <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                            {{ __('donation.inkind_description_label') }}
+                        </label>
+                        <textarea x-model="inkindDescription"
+                                  rows="4"
+                                  placeholder="{{ __('donation.inkind_description_placeholder') }}"
+                                  class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none resize-none"
+                                  style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                  @focus="$el.style.borderColor='#16a34a'"
+                                  @blur="$el.style.borderColor='#e2e8f0'"></textarea>
+                        <p x-message="inkindDescription" class="text-xs mt-1.5 font-medium" style="color: #dc2626;"></p>
+                    </div>
+
+                    {{-- Estimated value + Programme --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                                {{ __('donation.inkind_value_label') }}
+                            </label>
+                            <div class="relative">
+                                <input type="number"
+                                       x-model="inkindEstimatedValue"
+                                       min="0"
+                                       step="0.01"
+                                       placeholder="{{ __('donation.inkind_value_placeholder') }}"
+                                       class="w-full px-4 py-3 pr-10 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                                       style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                       @focus="$el.style.borderColor='#16a34a'"
+                                       @blur="$el.style.borderColor='#e2e8f0'">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold" style="color: #94a3b8;">€</span>
+                            </div>
+                            <p class="text-xs mt-1" style="color: #94a3b8;">{{ __('donation.inkind_value_hint') }}</p>
+                            <p x-message="inkindEstimatedValue" class="text-xs mt-1 font-medium" style="color: #dc2626;"></p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                                {{ __('donation.inkind_programme_label') }}
+                            </label>
+                            <select x-model="inkindProgramme"
+                                    class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none appearance-none"
+                                    style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                                    @focus="$el.style.borderColor='#16a34a'"
+                                    @blur="$el.style.borderColor='#e2e8f0'">
+                                <option value="">{{ __('donation.pledge_programme_none') }}</option>
+                                <option value="bree-protege">{{ __('donation.programme_protege') }}</option>
+                                <option value="bree-eleve">{{ __('donation.programme_eleve') }}</option>
+                                <option value="bree-respire">{{ __('donation.programme_respire') }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {{-- Availability --}}
+                    <div class="mb-8">
+                        <label class="block text-sm font-semibold mb-2" style="color: #143c64;">
+                            {{ __('donation.inkind_availability_label') }}
+                        </label>
+                        <input type="text"
+                               x-model="inkindAvailability"
+                               placeholder="{{ __('donation.inkind_availability_placeholder') }}"
+                               class="w-full px-4 py-3 rounded-xl border-2 text-sm transition-colors focus:outline-none"
+                               style="border-color: #e2e8f0; color: #143c64; background-color: #ffffff;"
+                               @focus="$el.style.borderColor='#16a34a'"
+                               @blur="$el.style.borderColor='#e2e8f0'">
+                    </div>
+
+                    {{-- Submit --}}
+                    <button type="submit"
+                            :disabled="!inkindDonorName.trim() || !inkindEmail.trim() || !inkindDescription.trim()"
+                            :style="(inkindDonorName.trim() && inkindEmail.trim() && inkindDescription.trim())
+                                ? 'background-color:#16a34a; opacity:1; cursor:pointer;'
+                                : 'background-color:#16a34a; opacity:0.4; cursor:not-allowed;'"
+                            class="w-full flex items-center justify-center gap-3 py-4 rounded-xl text-sm font-bold text-white transition-all"
+                            style="background-color:#16a34a;">
+                        <span x-show="!$fetching()">{{ __('donation.inkind_submit_btn') }}</span>
+                        <span x-show="$fetching()">{{ __('donation.inkind_submitting_btn') }}</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
+                             x-show="!$fetching()">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6.75l4.5 4.5-4.5 4.5M3.75 12h16.5"/>
+                        </svg>
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    {{-- ================================================================
          SECONDARY CTA — VOLUNTEER / PARTNER
          ================================================================ --}}
     <section class="py-12 lg:py-16" style="background-color: #ffffff;">

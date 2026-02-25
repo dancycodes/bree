@@ -152,6 +152,12 @@ Route::post('/faire-un-don/charger-carte', [DonationController::class, 'chargeCa
 Route::post('/faire-un-don/authentifier', [DonationController::class, 'authenticateCharge'])->name('public.donate.authenticateCharge');
 Route::get('/don/merci', [DonationController::class, 'successPage'])->name('public.donate.merci');
 Route::get('/don/callback-3ds', [DonationController::class, 'verifyPayment'])->name('public.donate.verify3ds');
+Route::post('/faire-un-don/promesse', [DonationController::class, 'storePledge'])
+    ->name('public.donate.pledge')
+    ->middleware(\Spatie\Honeypot\ProtectAgainstSpam::class);
+Route::post('/faire-un-don/don-en-nature', [DonationController::class, 'storeInKind'])
+    ->name('public.donate.inkind')
+    ->middleware(\Spatie\Honeypot\ProtectAgainstSpam::class);
 Route::post('/webhook/flutterwave', [WebhookController::class, 'flutterwave'])->name('webhook.flutterwave');
 Route::get('/programmes/{program:slug}', [ProgramsController::class, 'show'])->name('public.programs.show');
 

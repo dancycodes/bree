@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Mail\DonationConfirmation;
+use App\Mail\InKindAdminNotification;
 use App\Mail\PledgeAdminNotification;
 use App\Models\Donation;
 use App\Models\DonationPledge;
 use App\Models\ImpactExample;
+use App\Models\InKindDonation;
 use App\Models\RecurringDonation;
 use App\Services\FlutterwaveDirectCharge;
 use Flutterwave\Payments\Facades\Flutterwave;
@@ -366,6 +368,69 @@ class DonationController extends Controller
             ->dispatch('toast', [
                 'type' => 'success',
                 'message' => __('donation.pledge_success_toast'),
+            ]);
+    }
+
+    public function storeInKind(Request $request): mixed
+    {
+        $request->validateState([
+            'inkindDonorName' => ['required', 'string', 'max:150'],
+            'inkindOrganization' => ['nullable', 'string', 'max:150'],
+            'inkindEmail' => ['required', 'email'],
+            'inkindPhone' => ['nullable', 'string', 'max:30'],
+            'inkindType' => ['required', 'string', 'in:goods,services,expertise,other'],
+            'inkindDescription' => ['required', 'string', 'max:2000'],
+            'inkindEstimatedValue' => ['nullable', 'numeric', 'min:0'],
+            'inkindProgramme' => ['nullable', 'string', 'in:general,bree-protege,bree-eleve,bree-respire'],
+            'inkindAvailability' => ['nullable', 'string', 'max:255'],
+        ], [
+            'inkindDonorName.required' => __('donation.inkind_name_required'),
+            'inkindEmail.required' => __('donation.inkind_email_invalid'),
+            'inkindEmail.email' => __('donation.inkind_email_invalid'),
+            'inkindType.required' => __('donation.inkind_type_required'),
+            'inkindDescription.required' => __('donation.inkind_description_required'),
+            'inkindEstimatedValue.numeric' => __('donation.inkind_value_invalid'),
+        ]);
+
+        $programme = (string) $request->state('inkindProgramme', '');
+        $validProgrammes = ['bree-protege', 'bree-eleve', 'bree-respire', 'general'];
+        if (! in_array($programme, $validProgrammes, true)) {
+            $programme = null;
+        }
+
+        $rawValue = (string) $request->state('inkindEstimatedValue', '');
+        $estimatedValue = ! empty($rawValue) ? (float) str_replace(',', '.', $rawValue) : null;
+
+        $donation = InKindDonation::create([
+            'donor_name' => (string) $request->state('inkindDonorName'),
+            'organization' => ($v = trim((string) $request->state('inkindOrganization', ''))) ? $v : null,
+            'email' => (string) $request->state('inkindEmail'),
+            'phone' => ($v = trim((string) $request->state('inkindPhone', ''))) ? $v : null,
+            'donation_type' => (string) $request->state('inkindType'),
+            'description' => (string) $request->state('inkindDescription'),
+            'estimated_value' => $estimatedValue,
+            'programme' => $programme,
+            'availability' => ($v = trim((string) $request->state('inkindAvailability', ''))) ? $v : null,
+            'status' => 'pending_review',
+        ]);
+
+        $adminEmail = config('mail.from.address');
+        Mail::to($adminEmail)->queue(new InKindAdminNotification($donation));
+
+        return gale()
+            ->state('inkindSubmitted', true)
+            ->state('inkindDonorName', '')
+            ->state('inkindOrganization', '')
+            ->state('inkindEmail', '')
+            ->state('inkindPhone', '')
+            ->state('inkindType', 'goods')
+            ->state('inkindDescription', '')
+            ->state('inkindEstimatedValue', '')
+            ->state('inkindProgramme', '')
+            ->state('inkindAvailability', '')
+            ->dispatch('toast', [
+                'type' => 'success',
+                'message' => __('donation.inkind_success_toast'),
             ]);
     }
 
