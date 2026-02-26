@@ -11,4 +11,11 @@ return [
     'other_programs' => 'Nos Autres Programmes',
     'upcoming_events' => 'Prochains Événements',
     'program_events_label' => 'Agenda du programme',
+    'testimonials_label' => 'Témoignages',
+    'testimonials_title' => 'Ils témoignent',
+    'activity_number' => 'Action',
+    'stat_label_beneficiaries' => 'Bénéficiaires',
+    'view_all_programs' => 'Voir tous les programmes',
+    'impact_title' => 'Notre Impact',
+    'impact_label' => 'Impact du programme',
 ];
