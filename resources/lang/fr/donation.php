@@ -133,6 +133,21 @@ return [
     'merci_failed_retry' => 'Réessayer un don',
     'merci_failed_pledge' => 'Faire une promesse de don',
 
+    'merci_impact_statement' => 'Votre don permettra de financer :impact.',
+    'merci_date_label' => 'Date',
+    'merci_date_today' => 'Aujourd\'hui',
+
+    'echec_page_title' => 'Paiement non effectué',
+    'echec_heading' => 'Votre paiement n\'a pas pu être traité',
+    'echec_sub' => 'Ne vous inquiétez pas — aucun montant n\'a été débité de votre compte. Vous pouvez réessayer en toute sécurité ou nous contacter si vous avez besoin d\'aide.',
+    'echec_retry_btn' => 'Réessayer',
+    'echec_pledge_btn' => 'Faire une promesse de don',
+    'echec_home_btn' => 'Retour à l\'accueil',
+    'echec_support_heading' => 'Besoin d\'aide ?',
+    'echec_support_sub' => 'Notre équipe est disponible pour vous accompagner dans votre démarche de don.',
+    'echec_reason_label' => 'Motif indiqué',
+    'echec_ref_label' => 'Référence de transaction',
+
     'card_heading' => 'Payer par carte bancaire',
     'card_sub' => 'Vos informations bancaires sont chiffrées de bout en bout et ne sont jamais stockées sur nos serveurs.',
     'card_number_label' => 'Numéro de carte',

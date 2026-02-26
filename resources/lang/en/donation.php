@@ -133,6 +133,21 @@ return [
     'merci_failed_retry' => 'Try again',
     'merci_failed_pledge' => 'Make a donation pledge',
 
+    'merci_impact_statement' => 'Your donation will help fund :impact.',
+    'merci_date_label' => 'Date',
+    'merci_date_today' => 'Today',
+
+    'echec_page_title' => 'Payment unsuccessful',
+    'echec_heading' => 'Your payment could not be processed',
+    'echec_sub' => 'Don\'t worry — no amount has been charged to your account. You can safely try again or contact us if you need help.',
+    'echec_retry_btn' => 'Try again',
+    'echec_pledge_btn' => 'Make a donation pledge',
+    'echec_home_btn' => 'Back to homepage',
+    'echec_support_heading' => 'Need help?',
+    'echec_support_sub' => 'Our team is available to guide you through the donation process.',
+    'echec_reason_label' => 'Reason given',
+    'echec_ref_label' => 'Transaction reference',
+
     'card_heading' => 'Pay with your card',
     'card_sub' => 'Your card details are encrypted end-to-end and never stored on our servers.',
     'card_number_label' => 'Card number',
