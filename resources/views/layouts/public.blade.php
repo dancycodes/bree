@@ -257,10 +257,16 @@
 
                 {{-- Brand Column --}}
                 <div class="lg:col-span-1">
-                    <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" class="h-16 w-auto mb-5 brightness-0 invert">
+                    <a href="{{ route('public.home') }}" x-navigate class="inline-block mb-5">
+                        <img src="{{ asset('images/logo.png') }}"
+                             alt="{{ config('app.name') }}"
+                             class="h-16 w-auto brightness-0 invert"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                        <span style="display:none; color:#ffffff; font-family:'Playfair Display',serif; font-weight:700; font-size:1.25rem;">Fondation BREE</span>
+                    </a>
                     <p class="text-sm leading-relaxed mb-6" style="color: rgba(255,255,255,0.6); font-family: 'Playfair Display', serif; font-style: italic;">
-                        Protéger. Élever. Inspirer.<br>
-                        <span class="text-xs not-italic" style="font-family: 'Inter', sans-serif;">Pour un avenir plus humain.</span>
+                        {{ __('footer.tagline_main') }}<br>
+                        <span class="text-xs not-italic" style="font-family: 'Inter', sans-serif;">{{ __('footer.tagline_sub') }}</span>
                     </p>
                     {{-- Social Links --}}
                     @php
@@ -274,16 +280,16 @@
                         $activeSocials = array_filter($socialLinks, fn($s) => !empty($siteSettings[$s['key']] ?? ''));
                     @endphp
                     @if(count($activeSocials) > 0)
-                        <div class="flex gap-3">
+                        <div class="flex flex-wrap gap-3">
                             @foreach ($activeSocials as $social)
                                 <a href="{{ $siteSettings[$social['key']] }}"
-                                   target="_blank" rel="noopener"
+                                   target="_blank" rel="noopener noreferrer"
                                    aria-label="{{ $social['name'] }}"
-                                   class="w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-150"
-                                   style="background-color: rgba(255,255,255,0.08);"
-                                   @mouseover="$el.style.backgroundColor='#c80078'"
-                                   @mouseout="$el.style.backgroundColor='rgba(255,255,255,0.08)'">
-                                    <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                   class="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200"
+                                   style="background-color: rgba(255,255,255,0.1);"
+                                   @mouseover="$el.style.backgroundColor='#c80078'; $el.style.transform='translateY(-2px)';"
+                                   @mouseout="$el.style.backgroundColor='rgba(255,255,255,0.1)'; $el.style.transform='translateY(0)';">
+                                    <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                         <path d="{{ $social['icon'] }}"/>
                                     </svg>
                                 </a>
@@ -294,7 +300,7 @@
 
                 {{-- Programs Column --}}
                 <div>
-                    <h4 class="text-xs font-bold tracking-widest uppercase mb-6" style="color: #c8a03c;">
+                    <h4 class="text-xs font-bold tracking-widest uppercase mb-6" style="color: #c8a03c; font-family: 'Inter', sans-serif;">
                         {{ __('nav.programs') }}
                     </h4>
                     <ul class="space-y-3 text-sm">
@@ -304,11 +310,16 @@
                             ['label' => 'BREE RESPIRE', 'slug' => 'bree-respire'],
                         ] as $program)
                             <li>
-                                <a href="{{ route('public.programs.show', $program['slug']) }}"
-                                   class="transition-colors duration-150 hover:text-white"
-                                   style="color: rgba(255,255,255,0.6);">
-                                    {{ $program['label'] }}
-                                </a>
+                                @if (Route::has('public.programs.show'))
+                                    <a href="{{ route('public.programs.show', $program['slug']) }}"
+                                       x-navigate
+                                       class="transition-colors duration-150 hover:text-white"
+                                       style="color: rgba(255,255,255,0.6);">
+                                        {{ $program['label'] }}
+                                    </a>
+                                @else
+                                    <span style="color: rgba(255,255,255,0.6);">{{ $program['label'] }}</span>
+                                @endif
                             </li>
                         @endforeach
                     </ul>
@@ -316,8 +327,8 @@
 
                 {{-- Quick Links Column --}}
                 <div>
-                    <h4 class="text-xs font-bold tracking-widest uppercase mb-6" style="color: #c8a03c;">
-                        Liens Rapides
+                    <h4 class="text-xs font-bold tracking-widest uppercase mb-6" style="color: #c8a03c; font-family: 'Inter', sans-serif;">
+                        {{ __('footer.quick_links') }}
                     </h4>
                     <ul class="space-y-3 text-sm">
                         @foreach ([
@@ -331,6 +342,7 @@
                             <li>
                                 @if (Route::has($link['route']))
                                     <a href="{{ route($link['route']) }}"
+                                       x-navigate
                                        class="transition-colors duration-150 hover:text-white"
                                        style="color: rgba(255,255,255,0.6);">
                                         {{ $link['label'] }}
@@ -345,31 +357,33 @@
 
                 {{-- Contact Column --}}
                 <div>
-                    <h4 class="text-xs font-bold tracking-widest uppercase mb-6" style="color: #c8a03c;">
+                    <h4 class="text-xs font-bold tracking-widest uppercase mb-6" style="color: #c8a03c; font-family: 'Inter', sans-serif;">
                         {{ __('nav.contact') }}
                     </h4>
                     <ul class="space-y-4 text-sm" style="color: rgba(255,255,255,0.6);">
                         @if(!empty($siteSettings['contact_email'] ?? ''))
                         <li class="flex items-start gap-3">
-                            <svg class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: #c8a03c;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 mt-0.5 shrink-0" style="color: #c8a03c;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                             </svg>
-                            <a href="mailto:{{ $siteSettings['contact_email'] }}" class="hover:text-white transition-colors">
+                            <a href="mailto:{{ $siteSettings['contact_email'] }}" class="hover:text-white transition-colors break-all">
                                 {{ $siteSettings['contact_email'] }}
                             </a>
                         </li>
                         @endif
                         @if(!empty($siteSettings['contact_phone'] ?? ''))
                         <li class="flex items-start gap-3">
-                            <svg class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: #c8a03c;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 mt-0.5 shrink-0" style="color: #c8a03c;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                             </svg>
-                            <span>{{ $siteSettings['contact_phone'] }}</span>
+                            <a href="tel:{{ preg_replace('/\s+/', '', $siteSettings['contact_phone']) }}" class="hover:text-white transition-colors">
+                                {{ $siteSettings['contact_phone'] }}
+                            </a>
                         </li>
                         @endif
                         @if(!empty($siteSettings['contact_address'] ?? ''))
                         <li class="flex items-start gap-3">
-                            <svg class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: #c8a03c;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 mt-0.5 shrink-0" style="color: #c8a03c;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
                             <span>{{ $siteSettings['contact_address'] }}</span>
@@ -380,7 +394,9 @@
                     {{-- Donate CTA in footer --}}
                     @if (Route::has('public.donate'))
                         <div class="mt-8">
-                            <a href="{{ route('public.donate') }}" class="btn-primary text-sm py-3 px-6 rounded-lg w-full text-center block">
+                            <a href="{{ route('public.donate') }}"
+                               x-navigate
+                               class="btn-primary text-sm py-3 px-6 rounded-lg w-full text-center block">
                                 {{ __('nav.donate') }}
                             </a>
                         </div>
@@ -390,16 +406,26 @@
         </div>
 
         {{-- Footer Bottom --}}
-        <div style="border-top: 1px solid rgba(255,255,255,0.08);">
+        <div style="border-top: 1px solid rgba(255,255,255,0.1);">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p class="text-xs" style="color: rgba(255,255,255,0.4);">
-                    &copy; {{ date('Y') }} {{ config('app.name') }}. Tous droits réservés.
+                    &copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('footer.all_rights_reserved') }}
                 </p>
-                <div class="flex gap-4 text-xs" style="color: rgba(255,255,255,0.4);">
-                    {{-- TODO: replace href="#" with route('legal.mentions') once F-023 creates the page --}}
-                    <a href="#" class="hover:text-white transition-colors">Mentions légales</a>
-                    {{-- TODO: replace href="#" with route('legal.confidentialite') once F-024 creates the page --}}
-                    <a href="#" class="hover:text-white transition-colors">Confidentialité</a>
+                <div class="flex gap-6 text-xs" style="color: rgba(255,255,255,0.4);">
+                    @if (Route::has('legal.mentions'))
+                        <a href="{{ route('legal.mentions') }}"
+                           x-navigate
+                           class="hover:text-white transition-colors duration-150">{{ __('footer.legal_mentions') }}</a>
+                    @else
+                        <span class="opacity-50 cursor-default">{{ __('footer.legal_mentions') }}</span>
+                    @endif
+                    @if (Route::has('legal.privacy'))
+                        <a href="{{ route('legal.privacy') }}"
+                           x-navigate
+                           class="hover:text-white transition-colors duration-150">{{ __('footer.privacy_policy') }}</a>
+                    @else
+                        <span class="opacity-50 cursor-default">{{ __('footer.privacy_policy') }}</span>
+                    @endif
                 </div>
             </div>
         </div>
