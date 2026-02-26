@@ -473,7 +473,31 @@ class DonationController extends Controller
             $programmeLabel = $programmeMap[$donation->programme] ?? __('donation.programme_general');
         }
 
-        return gale()->view('public.donation.merci', compact('donation', 'programmeLabel'), web: true);
+        // Compute impact statement for the donated amount
+        $impactStatement = null;
+        if ($donation && (float) $donation->amount > 0) {
+            $impactExamples = ImpactExample::published()->orderBy('amount')->get();
+            $amount = (float) $donation->amount;
+
+            // Find the best matching impact example (highest threshold not exceeding the amount)
+            $matched = null;
+            foreach ($impactExamples as $example) {
+                if ($amount >= (float) $example->amount) {
+                    $matched = $example;
+                }
+            }
+
+            if ($matched) {
+                $locale = app()->getLocale();
+                $descriptionKey = 'description_'.$locale;
+                $description = $matched->{$descriptionKey} ?? $matched->description_fr ?? null;
+                if ($description) {
+                    $impactStatement = $description;
+                }
+            }
+        }
+
+        return gale()->view('public.donation.merci', compact('donation', 'programmeLabel', 'impactStatement'), web: true);
     }
 
     private function initRecurringPayment(
