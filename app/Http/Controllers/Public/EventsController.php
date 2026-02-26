@@ -12,8 +12,8 @@ class EventsController extends Controller
 {
     public function index(): mixed
     {
-        $upcoming = FoundationEvent::upcoming()->get();
-        $past = FoundationEvent::past()->get();
+        $upcoming = FoundationEvent::upcoming()->withCount('registrations')->get();
+        $past = FoundationEvent::past()->withCount('registrations')->get();
 
         return gale()->view('public.events.index', compact('upcoming', 'past'), web: true);
     }
@@ -26,11 +26,16 @@ class EventsController extends Controller
 
         $isPast = $event->event_date->isPast();
         $isFull = $event->isFull();
+        $registrationsCount = $event->registrations()->count();
         $program = $event->program_slug
             ? ProgramCard::where('slug', $event->program_slug)->first()
             : null;
 
-        return gale()->view('public.events.show', compact('event', 'isPast', 'isFull', 'program'), web: true);
+        return gale()->view(
+            'public.events.show',
+            compact('event', 'isPast', 'isFull', 'registrationsCount', 'program'),
+            web: true,
+        );
     }
 
     public function register(Request $request, FoundationEvent $event): mixed
@@ -64,9 +69,6 @@ class EventsController extends Controller
         return gale()
             ->state('reg_name', '')
             ->state('reg_email', '')
-            ->dispatch('toast', [
-                'message' => __('events.registration_success'),
-                'type' => 'success',
-            ]);
+            ->state('reg_submitted', true);
     }
 }
