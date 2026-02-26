@@ -1,6 +1,7 @@
 <?php
 
 return [
+    // Public navigation
     'home' => 'Accueil',
     'about' => 'À Propos',
     'programs' => 'Programmes',
@@ -11,10 +12,33 @@ return [
     'donate' => 'Faire un Don',
     'contact' => 'Contact',
     'language' => 'Langue',
-    'donate' => 'Faire un Don',
-    'about' => 'À Propos',
-    'programs' => 'Programmes',
-    'events' => 'Événements',
-    'gallery' => 'Galerie',
-    'partners' => 'Partenaires',
+
+    // Admin sidebar — group headings
+    'group' => [
+        'contenu'      => 'Contenu',
+        'a_propos'     => 'À propos',
+        'interactions' => 'Interactions',
+        'systeme'      => 'Système',
+    ],
+
+    // Admin sidebar — item labels
+    'dashboard'    => 'Tableau de bord',
+    'news'         => 'Actualités',
+    'events'       => 'Événements',
+    'programs'     => 'Programmes',
+    'gallery'      => 'Galerie',
+    'partners'     => 'Partenaires',
+    'founder'      => 'Fondatrice',
+    'patron'       => 'Marraine',
+    'milestones'   => 'Jalons',
+    'team'         => 'Équipe',
+    'hero_cta'     => 'Hero / CTA',
+    'stats'        => 'Statistiques',
+    'donations'    => 'Dons',
+    'applications' => 'Candidatures',
+    'messages'     => 'Messages',
+    'newsletter'   => 'Newsletter',
+    'users'        => 'Utilisateurs',
+    'roles'        => 'Rôles',
+    'settings'     => 'Paramètres',
 ];
