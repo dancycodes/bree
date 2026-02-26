@@ -249,7 +249,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 </laravel-boost-guidelines>
 
 <!-- EXECUTOR:START -->
-## Fondation BREE Website — Implementation Reference
+## Fondation BREE — Polish Phase Implementation Reference
 
 ### Tech Stack
 | Layer | Technology | Version |
@@ -278,6 +278,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - Flutterwave: inline modal, webhook at POST `/webhook/flutterwave` (CSRF-exempt)
 - Honeypot on all public forms via `@honeypot` directive
 - GSAP ScrollTrigger killed on Gale navigation, re-initialized on new page
+- **Polish phase: preserve all existing functionality — do not break working features**
 
 ### Skills to Activate Per Feature
 - Any blade/controller: **gale** skill
@@ -285,9 +286,26 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - Any animation: **gsap-sequencing** + **awwwards-animations** skills
 - Images needed: **unsplash-asset-images** skill
 - Any test: **pest-testing** skill
+- Any styling: **tailwindcss-development** skill
+
+### Spec Skill Reference
+This project's polish specification lives in the `bree-foundation-polish-specs` skill.
+- To see all features: invoke the spec skill (reads SKILL.md with feature catalog)
+- To read a specific feature: read `references/F-xxx.md` from the spec skill
+- Tech stack details: `references/tech-stack.md`
+- Implementation standards: `references/general-concepts.md`
+
+### State Management
+dd-manager MCP is configured for this project:
+- **DD_DIR:** `.executor` (SQLite database for implementation state)
+- Recovery: call `recover()` after compaction
+- Feature state: call `next_task()` before each feature
+
+### Executor Agent
+Feature implementation is delegated to `.claude/agents/executor.md`.
+The orchestrator spawns one executor per feature via Task tool (foreground, sequential).
 
 <!-- DANCYDEV:STATE -->
-Phase: implementing | Progress: 90/90
-Last: F-090 done (Accessibility Audit & Fixes)
+Phase: implementing | Progress: 30/44 | Current: F-031
 <!-- DANCYDEV:STATE -->
 <!-- EXECUTOR:END -->
