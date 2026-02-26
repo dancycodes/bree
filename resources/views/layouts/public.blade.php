@@ -47,18 +47,44 @@
     <div aria-live="polite" aria-atomic="true" class="sr-only" id="aria-announcer"></div>
 
     {{-- ================================================================
-         GLOBAL NAV LOADER (Gale navigation indicator)
+         GLOBAL NAV LOADER — NProgress-style top progress bar
+         Appears during Gale SPA navigation (gale:navigating → gale:navigated).
+         3px height, magenta brand color, animated fill from left.
          ================================================================ --}}
     <div
-        x-data
+        x-data="{ navProgress: 0, navTimer: null }"
         x-show="$gale.loading"
-        x-transition:enter="transition-opacity duration-150"
+        x-init="
+            $watch('$gale.loading', val => {
+                if (val) {
+                    navProgress = 15;
+                    clearInterval(navTimer);
+                    navTimer = setInterval(() => {
+                        if (navProgress < 85) { navProgress += Math.random() * 12; }
+                        if (navProgress > 85) { navProgress = 85; }
+                    }, 200);
+                } else {
+                    navProgress = 100;
+                    clearInterval(navTimer);
+                    setTimeout(() => { navProgress = 0; }, 350);
+                }
+            });
+        "
+        x-transition:enter="transition-opacity duration-100"
         x-transition:enter-start="opacity-0"
-        x-transition:leave="transition-opacity duration-300"
+        x-transition:leave="transition-opacity duration-400"
         x-transition:leave-end="opacity-0"
         style="display: none;"
-        class="fixed top-0 left-0 right-0 z-[9999] h-0.5 bg-transparent">
-        <div class="h-full w-full animate-pulse" style="background-color: #c80078;"></div>
+        class="fixed top-0 left-0 right-0 z-[9999]"
+        aria-hidden="true">
+        {{-- Progress fill bar — transitions width smoothly --}}
+        <div class="h-[3px] transition-all ease-out"
+             :style="'width: ' + navProgress + '%; background-color: #c80078; transition-duration: ' + (navProgress === 100 ? '150ms' : '200ms') + ';'">
+        </div>
+        {{-- Glowing tip at the leading edge --}}
+        <div class="absolute top-0 h-[3px] w-20 opacity-60"
+             :style="'right: calc(100% - ' + navProgress + '%); background-color: #c80078; filter: blur(3px);'">
+        </div>
     </div>
 
     {{-- ================================================================

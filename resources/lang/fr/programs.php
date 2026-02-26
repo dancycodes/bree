@@ -18,4 +18,6 @@ return [
     'view_all_programs' => 'Voir tous les programmes',
     'impact_title' => 'Notre Impact',
     'impact_label' => 'Impact du programme',
+    'no_programs' => 'Nos programmes seront bientôt disponibles.',
+    'no_programs_sub' => 'La Fondation BREE prépare ses prochains programmes d\'action.',
 ];

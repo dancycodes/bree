@@ -36,6 +36,27 @@
     <section class="py-20 lg:py-24" style="background-color: #f8f5f0;">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
+            @if ($programs->isEmpty())
+
+                {{-- Empty state --}}
+                <div class="flex flex-col items-center justify-center py-20 text-center">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center"
+                         style="background-color: rgba(200,0,120,0.08);">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                             stroke-width="1.5" style="color: #c80078;" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-semibold mb-2"
+                        style="color: #475569; font-family: 'Playfair Display', serif;">
+                        {{ __('programs.no_programs') }}
+                    </h2>
+                    <p class="text-sm" style="color: #94a3b8;">{{ __('programs.no_programs_sub') }}</p>
+                </div>
+
+            @else
+
             <div class="flex flex-col gap-10 lg:gap-12" id="programs-listing" data-stagger="0.12">
 
                 @foreach ($programs as $index => $program)
@@ -194,6 +215,8 @@
                 @endforeach
 
             </div>
+
+            @endif
 
         </div>
     </section>

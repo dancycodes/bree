@@ -18,4 +18,6 @@ return [
     'view_all_programs' => 'View all programs',
     'impact_title' => 'Our Impact',
     'impact_label' => 'Program impact',
+    'no_programs' => 'Our programmes will be available soon.',
+    'no_programs_sub' => 'Fondation BREE is preparing its upcoming action programmes.',
 ];
