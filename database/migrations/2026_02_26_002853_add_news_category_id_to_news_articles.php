@@ -18,13 +18,13 @@ return new class extends Migration
         });
 
         // Data migration: match existing category_slug to news_categories.slug
-        DB::statement('
-            UPDATE news_articles na
-            SET news_category_id = nc.id
-            FROM news_categories nc
-            WHERE na.category_slug = nc.slug
-              AND na.category_slug IS NOT NULL
-        ');
+        DB::table('news_articles')
+            ->whereNotNull('category_slug')
+            ->update([
+                'news_category_id' => DB::raw(
+                    '(SELECT id FROM news_categories WHERE news_categories.slug = news_articles.category_slug)'
+                ),
+            ]);
     }
 
     public function down(): void

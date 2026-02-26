@@ -2,11 +2,13 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\RateLimiter;
+use Spatie\Honeypot\ProtectAgainstSpam;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
     RateLimiter::clear('1.2.3.4');
+    $this->withoutMiddleware(ProtectAgainstSpam::class);
 });
 
 it('contact form allows 5 submissions then blocks on the 6th', function () {

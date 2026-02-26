@@ -19,13 +19,13 @@ it('404 page shows return to homepage link', function () {
 it('404 page contains branded heading', function () {
     $this->get('/non-existent-page')
         ->assertStatus(404)
-        ->assertSee("Cette page n'existe pas", false);
+        ->assertSee("cette page n'existe plus", false);
 });
 
 it('500 error view exists and renders without database queries', function () {
     $view = view('errors.500')->render();
 
     expect($view)->toContain('500')
-        ->toContain('Oups')
-        ->toContain("Retour à l'accueil");
+        ->toContain('Une erreur est survenue')
+        ->toContain('Accueil');
 });
