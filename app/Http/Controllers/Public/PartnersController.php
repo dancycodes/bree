@@ -25,9 +25,8 @@ class PartnersController extends Controller
             'contactName' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:50',
-            'orgType' => 'required|in:ngo,government,private,other',
-            'proposal' => 'required|string|max:5000',
-            'heardAbout' => 'nullable|string|max:255',
+            'partnershipType' => 'required|in:financial,technical,institutional,other',
+            'motivation' => 'required|string|max:5000',
         ]);
 
         $application = PartnershipApplication::create([
@@ -35,9 +34,8 @@ class PartnersController extends Controller
             'contact_name' => $validated['contactName'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
-            'organization_type' => $validated['orgType'],
-            'proposal' => $validated['proposal'],
-            'heard_about' => $validated['heardAbout'] ?? null,
+            'organization_type' => $validated['partnershipType'],
+            'proposal' => $validated['motivation'],
         ]);
 
         Mail::to(config('mail.from.address'))->queue(new PartnershipApplicationNotification($application));
@@ -45,7 +43,7 @@ class PartnersController extends Controller
         return gale()
             ->state('partnershipSubmitted', true)
             ->state('orgName', '')->state('contactName', '')->state('email', '')
-            ->state('phone', '')->state('orgType', '')->state('proposal', '')->state('heardAbout', '')
+            ->state('phone', '')->state('partnershipType', '')->state('motivation', '')
             ->dispatch('toast', ['message' => 'Votre demande de partenariat a été soumise. Nous vous répondrons dans les meilleurs délais.', 'type' => 'success']);
     }
 }
