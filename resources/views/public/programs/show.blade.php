@@ -140,10 +140,7 @@
                           style="color: {{ $program->color }};">
                         {{ __('programs.our_mission') }}
                     </span>
-                    <h2 class="font-heading font-bold mb-6"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.5rem, 3vw, 2.25rem);
-                               color: #002850;">
+                    <h2 class="bree-section-h2 mb-6">
                         {{ __('programs.what_we_do') }}
                     </h2>
                     <p class="text-base leading-relaxed mb-8" style="color: #5a6a7a;">
@@ -223,10 +220,7 @@
                           style="color: {{ $program->color }};">
                         {{ __('programs.testimonials_label') }}
                     </span>
-                    <h2 class="font-heading font-bold"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.5rem, 3vw, 2rem);
-                               color: #002850;">
+                    <h2 class="bree-section-h2">
                         {{ __('programs.testimonials_title') }}
                     </h2>
                 </div>
@@ -302,10 +296,7 @@
                           style="color: {{ $program->color }};">
                         {{ __('programs.program_events_label') }}
                     </span>
-                    <h2 class="font-heading font-bold"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.5rem, 3vw, 2rem);
-                               color: #002850;">
+                    <h2 class="bree-section-h2">
                         {{ __('programs.upcoming_events') }}
                     </h2>
                     <div class="mt-4 h-0.5 w-12" style="background-color: {{ $program->color }};"></div>
@@ -389,10 +380,8 @@
                           style="color: #c8a03c;">
                         {{ config('app.name') }}
                     </span>
-                    <h2 class="font-heading font-bold"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.5rem, 3vw, 2rem);
-                               color: #ffffff;">
+                    <h2 class="bree-section-h2"
+                        style="color: #ffffff;">
                         {{ __('programs.other_programs') }}
                     </h2>
                 </div>

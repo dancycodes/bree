@@ -301,6 +301,106 @@ body.overflow-hidden {
 }
 
 /* ============================================================
+   Typography Design System — F-040
+   Heading scale and body text tokens for all public pages.
+   ============================================================ */
+
+/* Hero h1 — consistent across all page heroes */
+.bree-hero-h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+}
+
+/* Section h2 — consistent across all content sections */
+.bree-section-h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #002850;
+}
+
+/* Subsection h3 — consistent for card titles, sub-headings */
+.bree-subsection-h3 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+    font-weight: 600;
+    line-height: 1.3;
+    color: #002850;
+}
+
+/* Standard section padding */
+.bree-section {
+    padding-top: 5rem;   /* py-20 */
+    padding-bottom: 5rem;
+}
+
+@media (min-width: 1024px) {
+    .bree-section {
+        padding-top: 6rem;  /* py-24 on lg */
+        padding-bottom: 6rem;
+    }
+}
+
+/* Container convention */
+.bree-container {
+    max-width: 80rem; /* max-w-7xl */
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+    .bree-container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .bree-container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+/* Body text standard */
+.bree-body-text {
+    font-family: var(--font-sans);
+    font-size: 1rem;         /* text-base = 16px */
+    line-height: 1.625;      /* leading-relaxed */
+    color: #374151;          /* gray-700 */
+}
+
+/* Breadcrumb standard */
+.bree-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;      /* text-xs */
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.bree-breadcrumb a:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.bree-breadcrumb [aria-current="page"] {
+    color: #ffffff;
+}
+
+.bree-breadcrumb .bree-breadcrumb-sep {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================================
    Micro-interaction Polish — Card Hover Lift
    Applied to article cards inside stagger-animated grids.
    Respects prefers-reduced-motion.

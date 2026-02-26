@@ -54,11 +54,8 @@
                 {{ __('news.hero_label') }}
             </span>
 
-            <h1 class="font-heading font-bold max-w-3xl"
-                style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(2rem, 4.5vw, 3.5rem);
-                       color: #ffffff;
-                       line-height: 1.1;"
+            <h1 class="bree-hero-h1 max-w-3xl"
+                style="color: #ffffff;"
                 data-animate="fade-up">
                 {{ __('news.hero_heading') }}
             </h1>

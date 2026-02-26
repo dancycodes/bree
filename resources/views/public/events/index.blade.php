@@ -78,11 +78,8 @@
                 {{ __('events.hero_label') }}
             </span>
 
-            <h1 class="font-bold max-w-3xl"
-                style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(2rem, 4.5vw, 3.5rem);
-                       color: #ffffff;
-                       line-height: 1.1;"
+            <h1 class="bree-hero-h1 max-w-3xl"
+                style="color: #ffffff;"
                 data-animate="fade-up">
                 {{ __('events.hero_heading') }}
             </h1>
@@ -112,11 +109,7 @@
                     <p class="text-xs font-bold tracking-widest uppercase mb-1" style="color: #c80078;">
                         {{ __('events.hero_label') }}
                     </p>
-                    <h2 class="font-bold"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.5rem, 3vw, 2.25rem);
-                               color: #002850;
-                               line-height: 1.15;">
+                    <h2 class="bree-section-h2">
                         {{ __('events.upcoming_title') }}
                     </h2>
                 </div>
@@ -297,11 +290,8 @@
                         <p class="text-xs font-bold tracking-widest uppercase mb-1" style="color: #94a3b8;">
                             {{ __('events.hero_label') }}
                         </p>
-                        <h2 class="font-bold"
-                            style="font-family: 'Playfair Display', serif;
-                                   font-size: clamp(1.5rem, 3vw, 2.25rem);
-                                   color: #475569;
-                                   line-height: 1.15;">
+                        <h2 class="bree-section-h2"
+                            style="color: #475569;">
                             {{ __('events.past_title') }}
                         </h2>
                     </div>

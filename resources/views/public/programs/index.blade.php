@@ -15,10 +15,8 @@
                   style="color: #c8a03c;">
                 {{ config('app.name') }}
             </span>
-            <h1 class="font-heading font-bold"
-                style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(2rem, 5vw, 3.5rem);
-                       color: #ffffff;">
+            <h1 class="bree-hero-h1"
+                style="color: #ffffff;">
                 {{ __('programs.page_title') }}
             </h1>
             <div class="mt-6 h-0.5 w-16 mx-auto" style="background-color: #c8a03c;"></div>
@@ -114,10 +112,8 @@
                                 {{-- Top: Name + description --}}
                                 <div>
                                     {{-- Program name --}}
-                                    <h2 class="font-heading font-bold mb-4"
-                                        style="font-family: 'Playfair Display', serif;
-                                               font-size: clamp(1.5rem, 3vw, 2.25rem);
-                                               color: {{ $program->color }};">
+                                    <h2 class="bree-subsection-h3 mb-4"
+                                        style="color: {{ $program->color }};">
                                         {{ $program->name() }}
                                     </h2>
 

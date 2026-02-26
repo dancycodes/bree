@@ -18,18 +18,17 @@
 
         <div class="relative z-10 h-full flex flex-col justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
 
-            <nav class="mb-5" aria-label="Breadcrumb">
-                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.6);">
+            <nav class="mb-5" aria-label="{{ __('ui.breadcrumb') }}">
+                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
                            x-navigate
-                           class="hover:text-white transition-colors"
-                           style="color: rgba(255,255,255,0.6);">
+                           class="hover:text-white transition-colors focus-visible:outline-white">
                             {{ __('nav.home') }}
                         </a>
                     </li>
-                    <li style="color: rgba(255,255,255,0.4);">/</li>
-                    <li style="color: #ffffff;">{{ __('gallery.page_title') }}</li>
+                    <li aria-hidden="true" style="color: rgba(255,255,255,0.3);">/</li>
+                    <li style="color: #ffffff;" aria-current="page">{{ __('gallery.page_title') }}</li>
                 </ol>
             </nav>
 
@@ -39,11 +38,8 @@
                 {{ __('gallery.hero_label') }}
             </span>
 
-            <h1 class="font-heading font-bold"
-                style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(1.75rem, 4vw, 3rem);
-                       color: #ffffff;
-                       line-height: 1.1;"
+            <h1 class="bree-hero-h1 max-w-3xl"
+                style="color: #ffffff;"
                 data-animate="fade-up">
                 {{ __('gallery.hero_heading') }}
             </h1>
@@ -72,8 +68,8 @@
                                   d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 18.75V7.5A2.25 2.25 0 015.25 5.25h13.5A2.25 2.25 0 0121 7.5v11.25A2.25 2.25 0 0118.75 21H5.25A2.25 2.25 0 013 18.75z"/>
                         </svg>
                     </div>
-                    <h2 class="font-heading text-2xl font-bold mb-3"
-                        style="font-family: 'Playfair Display', serif; color: #1e293b;">
+                    <h2 class="bree-subsection-h3 mb-3"
+                        style="color: #1e293b;">
                         {{ __('gallery.empty_heading') }}
                     </h2>
                     <p class="text-sm" style="color: #64748b;">{{ __('gallery.empty_sub') }}</p>
@@ -82,8 +78,7 @@
             @else
 
                 <div class="mb-12">
-                    <h2 class="font-heading text-3xl font-bold"
-                        style="font-family: 'Playfair Display', serif; color: #002850;"
+                    <h2 class="bree-section-h2"
                         data-animate="fade-up">
                         {{ __('gallery.albums_title') }}
                     </h2>
