@@ -3,32 +3,50 @@
 @section('title', __('partners.page_title') . ' — ' . config('app.name'))
 @section('meta_description', __('partners.meta_description'))
 
+@push('head')
+<style>
+    .partner-logo-img {
+        filter: grayscale(100%);
+        transition: filter 300ms ease;
+    }
+    .partner-logo-wrap:hover .partner-logo-img,
+    .partner-logo-wrap:focus-within .partner-logo-img {
+        filter: grayscale(0%);
+    }
+</style>
+@endpush
+
 @section('content')
 
     {{-- ================================================================
          PAGE HERO
          ================================================================ --}}
-    <section class="relative overflow-hidden" style="height: clamp(320px, 45vw, 500px);">
+    <section class="relative overflow-hidden" style="height: clamp(340px, 48vw, 520px);">
 
         <img src="{{ asset('images/sections/about.jpg') }}"
              alt="{{ __('partners.page_title') }}"
-             class="absolute inset-0 w-full h-full object-cover">
+             class="absolute inset-0 w-full h-full object-cover"
+             loading="eager">
 
-        <div class="absolute inset-0" style="background-color: rgba(0,20,60,0.78);"></div>
+        {{-- Solid dark overlay — NO gradient per BR-001 --}}
+        <div class="absolute inset-0" style="background-color: rgba(0,20,60,0.76);"></div>
 
-        <div class="relative z-10 h-full flex flex-col justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+        {{-- Left magenta accent bar --}}
+        <div class="absolute left-0 top-0 bottom-0 w-1" style="background-color: #c80078;"></div>
 
-            <nav class="mb-5" aria-label="Breadcrumb">
-                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.6);">
+        <div class="relative z-10 h-full flex flex-col justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+
+            <nav class="mb-5" aria-label="{{ __('ui.breadcrumb') }}">
+                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
-                           class="hover:text-white transition-colors"
-                           style="color: rgba(255,255,255,0.6);">
+                           x-navigate
+                           class="hover:text-white transition-colors focus-visible:outline-white">
                             {{ __('nav.home') }}
                         </a>
                     </li>
-                    <li style="color: rgba(255,255,255,0.4);">/</li>
-                    <li style="color: #ffffff;">{{ __('partners.page_title') }}</li>
+                    <li aria-hidden="true" style="color: rgba(255,255,255,0.3);">/</li>
+                    <li style="color: #ffffff;" aria-current="page">{{ __('partners.page_title') }}</li>
                 </ol>
             </nav>
 
@@ -40,14 +58,16 @@
 
             <h1 class="font-heading font-bold"
                 style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(2rem, 5vw, 3.5rem);
+                       font-size: clamp(2.2rem, 5.5vw, 4rem);
                        color: #ffffff;
-                       line-height: 1.1;"
+                       line-height: 1.1;
+                       letter-spacing: -0.01em;
+                       max-width: 680px;"
                 data-animate="fade-up">
                 {{ __('partners.hero_heading') }}
             </h1>
 
-            <p class="mt-4 text-base max-w-2xl"
+            <p class="mt-4 text-base max-w-xl"
                style="color: rgba(255,255,255,0.75); line-height: 1.7;"
                data-animate="fade-up">
                 {{ __('partners.hero_subtitle') }}
@@ -58,14 +78,16 @@
 
     {{-- ================================================================
          PARTNERS BY GROUP
+         Logo grid: 6-col desktop / 4-col tablet / 3-col mobile
+         Logos: grayscale default, full-color on hover (CSS transition)
          ================================================================ --}}
     <section class="py-16 lg:py-24" style="background-color: #ffffff;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             @if ($partners->isEmpty())
-                {{-- Empty state --}}
-                <div class="py-24 text-center">
-                    <div class="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center"
+                {{-- All partner types empty — placeholder message --}}
+                <div class="py-28 text-center">
+                    <div class="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center"
                          style="background-color: #f8f5f0;">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.25"
                              style="color: #c8a03c;">
@@ -73,10 +95,13 @@
                                   d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
                     </div>
-                    <h2 class="text-xl font-bold mb-2" style="color: #143c64; font-family: 'Playfair Display', serif;">
+                    <h2 class="text-xl font-bold mb-3"
+                        style="color: #143c64; font-family: 'Playfair Display', serif;">
                         {{ __('partners.empty_heading') }}
                     </h2>
-                    <p class="text-base" style="color: #64748b;">{{ __('partners.empty_sub') }}</p>
+                    <p class="text-base" style="color: #64748b;">
+                        {{ __('partners.empty_sub') }}
+                    </p>
                 </div>
 
             @else
@@ -90,81 +115,75 @@
 
                 @foreach ($groups as $type => $groupLabel)
                     @if ($partners->has($type))
-                        <div class="{{ !$loop->first ? 'mt-16 lg:mt-24' : '' }}">
+                        <div class="{{ !$loop->first ? 'mt-20 lg:mt-28' : '' }}">
 
-                            {{-- Group header --}}
-                            <div class="flex items-center gap-4 mb-10" data-animate="fade-up">
-                                <div class="h-px flex-1" style="background-color: #e2e8f0;"></div>
-                                <span class="text-xs font-bold tracking-widest uppercase px-4"
-                                      style="color: #143c64;">
-                                    {{ $groupLabel }}
-                                </span>
-                                <div class="h-px flex-1" style="background-color: #e2e8f0;"></div>
+                            {{-- Group heading with gold accent rule --}}
+                            <div class="mb-10" data-animate="fade-up">
+                                <div class="flex items-center gap-4">
+                                    <div class="h-px flex-1" style="background-color: #e2e8f0;"></div>
+                                    <h2 class="text-xs font-bold tracking-widest uppercase px-2 whitespace-nowrap"
+                                        style="color: #143c64;">
+                                        {{ $groupLabel }}
+                                    </h2>
+                                    <div class="h-px flex-1" style="background-color: #e2e8f0;"></div>
+                                </div>
+                                <div class="mt-3 flex justify-center">
+                                    <div class="h-0.5 w-12" style="background-color: #c8a03c;"></div>
+                                </div>
                             </div>
 
-                            {{-- Partners grid --}}
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {{-- Logo grid: 6-col desktop / 4-col tablet / 3-col mobile --}}
+                            <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4 lg:gap-6"
+                                 data-stagger="0.06">
                                 @foreach ($partners[$type] as $partner)
-                                    <div class="group rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1"
-                                         style="border: 1px solid #e2e8f0; background-color: #ffffff;"
-                                         data-animate="fade-up">
-
-                                        {{-- Logo or name badge --}}
-                                        <div class="flex items-center gap-4 mb-4">
-                                            @if ($partner->logo_path)
-                                                <div class="w-16 h-16 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0"
-                                                     style="background-color: #f8fafc;">
-                                                    <img src="{{ asset($partner->logo_path) }}"
-                                                         alt="{{ $partner->name }}"
-                                                         class="w-full h-full object-contain transition-all duration-300"
-                                                         style="filter: grayscale(100%);"
-                                                         onmouseover="this.style.filter='grayscale(0%)'"
-                                                         onmouseout="this.style.filter='grayscale(100%)'">
-                                                </div>
-                                            @else
-                                                <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0"
-                                                     style="background-color: #f0f4ff;">
-                                                    <span class="text-lg font-bold"
-                                                          style="color: #143c64;">
-                                                        {{ mb_substr($partner->name, 0, 2) }}
-                                                    </span>
-                                                </div>
-                                            @endif
-
-                                            <div class="min-w-0">
-                                                <h3 class="text-sm font-bold leading-tight"
-                                                    style="color: #143c64; font-family: 'Playfair Display', serif;">
-                                                    {{ $partner->name }}
-                                                </h3>
-                                                <span class="text-xs font-medium mt-1 inline-block"
-                                                      style="color: #c8a03c;">
-                                                    {{ $partner->typeLabel() }}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        {{-- Description --}}
-                                        @if ($partner->description())
-                                            <p class="text-sm leading-relaxed"
-                                               style="color: #475569; line-height: 1.7;">
-                                                {{ $partner->description() }}
-                                            </p>
-                                        @endif
-
-                                        {{-- Website link --}}
+                                    <div data-animate="fade-up">
                                         @if ($partner->website_url)
                                             <a href="{{ $partner->website_url }}"
                                                target="_blank"
                                                rel="noopener noreferrer"
-                                               class="inline-flex items-center gap-1.5 mt-4 text-xs font-semibold transition-colors"
-                                               style="color: #c80078;">
-                                                {{ __('partners.visit_website') }}
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                                                </svg>
+                                               title="{{ $partner->name }}"
+                                               class="partner-logo-wrap flex items-center justify-center rounded-xl p-3 transition-shadow duration-300 focus-visible:outline-2 focus-visible:outline-offset-2"
+                                               style="background-color: #f8f5f0;
+                                                      height: 100px;
+                                                      border: 1px solid #e2e8f0;
+                                                      outline-color: #c80078;">
+                                                @if ($partner->logo_path)
+                                                    <img src="{{ asset($partner->logo_path) }}"
+                                                         alt="{{ $partner->name }}"
+                                                         class="partner-logo-img w-full object-contain"
+                                                         style="height: 80px; max-width: 100%;">
+                                                @else
+                                                    <span class="text-sm font-bold text-center leading-tight px-1"
+                                                          style="color: #143c64; font-family: 'Playfair Display', serif;">
+                                                        {{ mb_substr($partner->name, 0, 3) }}
+                                                    </span>
+                                                @endif
                                             </a>
+                                        @else
+                                            <div class="partner-logo-wrap flex items-center justify-center rounded-xl p-3"
+                                                 title="{{ $partner->name }}"
+                                                 style="background-color: #f8f5f0;
+                                                        height: 100px;
+                                                        border: 1px solid #e2e8f0;">
+                                                @if ($partner->logo_path)
+                                                    <img src="{{ asset($partner->logo_path) }}"
+                                                         alt="{{ $partner->name }}"
+                                                         class="partner-logo-img w-full object-contain"
+                                                         style="height: 80px; max-width: 100%;">
+                                                @else
+                                                    <span class="text-sm font-bold text-center leading-tight px-1"
+                                                          style="color: #143c64; font-family: 'Playfair Display', serif;">
+                                                        {{ mb_substr($partner->name, 0, 3) }}
+                                                    </span>
+                                                @endif
+                                            </div>
                                         @endif
 
+                                        {{-- Partner name below logo --}}
+                                        <p class="mt-2 text-center text-xs font-medium leading-tight px-1"
+                                           style="color: #64748b;">
+                                            {{ $partner->name }}
+                                        </p>
                                     </div>
                                 @endforeach
                             </div>
@@ -187,9 +206,10 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                 {{-- Become a partner --}}
-                <div class="rounded-3xl p-8 lg:p-10" style="background-color: #143c64;">
+                <div class="rounded-3xl p-8 lg:p-10" style="background-color: #143c64;"
+                     data-animate="fade-up">
                     <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-6"
-                         style="background-color: rgba(200,160,60,0.2);">
+                         style="background-color: rgba(200,160,60,0.18);">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"
                              style="color: #c8a03c;">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -204,7 +224,7 @@
                         {{ __('partners.cta_partner_sub') }}
                     </p>
                     <a href="#partenariat"
-                       class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-opacity hover:opacity-90"
+                       class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                        style="background-color: #c80078; color: #ffffff;">
                         {{ __('partners.cta_partner_btn') }}
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
@@ -214,7 +234,9 @@
                 </div>
 
                 {{-- Become a volunteer --}}
-                <div class="rounded-3xl p-8 lg:p-10" style="background-color: #ffffff; border: 2px solid #e2e8f0;">
+                <div class="rounded-3xl p-8 lg:p-10"
+                     style="background-color: #ffffff; border: 2px solid #e2e8f0;"
+                     data-animate="fade-up">
                     <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-6"
                          style="background-color: #fff0f8;">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"
@@ -231,8 +253,9 @@
                         {{ __('partners.cta_volunteer_sub') }}
                     </p>
                     <a href="{{ route('public.volunteers') }}"
-                       class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-opacity hover:opacity-90"
-                       style="background-color: #c80078; color: #ffffff;">
+                       x-navigate
+                       class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2"
+                       style="background-color: #c80078; color: #ffffff; outline-color: #c80078;">
                         {{ __('partners.cta_volunteer_btn') }}
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -256,16 +279,19 @@
                     contactName: '',
                     email: '',
                     phone: '',
-                    orgType: '',
-                    proposal: '',
-                    heardAbout: '',
+                    partnershipType: '',
+                    motivation: '',
                     partnershipSubmitted: false
                 }"
-                x-sync>
+                x-sync="['orgName','contactName','email','phone','partnershipType','motivation','partnershipSubmitted']">
 
                 {{-- Success state --}}
                 <div x-show="partnershipSubmitted"
-                     class="text-center py-16" style="display: none;">
+                     x-transition:enter="transition duration-400"
+                     x-transition:enter-start="opacity-0 translate-y-4"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     class="text-center py-16"
+                     style="display: none;">
                     <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"
                          style="background-color: #dcfce7;">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
@@ -277,122 +303,177 @@
                         style="color: #143c64; font-family: 'Playfair Display', serif;">
                         {{ __('partners.form_success_heading') }}
                     </h2>
-                    <p class="text-base mb-8" style="color: #64748b;">
+                    <p class="text-base mb-8" style="color: #64748b; max-width: 420px; margin-left: auto; margin-right: auto;">
                         {{ __('partners.form_success_sub') }}
                     </p>
                     <button @click="partnershipSubmitted = false"
-                            class="text-sm font-semibold transition-opacity hover:opacity-80"
-                            style="color: #c80078;">
+                            class="text-sm font-semibold transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2"
+                            style="color: #c80078; outline-color: #c80078;">
                         {{ __('partners.form_success_reset') }}
                     </button>
                 </div>
 
                 {{-- Form --}}
                 <div x-show="!partnershipSubmitted">
+
+                    {{-- Form header --}}
                     <div class="text-center mb-10">
                         <span class="block text-xs font-bold tracking-widest uppercase mb-3"
                               style="color: #c8a03c;"
                               data-animate="fade-up">
                             {{ __('partners.hero_label') }}
                         </span>
-                        <h2 class="text-2xl font-bold mb-3"
-                            style="color: #143c64; font-family: 'Playfair Display', serif;"
+                        <h2 class="text-3xl font-bold mb-4"
+                            style="color: #143c64; font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2rem);"
                             data-animate="fade-up">
                             {{ __('partners.form_heading') }}
                         </h2>
-                        <p class="text-base max-w-xl mx-auto" style="color: #64748b;" data-animate="fade-up">
+                        <p class="text-base max-w-xl mx-auto" style="color: #64748b; line-height: 1.7;"
+                           data-animate="fade-up">
                             {{ __('partners.form_subtitle') }}
+                        </p>
+                        <p class="mt-2 text-xs" style="color: #94a3b8;" data-animate="fade-up">
+                            {{ __('partners.form_required') }}
                         </p>
                     </div>
 
-                    <div class="rounded-3xl shadow-sm p-8 lg:p-10 space-y-6"
-                         style="background-color: #ffffff; border: 1px solid #e2e8f0;">
+                    <div class="rounded-3xl p-8 lg:p-10 space-y-6"
+                         style="background-color: #f8f5f0; border: 1px solid #e2e8f0;"
+                         data-animate="fade-up">
 
                         {{-- Organization & Contact --}}
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <div>
-                                <label class="block text-sm font-semibold mb-2" style="color: #475569;">
-                                    {{ __('partners.field_org_name') }} <span style="color: #c80078;">*</span>
+                                <label for="field-org-name"
+                                       class="block text-sm font-semibold mb-2"
+                                       style="color: #1e293b;">
+                                    {{ __('partners.field_org_name') }}
+                                    <span aria-hidden="true" style="color: #c80078;">*</span>
                                 </label>
-                                <input x-model="orgName" x-name="orgName" type="text"
-                                       placeholder="Nom de votre organisation"
-                                       class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none transition-colors"
-                                       style="border-color: #e2e8f0; color: #1e293b;">
+                                <input id="field-org-name"
+                                       x-model="orgName"
+                                       x-name="orgName"
+                                       type="text"
+                                       autocomplete="organization"
+                                       required
+                                       class="w-full text-sm px-4 py-3 rounded-xl border bg-white focus:outline-none focus:ring-2 transition-colors"
+                                       style="border-color: #d1d5db; color: #1e293b;"
+                                       onfocus="this.style.borderColor='#c80078'; this.style.boxShadow='0 0 0 3px rgba(200,0,120,0.12)'"
+                                       onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
                                 <p x-message="orgName" class="text-xs mt-1.5" style="color: #ef4444;"></p>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold mb-2" style="color: #475569;">
-                                    {{ __('partners.field_contact_name') }} <span style="color: #c80078;">*</span>
+                                <label for="field-contact-name"
+                                       class="block text-sm font-semibold mb-2"
+                                       style="color: #1e293b;">
+                                    {{ __('partners.field_contact_name') }}
+                                    <span aria-hidden="true" style="color: #c80078;">*</span>
                                 </label>
-                                <input x-model="contactName" x-name="contactName" type="text"
-                                       placeholder="Votre nom et prénom"
-                                       class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none transition-colors"
-                                       style="border-color: #e2e8f0; color: #1e293b;">
+                                <input id="field-contact-name"
+                                       x-model="contactName"
+                                       x-name="contactName"
+                                       type="text"
+                                       autocomplete="name"
+                                       required
+                                       class="w-full text-sm px-4 py-3 rounded-xl border bg-white focus:outline-none transition-colors"
+                                       style="border-color: #d1d5db; color: #1e293b;"
+                                       onfocus="this.style.borderColor='#c80078'; this.style.boxShadow='0 0 0 3px rgba(200,0,120,0.12)'"
+                                       onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
                                 <p x-message="contactName" class="text-xs mt-1.5" style="color: #ef4444;"></p>
                             </div>
                         </div>
 
                         {{-- Email & Phone --}}
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <div>
-                                <label class="block text-sm font-semibold mb-2" style="color: #475569;">
-                                    {{ __('partners.field_email') }} <span style="color: #c80078;">*</span>
+                                <label for="field-email"
+                                       class="block text-sm font-semibold mb-2"
+                                       style="color: #1e293b;">
+                                    {{ __('partners.field_email') }}
+                                    <span aria-hidden="true" style="color: #c80078;">*</span>
                                 </label>
-                                <input x-model="email" x-name="email" type="email"
-                                       placeholder="contact@organisation.org"
-                                       class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none"
-                                       style="border-color: #e2e8f0; color: #1e293b;">
+                                <input id="field-email"
+                                       x-model="email"
+                                       x-name="email"
+                                       type="email"
+                                       autocomplete="email"
+                                       required
+                                       class="w-full text-sm px-4 py-3 rounded-xl border bg-white focus:outline-none transition-colors"
+                                       style="border-color: #d1d5db; color: #1e293b;"
+                                       onfocus="this.style.borderColor='#c80078'; this.style.boxShadow='0 0 0 3px rgba(200,0,120,0.12)'"
+                                       onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
                                 <p x-message="email" class="text-xs mt-1.5" style="color: #ef4444;"></p>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold mb-2" style="color: #475569;">
+                                <label for="field-phone"
+                                       class="block text-sm font-semibold mb-2"
+                                       style="color: #1e293b;">
                                     {{ __('partners.field_phone') }}
                                 </label>
-                                <input x-model="phone" x-name="phone" type="tel"
-                                       placeholder="+237 6XX XXX XXX"
-                                       class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none"
-                                       style="border-color: #e2e8f0; color: #1e293b;">
+                                <input id="field-phone"
+                                       x-model="phone"
+                                       x-name="phone"
+                                       type="tel"
+                                       autocomplete="tel"
+                                       class="w-full text-sm px-4 py-3 rounded-xl border bg-white focus:outline-none transition-colors"
+                                       style="border-color: #d1d5db; color: #1e293b;"
+                                       onfocus="this.style.borderColor='#c80078'; this.style.boxShadow='0 0 0 3px rgba(200,0,120,0.12)'"
+                                       onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
                             </div>
                         </div>
 
-                        {{-- Organization type --}}
+                        {{-- Partnership type --}}
                         <div>
-                            <label class="block text-sm font-semibold mb-2" style="color: #475569;">
-                                {{ __('partners.field_org_type') }} <span style="color: #c80078;">*</span>
+                            <label for="field-partnership-type"
+                                   class="block text-sm font-semibold mb-2"
+                                   style="color: #1e293b;">
+                                {{ __('partners.field_partnership_type') }}
+                                <span aria-hidden="true" style="color: #c80078;">*</span>
                             </label>
-                            <select x-model="orgType" x-name="orgType"
-                                    class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none appearance-none"
-                                    style="border-color: #e2e8f0; color: #1e293b; background-color: #ffffff;">
-                                <option value="">— Sélectionner un type —</option>
-                                <option value="ngo">{{ __('partners.org_type_ngo') }}</option>
-                                <option value="government">{{ __('partners.org_type_government') }}</option>
-                                <option value="private">{{ __('partners.org_type_private') }}</option>
-                                <option value="other">{{ __('partners.org_type_other') }}</option>
-                            </select>
-                            <p x-message="orgType" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                            <div class="relative">
+                                <select id="field-partnership-type"
+                                        x-model="partnershipType"
+                                        x-name="partnershipType"
+                                        required
+                                        class="w-full text-sm px-4 py-3 rounded-xl border bg-white focus:outline-none appearance-none pr-10 transition-colors"
+                                        style="border-color: #d1d5db; color: #1e293b;"
+                                        onfocus="this.style.borderColor='#c80078'; this.style.boxShadow='0 0 0 3px rgba(200,0,120,0.12)'"
+                                        onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
+                                    <option value="">— {{ __('partners.partnership_type_placeholder') }} —</option>
+                                    <option value="financial">{{ __('partners.partnership_type_financial') }}</option>
+                                    <option value="technical">{{ __('partners.partnership_type_technical') }}</option>
+                                    <option value="institutional">{{ __('partners.partnership_type_institutional') }}</option>
+                                    <option value="other">{{ __('partners.partnership_type_other') }}</option>
+                                </select>
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
+                                         style="color: #94a3b8;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <p x-message="partnershipType" class="text-xs mt-1.5" style="color: #ef4444;"></p>
                         </div>
 
-                        {{-- Partnership proposal --}}
+                        {{-- Motivation / proposal --}}
                         <div>
-                            <label class="block text-sm font-semibold mb-2" style="color: #475569;">
-                                {{ __('partners.field_proposal') }} <span style="color: #c80078;">*</span>
+                            <label for="field-motivation"
+                                   class="block text-sm font-semibold mb-2"
+                                   style="color: #1e293b;">
+                                {{ __('partners.field_motivation') }}
+                                <span aria-hidden="true" style="color: #c80078;">*</span>
                             </label>
-                            <textarea x-model="proposal" x-name="proposal" rows="6"
-                                      placeholder="{{ __('partners.proposal_hint') }}"
-                                      class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none resize-y"
-                                      style="border-color: #e2e8f0; color: #1e293b; line-height: 1.7;"></textarea>
-                            <p x-message="proposal" class="text-xs mt-1.5" style="color: #ef4444;"></p>
-                        </div>
-
-                        {{-- How heard --}}
-                        <div>
-                            <label class="block text-sm font-semibold mb-2" style="color: #475569;">
-                                {{ __('partners.field_heard') }}
-                            </label>
-                            <input x-model="heardAbout" x-name="heardAbout" type="text"
-                                   placeholder="Réseaux sociaux, recommandation, presse…"
-                                   class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none"
-                                   style="border-color: #e2e8f0; color: #1e293b;">
+                            <textarea id="field-motivation"
+                                      x-model="motivation"
+                                      x-name="motivation"
+                                      rows="6"
+                                      required
+                                      placeholder="{{ __('partners.motivation_hint') }}"
+                                      class="w-full text-sm px-4 py-3 rounded-xl border bg-white focus:outline-none resize-y transition-colors"
+                                      style="border-color: #d1d5db; color: #1e293b; line-height: 1.7;"
+                                      onfocus="this.style.borderColor='#c80078'; this.style.boxShadow='0 0 0 3px rgba(200,0,120,0.12)'"
+                                      onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'"></textarea>
+                            <p x-message="motivation" class="text-xs mt-1.5" style="color: #ef4444;"></p>
                         </div>
 
                         {{-- Honeypot --}}
@@ -402,10 +483,16 @@
                         <button
                             @click="$action('{{ route('public.partners.store') }}')"
                             :disabled="$fetching()"
-                            class="w-full py-4 rounded-2xl text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-                            style="background-color: #143c64;">
+                            class="w-full py-4 rounded-2xl text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2"
+                            style="background-color: #c80078; outline-color: #c80078;">
                             <span x-show="!$fetching()">{{ __('partners.form_submit') }}</span>
-                            <span x-show="$fetching()">{{ __('partners.form_submitting') }}</span>
+                            <span x-show="$fetching()" class="flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                </svg>
+                                {{ __('partners.form_submitting') }}
+                            </span>
                         </button>
 
                     </div>
