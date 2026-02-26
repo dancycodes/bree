@@ -15,6 +15,28 @@ return [
 
     'types_heading' => 'How would you like to contribute?',
 
+    'tab_direct' => 'Direct Donation',
+    'tab_recurring' => 'Recurring Donation',
+    'tab_pledge' => 'Donation Pledge',
+
+    'direct_tab_heading' => 'Make a donation now',
+    'direct_tab_sub' => 'Select your amount and pay securely via Flutterwave.',
+    'recurring_tab_heading' => 'Monthly recurring donation',
+    'recurring_tab_sub' => 'Join our circle of regular donors. Your monthly support allows us to plan long-term.',
+    'recurring_coming_soon' => 'Coming soon',
+    'recurring_coming_soon_sub' => 'Recurring donations will be available soon. In the meantime, you can make a direct donation.',
+    'pledge_tab_heading' => 'Donation pledge',
+    'pledge_tab_sub' => 'Commit to a future donation. Our team will contact you to confirm the details.',
+
+    'secure_payment' => 'Secure Flutterwave Payment',
+    'secure_payment_badge' => '256-bit SSL Encryption',
+    'impact_for_amount' => 'With :amount FCFA',
+
+    'trust_secure' => 'Secure payment',
+    'trust_flutterwave' => 'Secure Flutterwave Payment',
+    'trust_encrypted' => 'Encrypted data',
+    'trust_deductible' => 'Tax deductible',
+
     'type_direct_title' => 'Direct donation',
     'type_direct_sub' => 'Make an immediate and secure donation by credit card or mobile money via Flutterwave. Simple, fast, and 100% secure.',
     'type_direct_btn' => 'Donate now',
