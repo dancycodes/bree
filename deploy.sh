@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+APP_DIR="/var/www/breefondation"
+
+echo ">>> Taking ownership for deploy..."
+sudo chown -R $USER:www-data "$APP_DIR"
+
 echo ">>> Pulling latest code..."
 git pull origin main
 
@@ -27,7 +32,16 @@ php artisan event:cache
 echo ">>> Running migrations..."
 php artisan migrate --force
 
-echo ">>> Restarting queue workers (if any)..."
+echo ">>> Restarting queue workers..."
 php artisan queue:restart
+
+echo ">>> Setting file permissions..."
+sudo find "$APP_DIR" -type f -exec chmod 644 {} \;
+sudo find "$APP_DIR" -type d -exec chmod 755 {} \;
+sudo chmod -R 775 "$APP_DIR/storage" "$APP_DIR/bootstrap/cache"
+sudo chown -R www-data:www-data "$APP_DIR/storage" "$APP_DIR/bootstrap/cache"
+
+echo ">>> Restarting PHP-FPM..."
+sudo systemctl restart php8.4-fpm
 
 echo ">>> Done! Deployment complete."
