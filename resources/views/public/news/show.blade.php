@@ -35,7 +35,6 @@
                     style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
-                           x-navigate
                            class="hover:text-white transition-colors focus-visible:outline-white">
                             {{ __('nav.home') }}
                         </a>
@@ -43,7 +42,6 @@
                     <li aria-hidden="true" style="color: rgba(255,255,255,0.3);">/</li>
                     <li>
                         <a href="{{ route('public.news') }}"
-                           x-navigate
                            class="hover:text-white transition-colors focus-visible:outline-white">
                             {{ __('news.page_title') }}
                         </a>
@@ -185,7 +183,6 @@
                     {{-- Back link --}}
                     <div class="mt-14 pt-8" style="border-top: 1.5px solid #e2e8f0;">
                         <a href="{{ route('public.news') }}"
-                           x-navigate
                            class="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-200 hover:gap-3"
                            style="color: #002850;">
                             <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor"
@@ -261,7 +258,6 @@
                                     {{ __('news.category_label') }}
                                 </p>
                                 <a href="{{ route('public.news', ['category' => $article->newsCategory?->slug ?? $article->category_slug]) }}"
-                                   x-navigate
                                    class="inline-flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-full transition-opacity hover:opacity-80"
                                    style="background-color: {{ $article->newsCategory?->color ? $article->newsCategory->color . '18' : '#c8007812' }};
                                           color: {{ $article->newsCategory?->color ?: '#c80078' }};">

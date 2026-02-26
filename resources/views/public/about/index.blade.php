@@ -27,7 +27,6 @@
                 <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
-                           x-navigate
                            class="hover:text-white transition-colors focus-visible:outline-white">
                             {{ __('nav.home') }}
                         </a>
@@ -613,7 +612,6 @@
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
 
                 <a href="{{ route('public.donate') }}"
-                   x-navigate
                    class="btn-primary rounded-full px-8 py-4 text-sm"
                    style="min-width: 200px;">
                     {{ __('about.cta_donate') }}
@@ -624,7 +622,6 @@
 
                 @if (Route::has('public.volunteers'))
                     <a href="{{ route('public.volunteers') }}"
-                       x-navigate
                        class="btn-outline-navy rounded-full px-8 py-4 text-sm"
                        style="min-width: 200px;">
                         {{ __('about.cta_volunteer') }}

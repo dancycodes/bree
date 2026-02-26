@@ -22,7 +22,6 @@
                 <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
-                           x-navigate
                            class="hover:text-white transition-colors focus-visible:outline-white">
                             {{ __('nav.home') }}
                         </a>
@@ -94,7 +93,6 @@
 
                             {{-- Album image link — Gale navigate --}}
                             <a href="{{ route('public.gallery.show', $album) }}"
-                               x-navigate
                                class="block relative overflow-hidden focus-visible:ring-2 focus-visible:ring-offset-2"
                                style="aspect-ratio: 16/9; display: block;"
                                aria-label="{{ $album->title() }}">
@@ -171,7 +169,6 @@
                     <div class="mt-12 flex items-center justify-center gap-2">
                         @if (! $albums->onFirstPage())
                             <a href="{{ $albums->previousPageUrl() }}"
-                               x-navigate
                                class="px-4 py-2 rounded-xl text-sm font-medium transition-colors"
                                style="border: 1px solid #e2e8f0; color: #475569;">&laquo;</a>
                         @endif
@@ -181,14 +178,12 @@
                                       style="background-color: #c80078;">{{ $page }}</span>
                             @else
                                 <a href="{{ $url }}"
-                                   x-navigate
                                    class="px-4 py-2 rounded-xl text-sm font-medium transition-colors"
                                    style="border: 1px solid #e2e8f0; color: #475569;">{{ $page }}</a>
                             @endif
                         @endforeach
                         @if ($albums->hasMorePages())
                             <a href="{{ $albums->nextPageUrl() }}"
-                               x-navigate
                                class="px-4 py-2 rounded-xl text-sm font-medium transition-colors"
                                style="border: 1px solid #e2e8f0; color: #475569;">&raquo;</a>
                         @endif

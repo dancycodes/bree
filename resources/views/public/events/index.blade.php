@@ -62,7 +62,6 @@
                 <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
-                           x-navigate
                            class="hover:text-white transition-colors focus-visible:outline-white">
                             {{ __('nav.home') }}
                         </a>
@@ -254,7 +253,6 @@
 
                                     <div class="mt-4">
                                         <a href="{{ route('public.events.show', $event) }}"
-                                           x-navigate
                                            class="inline-flex items-center gap-1.5 text-xs font-bold transition-opacity hover:opacity-75"
                                            style="color: #c80078;">
                                             {{ __('events.view_event') }}
@@ -355,7 +353,6 @@
                                 @endif
 
                                 <a href="{{ route('public.events.show', $event) }}"
-                                   x-navigate
                                    class="inline-flex items-center gap-1 text-xs font-semibold transition-opacity hover:opacity-75"
                                    style="color: #475569;">
                                     {{ __('events.view_event') }}

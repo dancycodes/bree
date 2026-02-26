@@ -38,7 +38,6 @@
                 <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
-                           x-navigate
                            class="hover:text-white transition-colors focus-visible:outline-white">
                             {{ __('nav.home') }}
                         </a>
@@ -78,7 +77,7 @@
     <section class="py-20" style="background-color: #f8f5f0;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
              x-data
-             x-navigate.key.articles>
+.key.articles>
 
             @fragment('articles-grid')
             {{-- CSS-only fade-in on every fragment swap — avoids GSAP opacity:0 issues --}}

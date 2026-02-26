@@ -173,7 +173,6 @@
                                 {{-- Bottom: CTA --}}
                                 <div class="flex items-center justify-between flex-wrap gap-4">
                                     <a href="{{ route('public.programs.show', $program) }}"
-                                       x-navigate
                                        class="inline-flex items-center gap-2 text-sm font-bold transition-opacity duration-200 hover:opacity-75"
                                        style="color: {{ $program->color }};">
                                         {{ __('programs.discover_program') }}

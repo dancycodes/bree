@@ -70,7 +70,6 @@
                     <a
                         data-hero-cta
                         href="{{ $hero->cta1_url }}"
-                        x-navigate
                         class="btn-primary text-base font-semibold px-8 py-4 rounded-xl w-full sm:w-auto text-center"
                         style="min-width: 220px;">
                         {{ $hero->cta1Label() }}
@@ -78,7 +77,6 @@
                     <a
                         data-hero-cta
                         href="{{ $hero->cta2_url }}"
-                        x-navigate
                         class="btn-secondary text-base font-semibold px-8 py-4 rounded-xl w-full sm:w-auto text-center"
                         style="min-width: 220px;">
                         {{ $hero->cta2Label() }}
@@ -364,7 +362,6 @@
                                 {{-- CTA Link --}}
                                 <a
                                     href="{{ $program->url }}"
-                                    x-navigate
                                     class="inline-flex items-center gap-2 text-sm font-bold"
                                     style="color: {{ $program->color }};">
                                     {{ __('home.learn_more') }}
@@ -409,7 +406,6 @@
                 @if (Route::has('public.news'))
                     <a
                         href="{{ route('public.news') }}"
-                        x-navigate
                         class="btn-outline text-sm font-semibold px-6 py-3 rounded-xl self-start sm:self-auto whitespace-nowrap"
                         data-animate="fade-left">
                         {{ __('home.all_news') }}
@@ -429,7 +425,7 @@
 
                             {{-- Thumbnail --}}
                             @if (Route::has('public.news.show'))
-                                <a href="{{ route('public.news.show', $article->slug) }}" x-navigate class="block overflow-hidden" style="height: 200px;">
+                                <a href="{{ route('public.news.show', $article->slug) }}" class="block overflow-hidden" style="height: 200px;">
                             @else
                                 <div class="block overflow-hidden" style="height: 200px;">
                             @endif
@@ -479,7 +475,6 @@
                                            color: #002850;">
                                     @if (Route::has('public.news.show'))
                                         <a href="{{ route('public.news.show', $article->slug) }}"
-                                           x-navigate
                                            class="hover:underline underline-offset-2">
                                             {{ $article->title() }}
                                         </a>
@@ -492,7 +487,6 @@
                                 @if (Route::has('public.news.show'))
                                     <a
                                         href="{{ route('public.news.show', $article->slug) }}"
-                                        x-navigate
                                         class="inline-flex items-center gap-2 text-sm font-semibold mt-auto"
                                         style="color: #c80078;">
                                         {{ __('home.read_more') }}
@@ -550,7 +544,6 @@
                 @if (Route::has('public.events'))
                     <a
                         href="{{ route('public.events') }}"
-                        x-navigate
                         class="btn-outline text-sm font-semibold px-6 py-3 rounded-xl self-start sm:self-auto whitespace-nowrap"
                         data-animate="fade-left">
                         {{ __('home.all_events') }}
@@ -595,7 +588,6 @@
                                            color: #002850;">
                                     @if (Route::has('public.events.show'))
                                         <a href="{{ route('public.events.show', $event->slug) }}"
-                                           x-navigate
                                            class="hover:underline underline-offset-2">
                                             {{ $event->title() }}
                                         </a>
@@ -625,7 +617,6 @@
                                 @if (Route::has('public.events.show'))
                                     <a
                                         href="{{ route('public.events.show', $event->slug) }}"
-                                        x-navigate
                                         class="inline-flex items-center gap-1.5 text-xs font-semibold mt-auto"
                                         style="color: #c80078;">
                                         {{ __('home.see_event') }}
@@ -759,7 +750,6 @@
                 <div class="text-center mt-10" data-animate="fade-up">
                     @if (Route::has('public.gallery'))
                         <a href="{{ route('public.gallery') }}"
-                           x-navigate
                            class="btn-outline text-sm font-semibold px-8 py-3 rounded-xl inline-flex items-center gap-2">
                             {{ __('home.gallery_cta') }}
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
@@ -1227,7 +1217,6 @@
                     @if (Route::has('public.donate'))
                         <a
                             href="{{ route('public.donate') }}"
-                            x-navigate
                             class="inline-flex items-center justify-center text-base font-semibold px-10 py-4 rounded-xl w-full sm:w-auto text-center transition-all duration-150"
                             style="background-color: #ffffff; color: #c80078; min-width: 220px;"
                             onmouseover="this.style.backgroundColor='#f8f5f0'"

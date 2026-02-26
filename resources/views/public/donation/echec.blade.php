@@ -75,7 +75,7 @@
 
         {{-- Logo --}}
         <div class="bree-animate-logo mb-8 sm:mb-10">
-            <a href="{{ route('public.home') }}" x-navigate aria-label="{{ config('app.name') }}">
+            <a href="{{ route('public.home') }}" aria-label="{{ config('app.name') }}">
                 <img src="{{ asset('images/logo.png') }}"
                      alt="{{ config('app.name') }}"
                      class="h-12 sm:h-14 w-auto mx-auto object-contain"
@@ -145,7 +145,6 @@
         {{-- Primary action buttons --}}
         <div class="bree-animate-cta flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
             <a href="{{ route('public.donate') }}"
-               x-navigate
                class="bree-cta-btn"
                style="background-color: #c80078; color: #ffffff;">
                 <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
@@ -154,7 +153,6 @@
                 {{ __('donation.echec_retry_btn') }}
             </a>
             <a href="{{ route('public.home') }}"
-               x-navigate
                class="bree-cta-btn"
                style="background-color: #143c64; color: #ffffff;">
                 <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
@@ -204,7 +202,6 @@
                 @endif
                 @if (!$supportEmail && !$supportPhone)
                     <a href="{{ route('public.contact') }}"
-                       x-navigate
                        class="inline-flex items-center gap-2 text-sm font-semibold"
                        style="color: #c80078;">
                         {{ __('nav.contact') }}

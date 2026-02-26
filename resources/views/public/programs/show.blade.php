@@ -30,7 +30,6 @@
                     style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
-                           x-navigate
                            class="hover:text-white transition-colors duration-200">
                             {{ __('nav.home') }}
                         </a>
@@ -38,7 +37,6 @@
                     <li aria-hidden="true" style="color: rgba(255,255,255,0.3);">/</li>
                     <li>
                         <a href="{{ route('public.programs') }}"
-                           x-navigate
                            class="hover:text-white transition-colors duration-200">
                             {{ __('programs.page_title') }}
                         </a>
@@ -150,7 +148,6 @@
                     {{-- Donate CTA --}}
                     @if (Route::has('public.donate'))
                         <a href="{{ route('public.donate') }}?programme={{ $program->slug }}"
-                           x-navigate
                            class="btn-primary rounded-full px-7 py-3.5 text-sm">
                             {{ __('programs.donate_for_program', ['name' => $program->name()]) }}
                             <svg class="w-4 h-4" fill="none" stroke="currentColor"
@@ -282,7 +279,7 @@
     {{-- ================================================================
          UPCOMING PROGRAM EVENTS
          Lighter visual than main content; hidden when no events.
-         All links use x-navigate (Gale).
+         All links use (Gale).
          ================================================================ --}}
     @if ($programEvents->count() > 0)
         <section class="py-20 lg:py-24" style="background-color: #ffffff;">
@@ -303,7 +300,6 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-stagger="0.08">
                     @foreach ($programEvents as $event)
                         <a href="{{ route('public.events.show', $event) }}"
-                           x-navigate
                            class="group block rounded-xl overflow-hidden transition-shadow duration-200
                                   hover:shadow-md"
                            style="border: 1px solid {{ $program->color }}20;"
@@ -367,7 +363,7 @@
     {{-- ================================================================
          OTHER PROGRAMS
          Dark navy section; image cards with flat overlay.
-         All navigation via x-navigate (Gale).
+         All navigation via (Gale).
          ================================================================ --}}
     @if ($otherPrograms->count() > 0)
         <section class="py-20 lg:py-24" style="background-color: #002850;">
@@ -388,7 +384,6 @@
                     @foreach ($otherPrograms as $other)
 
                         <a href="{{ route('public.programs.show', $other) }}"
-                           x-navigate
                            class="group block rounded-2xl overflow-hidden relative"
                            style="min-height: 260px;"
                            data-animate="fade-up">

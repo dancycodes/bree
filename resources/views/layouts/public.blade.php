@@ -140,7 +140,6 @@
 
                 {{-- Logo --}}
                 <a href="{{ route('public.home') }}"
-                   x-navigate
                    class="flex items-center flex-shrink-0 focus-visible:outline-offset-4">
                     <img src="{{ asset('images/logo.png') }}"
                          alt="{{ config('app.name') }}"
@@ -168,7 +167,6 @@
                         @if (Route::has($link['route']))
                             @php $isActive = request()->routeIs($link['match']); @endphp
                             <a href="{{ route($link['route']) }}"
-                               x-navigate
                                class="bree-nav-link{{ $isActive ? ' bree-nav-link--active' : '' }}">
                                 {{ $link['label'] }}
                                 <span class="bree-nav-underline"></span>
@@ -204,7 +202,6 @@
                     {{-- Donate CTA --}}
                     @if (Route::has('public.donate'))
                         <a href="{{ route('public.donate') }}"
-                           x-navigate
                            class="btn-primary text-xs px-3 py-2 xl:px-5 xl:py-2.5 rounded-lg font-bold tracking-wide uppercase whitespace-nowrap">
                             {{ __('nav.donate') }}
                         </a>
@@ -274,7 +271,6 @@
         <div class="flex items-center justify-between px-6 py-4"
              style="border-bottom: 1px solid rgba(255,255,255,0.08); min-height: 4.5rem;">
             <a href="{{ route('public.home') }}"
-               x-navigate
                @click="closeMenu()"
                class="flex items-center">
                 <img src="{{ asset('images/logo.png') }}"
@@ -307,7 +303,6 @@
                         @php $isMobileActive = request()->routeIs($link['match']); @endphp
                         <li>
                             <a href="{{ route($link['route']) }}"
-                               x-navigate
                                @click="closeMenu()"
                                class="flex items-center w-full transition-colors duration-150"
                                style="
@@ -333,7 +328,6 @@
             @if (Route::has('public.donate'))
                 <div class="mt-6">
                     <a href="{{ route('public.donate') }}"
-                       x-navigate
                        @click="closeMenu()"
                        class="flex items-center justify-center w-full rounded-xl font-bold text-base text-white"
                        style="background-color: #c80078; min-height: 52px; padding: 0.875rem 1.5rem; text-transform: uppercase; letter-spacing: 0.08em; transition: background-color 150ms ease; border: 2px solid #c80078;"
@@ -415,7 +409,7 @@
 
                 {{-- Brand Column --}}
                 <div class="lg:col-span-1">
-                    <a href="{{ route('public.home') }}" x-navigate class="inline-block mb-5">
+                    <a href="{{ route('public.home') }}" class="inline-block mb-5">
                         <img src="{{ asset('images/logo.png') }}"
                              alt="{{ config('app.name') }}"
                              class="h-16 w-auto brightness-0 invert"
@@ -468,7 +462,6 @@
                             <li>
                                 @if (Route::has('public.programs.show'))
                                     <a href="{{ route('public.programs.show', $program['slug']) }}"
-                                       x-navigate
                                        class="transition-colors duration-150 hover:text-white"
                                        style="color: rgba(255,255,255,0.6);">
                                         {{ $program['label'] }}
@@ -498,7 +491,6 @@
                             <li>
                                 @if (Route::has($link['route']))
                                     <a href="{{ route($link['route']) }}"
-                                       x-navigate
                                        class="transition-colors duration-150 hover:text-white"
                                        style="color: rgba(255,255,255,0.6);">
                                         {{ $link['label'] }}
@@ -551,7 +543,6 @@
                     @if (Route::has('public.donate'))
                         <div class="mt-8">
                             <a href="{{ route('public.donate') }}"
-                               x-navigate
                                class="btn-primary text-sm py-3 px-6 rounded-lg w-full text-center block">
                                 {{ __('nav.donate') }}
                             </a>
@@ -570,14 +561,12 @@
                 <div class="flex gap-6 text-xs" style="color: rgba(255,255,255,0.4);">
                     @if (Route::has('legal.mentions'))
                         <a href="{{ route('legal.mentions') }}"
-                           x-navigate
                            class="hover:text-white transition-colors duration-150">{{ __('footer.legal_mentions') }}</a>
                     @else
                         <span class="opacity-50 cursor-default">{{ __('footer.legal_mentions') }}</span>
                     @endif
                     @if (Route::has('legal.privacy'))
                         <a href="{{ route('legal.privacy') }}"
-                           x-navigate
                            class="hover:text-white transition-colors duration-150">{{ __('footer.privacy_policy') }}</a>
                     @else
                         <span class="opacity-50 cursor-default">{{ __('footer.privacy_policy') }}</span>

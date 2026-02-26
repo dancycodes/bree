@@ -149,7 +149,6 @@
                     <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.5);">
                         <li>
                             <a href="{{ route('public.home') }}"
-                               x-navigate
                                class="hover:text-white transition-colors"
                                style="color: rgba(255,255,255,0.5);">
                                 {{ __('nav.home') }}
@@ -158,7 +157,6 @@
                         <li style="color: rgba(255,255,255,0.3);">/</li>
                         <li>
                             <a href="{{ route('public.gallery') }}"
-                               x-navigate
                                class="hover:text-white transition-colors"
                                style="color: rgba(255,255,255,0.5);">
                                 {{ __('gallery.page_title') }}
@@ -259,7 +257,6 @@
                 {{-- Back link --}}
                 <div class="mt-10">
                     <a href="{{ route('public.gallery') }}"
-                       x-navigate
                        class="inline-flex items-center gap-2 text-sm font-semibold transition-opacity hover:opacity-70"
                        style="color: #c80078;">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">

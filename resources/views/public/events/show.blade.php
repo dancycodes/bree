@@ -38,7 +38,6 @@
                     style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
-                           x-navigate
                            class="hover:text-white transition-colors focus-visible:outline-white"
                            style="color: rgba(255,255,255,0.55);">
                             {{ __('nav.home') }}
@@ -47,7 +46,6 @@
                     <li aria-hidden="true" style="color: rgba(255,255,255,0.3);">/</li>
                     <li>
                         <a href="{{ route('public.events') }}"
-                           x-navigate
                            class="hover:text-white transition-colors"
                            style="color: rgba(255,255,255,0.55);">
                             {{ __('events.page_title') }}
@@ -261,7 +259,6 @@
                     {{-- ── Back link ── --}}
                     <div data-animate="fade-up">
                         <a href="{{ route('public.events') }}"
-                           x-navigate
                            class="inline-flex items-center gap-2 text-sm font-semibold transition-opacity hover:opacity-75"
                            style="color: #143c64;">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
@@ -298,7 +295,6 @@
                                 {{ __('events.event_past_sub') }}
                             </p>
                             <a href="{{ route('public.events') }}"
-                               x-navigate
                                class="inline-flex items-center gap-1.5 text-xs font-bold transition-opacity hover:opacity-75"
                                style="color: #c80078;">
                                 {{ __('events.back_to_events') }}

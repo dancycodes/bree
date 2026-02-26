@@ -40,7 +40,6 @@
                 <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
-                           x-navigate
                            class="hover:text-white transition-colors focus-visible:outline-white">
                             {{ __('nav.home') }}
                         </a>
@@ -248,7 +247,6 @@
                         {{ __('partners.cta_volunteer_sub') }}
                     </p>
                     <a href="{{ route('public.volunteers') }}"
-                       x-navigate
                        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2"
                        style="background-color: #c80078; color: #ffffff; outline-color: #c80078;">
                         {{ __('partners.cta_volunteer_btn') }}
