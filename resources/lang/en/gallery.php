@@ -8,8 +8,8 @@ return [
     'albums_title' => 'Photo Albums',
     'photos_count' => ':count photo|:count photos',
     'view_album' => 'View album',
-    'empty_heading' => 'Gallery coming soon',
-    'empty_sub' => 'Our photo albums will be published soon.',
+    'empty_heading' => 'Gallery under construction',
+    'empty_sub' => 'Come back soon to discover our photo albums.',
     'back_to_gallery' => 'Back to gallery',
     'album_empty' => 'This album is empty',
     'album_empty_sub' => 'No photos have been added to this album yet.',
@@ -18,4 +18,5 @@ return [
     'next_photo' => 'Next photo',
     'photo_counter' => ':current / :total',
     'expand_photo' => 'View full screen',
+    'loading_image' => 'Loading image…',
 ];

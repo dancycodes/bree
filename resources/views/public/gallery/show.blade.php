@@ -48,9 +48,11 @@
             activeIndex: null,
             open: false,
             imgFading: false,
+            imgLoading: false,
 
             openAt(i) {
                 this.activeIndex = i;
+                this.imgLoading = true;
                 this.open = true;
                 document.body.style.overflow = 'hidden';
                 this.$nextTick(() => this._gsapLightboxIn());
@@ -78,6 +80,7 @@
 
             _changePhoto(newIndex) {
                 this.imgFading = true;
+                this.imgLoading = true;
                 setTimeout(() => {
                     this.activeIndex = newIndex;
                     this.imgFading = false;
@@ -335,12 +338,30 @@
                 <template x-if="activeIndex !== null">
                     <div class="flex flex-col items-center gap-3 max-w-5xl w-full">
 
-                        {{-- Image wrapper with cross-fade transition --}}
-                        <div class="lightbox-img-wrap w-full flex justify-center"
-                             :class="imgFading ? 'fading' : ''">
+                        {{-- Image wrapper with cross-fade transition + loading spinner --}}
+                        <div class="lightbox-img-wrap w-full flex justify-center relative"
+                             :class="imgFading ? 'fading' : ''"
+                             style="min-height: 120px;">
+
+                            {{-- Loading spinner — shown while image loads --}}
+                            <div x-show="imgLoading"
+                                 class="absolute inset-0 flex items-center justify-center"
+                                 aria-label="{{ __('gallery.loading_image') }}">
+                                <svg class="w-10 h-10 animate-spin" fill="none" viewBox="0 0 24 24"
+                                     aria-hidden="true" style="color: rgba(200,0,120,0.7);">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="3"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                </svg>
+                            </div>
+
                             <img :src="photos[activeIndex].url"
                                  :alt="photos[activeIndex].caption"
+                                 x-on:load="imgLoading = false"
+                                 x-on:error="imgLoading = false"
                                  class="max-h-[75vh] max-w-full object-contain rounded-lg shadow-2xl"
+                                 :style="imgLoading ? 'opacity: 0;' : 'opacity: 1; transition: opacity 0.2s ease;'"
                                  style="display: block;">
                         </div>
 
