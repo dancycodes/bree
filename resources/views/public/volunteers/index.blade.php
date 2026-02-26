@@ -20,11 +20,15 @@
 
             <nav class="mb-4" aria-label="Breadcrumb">
                 <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.7);">
-                    <li><a href="{{ route('public.home') }}" class="hover:text-white transition-colors">Accueil</a></li>
+                    <li>
+                        <a href="{{ route('public.home') }}"
+                           class="hover:text-white transition-colors"
+                           style="color: rgba(255,255,255,0.7);">
+                            {{ __('nav.home') }}
+                        </a>
+                    </li>
                     <li style="color: rgba(255,255,255,0.4);">/</li>
-                    <li><a href="{{ route('public.partners') }}" class="hover:text-white transition-colors">Partenaires</a></li>
-                    <li style="color: rgba(255,255,255,0.4);">/</li>
-                    <li style="color: #ffffff;">Devenir Bénévole</li>
+                    <li style="color: #ffffff;" aria-current="page">{{ __('nav.volunteers') }}</li>
                 </ol>
             </nav>
 
