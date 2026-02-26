@@ -6,15 +6,14 @@
 @section('content')
 
     {{-- ================================================================
-         HERO SECTION (F-016)
+         HERO SECTION
          Full-viewport cinematic entrance with GSAP animation.
-         Background: hero.jpg + solid dark overlay (no gradient per BR-003)
+         Background: hero.jpg + solid dark overlay (no gradient per BR-001)
          ================================================================ --}}
     @if ($hero)
         <section
             data-hero
-            class="relative w-full overflow-hidden"
-            style="min-height: calc(100vh - 4.5rem);">
+            class="relative w-full overflow-hidden min-h-screen flex items-center">
 
             {{-- Background Image — GSAP scales this for Ken Burns entrance --}}
             <div
@@ -23,19 +22,21 @@
                 style="background-image: url('{{ asset($hero->bg_image_path) }}'); background-color: #002850;">
             </div>
 
-            {{-- Solid Dark Overlay — NO gradient (brand rule BR-003) --}}
-            <div class="absolute inset-0" style="background-color: rgba(0, 20, 60, 0.65);"></div>
+            {{-- Solid Dark Overlay — NO gradient (brand rule BR-001) --}}
+            <div class="absolute inset-0" style="background-color: rgba(0, 20, 60, 0.68);"></div>
+
+            {{-- Left accent bar — visual refinement --}}
+            <div class="absolute left-0 top-0 bottom-0 w-1" style="background-color: #c80078;"></div>
 
             {{-- Hero Content — vertically centered --}}
             <div
-                class="relative z-10 flex flex-col items-center justify-center text-center px-6 sm:px-8 lg:px-12"
-                style="min-height: calc(100vh - 4.5rem); padding-bottom: 6rem;">
+                class="relative z-10 w-full flex flex-col items-center justify-center text-center px-6 sm:px-8 lg:px-12 py-24">
 
                 {{-- Foundation Badge --}}
                 <div
                     data-hero-badge
-                    class="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase"
-                    style="background-color: rgba(200,160,60,0.15); color: #c8a03c; border: 1px solid rgba(200,160,60,0.3);">
+                    class="mb-8 inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-bold tracking-widest uppercase"
+                    style="background-color: rgba(200,160,60,0.15); color: #c8a03c; border: 1px solid rgba(200,160,60,0.35);">
                     <span class="w-1.5 h-1.5 rounded-full inline-block" style="background-color: #c8a03c;"></span>
                     {{ config('app.name') }}
                 </div>
@@ -43,20 +44,24 @@
                 {{-- Main Tagline (Playfair Display, fluid size) --}}
                 <h1
                     data-hero-tagline
-                    class="font-heading mb-6 font-bold leading-none tracking-tight"
+                    class="font-heading mb-6 font-bold leading-tight"
                     style="font-family: 'Playfair Display', serif;
-                           font-size: clamp(2.5rem, 7vw, 5.5rem);
+                           font-size: clamp(2.5rem, 6.5vw, 5.5rem);
                            color: #ffffff;
-                           max-width: 900px;
-                           text-shadow: 0 4px 30px rgba(0,0,0,0.3);">
+                           max-width: 860px;
+                           letter-spacing: -0.01em;
+                           text-shadow: 0 4px 40px rgba(0,0,0,0.4);">
                     {{ $hero->tagline() }}
                 </h1>
+
+                {{-- Gold accent line below title --}}
+                <div data-hero-subtitle class="w-20 h-0.5 mb-6 mx-auto" style="background-color: #c8a03c;"></div>
 
                 {{-- Subtitle --}}
                 <p
                     data-hero-subtitle
-                    class="text-base sm:text-lg lg:text-xl leading-relaxed mb-10 font-light"
-                    style="color: rgba(255,255,255,0.8); max-width: 640px;">
+                    class="text-base sm:text-lg lg:text-xl leading-relaxed mb-12 font-light"
+                    style="color: rgba(255,255,255,0.82); max-width: 580px; font-family: 'Inter', sans-serif;">
                     {{ $hero->subtitle() }}
                 </p>
 
@@ -65,6 +70,7 @@
                     <a
                         data-hero-cta
                         href="{{ $hero->cta1_url }}"
+                        x-navigate
                         class="btn-primary text-base font-semibold px-8 py-4 rounded-xl w-full sm:w-auto text-center"
                         style="min-width: 220px;">
                         {{ $hero->cta1Label() }}
@@ -72,6 +78,7 @@
                     <a
                         data-hero-cta
                         href="{{ $hero->cta2_url }}"
+                        x-navigate
                         class="btn-secondary text-base font-semibold px-8 py-4 rounded-xl w-full sm:w-auto text-center"
                         style="min-width: 220px;">
                         {{ $hero->cta2Label() }}
@@ -87,7 +94,7 @@
                 aria-hidden="true">
                 <span
                     class="block text-center uppercase tracking-widest"
-                    style="font-size: 0.6rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.4);">
+                    style="font-size: 0.6rem; letter-spacing: 0.2em; color: rgba(255,255,255,0.45);">
                     {{ __('ui.scroll') }}
                 </span>
                 <svg
@@ -106,18 +113,23 @@
 
         {{-- Fallback: Navy background when no active hero section exists --}}
         <section
-            class="relative flex items-center justify-center"
-            style="min-height: calc(100vh - 4.5rem); background-color: #002850;">
-            <p class="text-sm" style="color: rgba(255,255,255,0.4);">
-                {{ __('ui.content_coming_soon') }}
-            </p>
+            class="relative flex items-center justify-center min-h-screen"
+            style="background-color: #002850;">
+            <div class="text-center px-6">
+                <p class="font-heading text-2xl mb-4" style="color: rgba(255,255,255,0.6); font-family: 'Playfair Display', serif;">
+                    {{ config('app.name') }}
+                </p>
+                <p class="text-sm" style="color: rgba(255,255,255,0.4);">
+                    {{ __('ui.content_coming_soon') }}
+                </p>
+            </div>
         </section>
 
     @endif
 
 
     {{-- ================================================================
-         IMPACT STATISTICS SECTION (F-017)
+         IMPACT STATISTICS SECTION
          Animated counters: scroll-triggered GSAP number counting.
          Off-white background, 4-col desktop / 2x2 mobile grid.
          ================================================================ --}}
@@ -126,10 +138,18 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {{-- Section Label --}}
-                <div class="text-center mb-14" data-animate="fade-up">
+                <div class="text-center mb-4" data-animate="fade-up">
                     <span class="text-xs font-bold tracking-widest uppercase" style="color: #c8a03c;">
                         {{ __('home.our_impact') }}
                     </span>
+                </div>
+                <div class="text-center mb-14" data-animate="fade-up">
+                    <h2 class="font-heading font-bold"
+                        style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.5rem, 3vw, 2.25rem);
+                               color: #002850;">
+                        {{ __('home.section_impact_intro') }}
+                    </h2>
                 </div>
 
                 {{-- Counters Grid: 2-col mobile, 4-col desktop --}}
@@ -139,8 +159,8 @@
 
                             {{-- Gold SVG Icon --}}
                             <div class="flex justify-center mb-5">
-                                <div class="w-14 h-14 rounded-full flex items-center justify-center"
-                                     style="background-color: rgba(200,160,60,0.1);">
+                                <div class="w-16 h-16 rounded-full flex items-center justify-center"
+                                     style="background-color: rgba(200,160,60,0.12); border: 1px solid rgba(200,160,60,0.2);">
                                     <svg
                                         class="w-7 h-7"
                                         fill="none"
@@ -178,14 +198,28 @@
         </section>
     @endif
 
+
     {{-- ================================================================
-         MISSION & VISION SECTION (F-018)
+         MISSION & VISION SECTION
          Navy background. Left: vision pullquote (Playfair italic).
-         Right: 5 mission items with gold icons, stagger animation.
+         Right: mission items with gold icons, stagger animation.
          ================================================================ --}}
     @if ($mission)
         <section class="py-20 lg:py-28" style="background-color: #002850;">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                {{-- Section header --}}
+                <div class="text-center mb-16" data-animate="fade-up">
+                    <span class="text-xs font-bold tracking-widest uppercase block mb-3" style="color: #c8a03c;">
+                        {{ __('home.our_vision') }}
+                    </span>
+                    <h2 class="font-heading font-bold"
+                        style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.75rem, 4vw, 2.5rem);
+                               color: #ffffff;">
+                        {{ __('home.section_mission_heading') }}
+                    </h2>
+                </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-start">
 
@@ -195,15 +229,9 @@
                         {{-- Decorative opening quote mark --}}
                         <div class="absolute -top-4 -left-2 select-none"
                              aria-hidden="true"
-                             style="font-family: 'Playfair Display', serif; font-size: 8rem; line-height: 1; color: rgba(200,160,60,0.2); font-style: italic;">
-                            "
+                             style="font-family: 'Playfair Display', serif; font-size: 8rem; line-height: 1; color: rgba(200,160,60,0.18); font-style: italic;">
+                            &ldquo;
                         </div>
-
-                        {{-- Section Label --}}
-                        <span class="block text-xs font-bold tracking-widest uppercase mb-6 relative z-10"
-                              style="color: #c8a03c;">
-                            {{ __('home.our_vision') }}
-                        </span>
 
                         {{-- Vision Text --}}
                         <blockquote
@@ -211,17 +239,17 @@
                             style="font-family: 'Playfair Display', serif;
                                    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
                                    font-style: italic;
-                                   line-height: 1.6;
+                                   line-height: 1.65;
                                    color: rgba(255,255,255,0.92);">
                             {{ $mission->vision() }}
                         </blockquote>
 
                         {{-- Gold divider line --}}
-                        <div class="mt-8 h-0.5 w-16" style="background-color: #c8a03c;"></div>
+                        <div class="mt-8 h-0.5 w-20" style="background-color: #c8a03c;"></div>
 
                     </div>
 
-                    {{-- Right: 5 Mission Items --}}
+                    {{-- Right: Mission Items --}}
                     <div>
 
                         {{-- Section Label --}}
@@ -236,7 +264,7 @@
 
                                     {{-- Gold Icon Circle --}}
                                     <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center mt-0.5"
-                                         style="background-color: rgba(200,160,60,0.12);">
+                                         style="background-color: rgba(200,160,60,0.12); border: 1px solid rgba(200,160,60,0.2);">
                                         <svg
                                             class="w-5 h-5"
                                             fill="none"
@@ -269,19 +297,111 @@
 
 
     {{-- ================================================================
-         PROGRAMS PREVIEW SECTION (F-019)
-         3 signature programs: BREE PROTÈGE / ÉLÈVE / RESPIRE.
-         White background, 3-col desktop / 1-col mobile.
+         PROGRAMS PREVIEW SECTION
+         3 signature programs. Off-white background, 3-col desktop.
          Each card: colored top border, image, name, description, CTA.
-         Hover: translateY(-4px) + deeper shadow.
+         Colors: PROTÈGE=Magenta, ÉLÈVE=Navy, RESPIRE=Gold
          ================================================================ --}}
+    @if ($programs->isNotEmpty())
+        <section class="py-20 lg:py-28" style="background-color: #f8f5f0;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                {{-- Section Header --}}
+                <div class="text-center mb-16" data-animate="fade-up">
+                    <span class="block text-xs font-bold tracking-widest uppercase mb-4"
+                          style="color: #c8a03c;">
+                        {{ __('home.our_programs') }}
+                    </span>
+                    <h2 class="font-heading font-bold"
+                        style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.75rem, 4vw, 2.75rem);
+                               color: #002850;
+                               font-weight: 700;">
+                        {{ __('home.section_programs_title') }}
+                    </h2>
+                </div>
+
+                {{-- Programs Grid: 1-col mobile, 3-col desktop --}}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-stagger="0.15">
+                    @foreach ($programs as $program)
+                        <article
+                            class="group rounded-2xl overflow-hidden flex flex-col card-lift"
+                            style="background-color: #ffffff;
+                                   box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+                                   border-top: 4px solid {{ $program->color }};"
+                            data-animate="fade-up">
+
+                            {{-- Program Image --}}
+                            <div class="overflow-hidden relative" style="height: 220px;">
+                                <img
+                                    src="{{ asset($program->image_path) }}"
+                                    alt="{{ $program->name() }}"
+                                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                    loading="lazy"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                {{-- Fallback color block if image missing --}}
+                                <div class="w-full h-full items-center justify-center hidden"
+                                     style="background-color: {{ $program->color }}20;">
+                                    <span class="font-heading font-bold text-2xl" style="color: {{ $program->color }}; font-family: 'Playfair Display', serif;">
+                                        {{ $program->name() }}
+                                    </span>
+                                </div>
+                                {{-- Color accent overlay strip at bottom --}}
+                                <div class="absolute bottom-0 left-0 right-0 h-1" style="background-color: {{ $program->color }};"></div>
+                            </div>
+
+                            {{-- Card Body --}}
+                            <div class="flex flex-col flex-1 p-7">
+
+                                {{-- Program Name --}}
+                                <h3 class="font-heading font-bold mb-3"
+                                    style="font-family: 'Playfair Display', serif;
+                                           font-size: 1.3rem;
+                                           color: {{ $program->color }};">
+                                    {{ $program->name() }}
+                                </h3>
+
+                                {{-- Accent divider --}}
+                                <div class="w-10 h-0.5 mb-4" style="background-color: {{ $program->color }}40;"></div>
+
+                                {{-- Description --}}
+                                <p class="text-sm leading-relaxed flex-1 mb-6"
+                                   style="color: #5a6a7a;">
+                                    {{ $program->description() }}
+                                </p>
+
+                                {{-- CTA Link --}}
+                                <a
+                                    href="{{ $program->url }}"
+                                    x-navigate
+                                    class="inline-flex items-center gap-2 text-sm font-bold"
+                                    style="color: {{ $program->color }};">
+                                    {{ __('home.learn_more') }}
+                                    <svg class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor"
+                                         viewBox="0 0 24 24" stroke-width="2"
+                                         aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                                    </svg>
+                                </a>
+
+                            </div>
+
+                        </article>
+                    @endforeach
+                </div>
+
+            </div>
+        </section>
+    @endif
+
+
     {{-- ================================================================
-         LATEST NEWS PREVIEW SECTION (F-020)
+         LATEST NEWS PREVIEW SECTION
          3 most recent published articles. White background.
          Card: thumbnail, category badge (Magenta), date, title (Navy).
-         Empty state if no published articles.
          ================================================================ --}}
-    <section class="py-20 lg:py-28" style="background-color: #f8f5f0;">
+    <section class="py-20 lg:py-28" style="background-color: #ffffff;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             {{-- Section Header --}}
@@ -296,15 +416,18 @@
                                font-size: clamp(1.75rem, 4vw, 2.75rem);
                                color: #002850;
                                font-weight: 700;">
-                        {{ config('app.name') }}
+                        {{ __('home.section_news_title') }}
                     </h2>
                 </div>
-                <a
-                    href="/actualites"
-                    class="btn-outline text-sm font-semibold px-6 py-3 rounded-xl self-start sm:self-auto whitespace-nowrap"
-                    data-animate="fade-left">
-                    {{ __('home.all_news') }}
-                </a>
+                @if (Route::has('public.news'))
+                    <a
+                        href="{{ route('public.news') }}"
+                        x-navigate
+                        class="btn-outline text-sm font-semibold px-6 py-3 rounded-xl self-start sm:self-auto whitespace-nowrap"
+                        data-animate="fade-left">
+                        {{ __('home.all_news') }}
+                    </a>
+                @endif
             </div>
 
             @if ($latestNews->isNotEmpty())
@@ -313,31 +436,39 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-stagger="0.12">
                     @foreach ($latestNews as $article)
                         <article
-                            class="rounded-2xl overflow-hidden flex flex-col"
-                            style="background-color: #ffffff; box-shadow: 0 2px 16px rgba(0,0,0,0.06);"
+                            class="rounded-2xl overflow-hidden flex flex-col card-lift"
+                            style="background-color: #ffffff; box-shadow: 0 2px 16px rgba(0,0,0,0.07);"
                             data-animate="fade-up">
 
                             {{-- Thumbnail --}}
-                            <a href="/actualites/{{ $article->slug }}" class="block overflow-hidden" style="height: 200px;">
+                            @if (Route::has('public.news.show'))
+                                <a href="{{ route('public.news.show', $article->slug) }}" x-navigate class="block overflow-hidden" style="height: 200px;">
+                            @else
+                                <div class="block overflow-hidden" style="height: 200px;">
+                            @endif
                                 @if ($article->thumbnail_path)
                                     <img
                                         src="{{ asset($article->thumbnail_path) }}"
                                         alt="{{ $article->title() }}"
-                                        class="w-full h-full object-cover"
-                                        style="transition: transform 0.5s ease;"
-                                        loading="lazy">
+                                        class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                        loading="lazy"
+                                        onerror="this.style.display='none'; this.parentElement.style.backgroundColor='rgba(200,0,120,0.06)'">
                                 @else
                                     <div class="w-full h-full flex items-center justify-center"
-                                         style="background-color: rgba(200,0,120,0.08);">
+                                         style="background-color: rgba(200,0,120,0.06);">
                                         <svg class="w-10 h-10" fill="none" stroke="currentColor"
                                              viewBox="0 0 24 24" stroke-width="1.5"
-                                             style="color: rgba(200,0,120,0.3);" aria-hidden="true">
+                                             style="color: rgba(200,0,120,0.25);" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                   d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9H3.375A1.125 1.125 0 002.25 8.25v8.625c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V7.5a1.125 1.125 0 00-1.125-1.125H15"/>
                                         </svg>
                                     </div>
                                 @endif
-                            </a>
+                            @if (Route::has('public.news.show'))
+                                </a>
+                            @else
+                                </div>
+                            @endif
 
                             {{-- Card Body --}}
                             <div class="flex flex-col flex-1 p-6">
@@ -348,9 +479,10 @@
                                           style="background-color: rgba(200,0,120,0.1); color: #c80078;">
                                         {{ $article->categoryLabel() }}
                                     </span>
-                                    <span class="text-xs" style="color: #9aacbb;">
+                                    <time class="text-xs" style="color: #9aacbb;"
+                                          datetime="{{ $article->published_at->format('Y-m-d') }}">
                                         {{ $article->published_at->translatedFormat('d M Y') }}
-                                    </span>
+                                    </time>
                                 </div>
 
                                 {{-- Title --}}
@@ -358,24 +490,32 @@
                                     style="font-family: 'Playfair Display', serif;
                                            font-size: 1.1rem;
                                            color: #002850;">
-                                    <a href="/actualites/{{ $article->slug }}"
-                                       class="hover:underline underline-offset-2">
+                                    @if (Route::has('public.news.show'))
+                                        <a href="{{ route('public.news.show', $article->slug) }}"
+                                           x-navigate
+                                           class="hover:underline underline-offset-2">
+                                            {{ $article->title() }}
+                                        </a>
+                                    @else
                                         {{ $article->title() }}
-                                    </a>
+                                    @endif
                                 </h3>
 
                                 {{-- Read more --}}
-                                <a
-                                    href="/actualites/{{ $article->slug }}"
-                                    class="inline-flex items-center gap-2 text-sm font-semibold mt-auto"
-                                    style="color: #c80078;">
-                                    {{ __('home.read_more') }}
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                         viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-                                    </svg>
-                                </a>
+                                @if (Route::has('public.news.show'))
+                                    <a
+                                        href="{{ route('public.news.show', $article->slug) }}"
+                                        x-navigate
+                                        class="inline-flex items-center gap-2 text-sm font-semibold mt-auto"
+                                        style="color: #c80078;">
+                                        {{ __('home.read_more') }}
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                             viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                                        </svg>
+                                    </a>
+                                @endif
 
                             </div>
 
@@ -387,6 +527,9 @@
 
                 {{-- Empty State --}}
                 <div class="text-center py-20" data-animate="fade-up">
+                    <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1" style="color: rgba(0,40,80,0.2);" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9H3.375A1.125 1.125 0 002.25 8.25v8.625c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V7.5a1.125 1.125 0 00-1.125-1.125H15"/>
+                    </svg>
                     <p class="text-base" style="color: #9aacbb;">
                         {{ __('home.no_news') }}
                     </p>
@@ -397,13 +540,13 @@
         </div>
     </section>
 
+
     {{-- ================================================================
-         UPCOMING EVENTS PREVIEW SECTION (F-022)
+         UPCOMING EVENTS PREVIEW SECTION
          Off-white background. Max 3 future events, soonest first.
          Card: large day (Magenta) + month (Navy) + title + location.
-         Empty state if no upcoming events.
          ================================================================ --}}
-    <section class="py-20 lg:py-28" style="background-color: #ffffff;">
+    <section class="py-20 lg:py-28" style="background-color: #f8f5f0;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             {{-- Section Header --}}
@@ -418,15 +561,18 @@
                                font-size: clamp(1.75rem, 4vw, 2.75rem);
                                color: #002850;
                                font-weight: 700;">
-                        {{ config('app.name') }}
+                        {{ __('home.section_events_title') }}
                     </h2>
                 </div>
-                <a
-                    href="/evenements"
-                    class="btn-outline text-sm font-semibold px-6 py-3 rounded-xl self-start sm:self-auto whitespace-nowrap"
-                    data-animate="fade-left">
-                    {{ __('home.all_events') }}
-                </a>
+                @if (Route::has('public.events'))
+                    <a
+                        href="{{ route('public.events') }}"
+                        x-navigate
+                        class="btn-outline text-sm font-semibold px-6 py-3 rounded-xl self-start sm:self-auto whitespace-nowrap"
+                        data-animate="fade-left">
+                        {{ __('home.all_events') }}
+                    </a>
+                @endif
             </div>
 
             @if ($upcomingEvents->isNotEmpty())
@@ -434,13 +580,13 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-stagger="0.12">
                     @foreach ($upcomingEvents as $event)
                         <article
-                            class="rounded-2xl overflow-hidden flex gap-5 items-start p-6"
-                            style="background-color: #f8f5f0; box-shadow: 0 2px 12px rgba(0,0,0,0.05);"
+                            class="rounded-2xl overflow-hidden flex gap-5 items-start p-6 card-lift"
+                            style="background-color: #ffffff; box-shadow: 0 2px 12px rgba(0,0,0,0.06);"
                             data-animate="fade-up">
 
                             {{-- Date Block --}}
                             <div class="flex-shrink-0 flex flex-col items-center justify-center rounded-xl w-16 py-3 text-center"
-                                 style="background-color: #ffffff; box-shadow: 0 1px 6px rgba(0,0,0,0.07);">
+                                 style="background-color: #f8f5f0; border: 1px solid rgba(0,40,80,0.08);">
                                 <span class="font-heading font-bold leading-none"
                                       style="font-family: 'Playfair Display', serif;
                                              font-size: 2rem;
@@ -464,10 +610,15 @@
                                     style="font-family: 'Playfair Display', serif;
                                            font-size: 1rem;
                                            color: #002850;">
-                                    <a href="/evenements/{{ $event->slug }}"
-                                       class="hover:underline underline-offset-2">
+                                    @if (Route::has('public.events.show'))
+                                        <a href="{{ route('public.events.show', $event->slug) }}"
+                                           x-navigate
+                                           class="hover:underline underline-offset-2">
+                                            {{ $event->title() }}
+                                        </a>
+                                    @else
                                         {{ $event->title() }}
-                                    </a>
+                                    @endif
                                 </h3>
 
                                 {{-- Location --}}
@@ -488,17 +639,20 @@
                                 @endif
 
                                 {{-- CTA --}}
-                                <a
-                                    href="/evenements/{{ $event->slug }}"
-                                    class="inline-flex items-center gap-1.5 text-xs font-semibold mt-auto"
-                                    style="color: #c80078;">
-                                    {{ __('home.see_event') }}
-                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
-                                         viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-                                    </svg>
-                                </a>
+                                @if (Route::has('public.events.show'))
+                                    <a
+                                        href="{{ route('public.events.show', $event->slug) }}"
+                                        x-navigate
+                                        class="inline-flex items-center gap-1.5 text-xs font-semibold mt-auto"
+                                        style="color: #c80078;">
+                                        {{ __('home.see_event') }}
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor"
+                                             viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                                        </svg>
+                                    </a>
+                                @endif
 
                             </div>
 
@@ -510,6 +664,9 @@
 
                 {{-- Empty State --}}
                 <div class="text-center py-20" data-animate="fade-up">
+                    <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1" style="color: rgba(0,40,80,0.2);" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5"/>
+                    </svg>
                     <p class="text-base" style="color: #9aacbb;">
                         {{ __('home.no_events') }}
                     </p>
@@ -520,93 +677,11 @@
         </div>
     </section>
 
-    @if ($programs->isNotEmpty())
-        <section class="py-20 lg:py-28" style="background-color: #ffffff;">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-                {{-- Section Header --}}
-                <div class="text-center mb-14" data-animate="fade-up">
-                    <span class="block text-xs font-bold tracking-widest uppercase mb-4"
-                          style="color: #c8a03c;">
-                        {{ __('home.our_programs') }}
-                    </span>
-                    <h2 class="font-heading"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.75rem, 4vw, 2.75rem);
-                               color: #002850;
-                               font-weight: 700;">
-                        {{ config('app.name') }}
-                    </h2>
-                </div>
-
-                {{-- Programs Grid: 1-col mobile, 3-col desktop --}}
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-stagger="0.15">
-                    @foreach ($programs as $program)
-                        <article
-                            class="group rounded-2xl overflow-hidden flex flex-col program-card"
-                            style="background-color: #ffffff;
-                                   box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-                                   transition: transform 0.3s ease, box-shadow 0.3s ease;
-                                   border-top: 4px solid {{ $program->color }};"
-                            data-animate="fade-up">
-
-                            {{-- Program Image --}}
-                            <div class="overflow-hidden" style="height: 220px;">
-                                <img
-                                    src="{{ asset($program->image_path) }}"
-                                    alt="{{ $program->name() }}"
-                                    class="w-full h-full object-cover"
-                                    style="transition: transform 0.5s ease;"
-                                    loading="lazy">
-                            </div>
-
-                            {{-- Card Body --}}
-                            <div class="flex flex-col flex-1 p-7">
-
-                                {{-- Program Name --}}
-                                <h3 class="font-heading font-bold mb-3"
-                                    style="font-family: 'Playfair Display', serif;
-                                           font-size: 1.25rem;
-                                           color: {{ $program->color }};">
-                                    {{ $program->name() }}
-                                </h3>
-
-                                {{-- Description --}}
-                                <p class="text-sm leading-relaxed flex-1 mb-6"
-                                   style="color: #5a6a7a;">
-                                    {{ $program->description() }}
-                                </p>
-
-                                {{-- CTA Link --}}
-                                <a
-                                    href="{{ $program->url }}"
-                                    class="inline-flex items-center gap-2 text-sm font-semibold"
-                                    style="color: {{ $program->color }};">
-                                    {{ __('home.learn_more') }}
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                         viewBox="0 0 24 24" stroke-width="2"
-                                         style="transition: transform 0.2s ease;"
-                                         aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-                                    </svg>
-                                </a>
-
-                            </div>
-
-                        </article>
-                    @endforeach
-                </div>
-
-            </div>
-        </section>
-    @endif
-
 
     {{-- ================================================================
-         GALLERY PREVIEW SECTION (F-023)
+         GALLERY PREVIEW SECTION
          White background. 4x2 grid desktop, 2-col mobile.
-         Hover: caption overlay fades in. Click: Alpine.js lightbox.
+         Hover: caption overlay fades in (solid, NO gradient per BR-001).
          ================================================================ --}}
     @php
         $galleryItems = $galleryPhotos->map(fn ($p) => [
@@ -628,33 +703,39 @@
         @keydown.arrow-left.window="if (open) prev()"
         @keydown.arrow-right.window="if (open) next()">
 
-        <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             {{-- Section Header --}}
-            <div class="text-center mb-12" data-animate>
+            <div class="text-center mb-12" data-animate="fade-up">
                 <p class="text-xs font-bold tracking-widest uppercase mb-3" style="color: #c80078;">
                     {{ __('home.gallery_eyebrow') }}
                 </p>
-                <h2 class="font-heading text-3xl sm:text-4xl font-bold mb-4" style="color: #143c64;">
+                <h2 class="font-heading font-bold mb-2"
+                    style="font-family: 'Playfair Display', serif;
+                           font-size: clamp(1.75rem, 4vw, 2.75rem);
+                           color: #002850;">
                     {{ __('home.gallery_title') }}
                 </h2>
             </div>
 
             @if ($galleryPhotos->isEmpty())
                 {{-- Empty state --}}
-                <div class="text-center py-16" data-animate>
+                <div class="text-center py-16" data-animate="fade-up">
+                    <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1" style="color: rgba(0,40,80,0.2);" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
+                    </svg>
                     <p class="text-sm" style="color: #94a3b8;">{{ __('home.gallery_empty') }}</p>
                 </div>
             @else
-                {{-- Photo Grid --}}
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-4" data-animate>
+                {{-- Photo Grid: 4-col desktop, 2-col mobile --}}
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-4" data-animate="fade-up">
                     @foreach ($galleryPhotos as $idx => $photo)
                         @php
                             $caption = app()->getLocale() === 'fr' ? $photo->caption_fr : $photo->caption_en;
                         @endphp
                         <div
-                            class="relative overflow-hidden rounded-xl cursor-pointer group"
-                            style="aspect-ratio: 1 / 1;"
+                            class="relative overflow-hidden rounded-xl cursor-pointer group focus-visible:ring-2 focus-visible:ring-offset-2"
+                            style="aspect-ratio: 1 / 1; --tw-ring-color: #c80078;"
                             @click="openAt({{ $idx }})"
                             role="button"
                             tabindex="0"
@@ -667,31 +748,45 @@
                                 alt="{{ $caption }}"
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 loading="lazy"
-                                onerror="this.src='/images/sections/gallery-placeholder.jpg'">
+                                onerror="this.src='{{ asset('images/sections/gallery-placeholder.jpg') }}'">
 
-                            {{-- Caption overlay --}}
-                            @if ($caption)
-                                <div
-                                    class="absolute inset-0 flex items-end p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                    style="background: linear-gradient(to top, rgba(0,20,50,0.75) 0%, transparent 60%);">
+                            {{-- Hover overlay — solid color, NO gradient (BR-001) --}}
+                            <div
+                                class="absolute inset-0 flex items-end p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                style="background-color: rgba(0,20,50,0.6);"
+                                aria-hidden="true">
+                                @if ($caption)
                                     <p class="text-white text-xs font-medium leading-tight line-clamp-2">
                                         {{ $caption }}
                                     </p>
-                                </div>
-                            @endif
+                                @endif
+                            </div>
+
+                            {{-- Zoom icon on hover --}}
+                            <div class="absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                                 style="background-color: rgba(200,160,60,0.9);"
+                                 aria-hidden="true">
+                                <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6"/>
+                                </svg>
+                            </div>
+
                         </div>
                     @endforeach
                 </div>
 
                 {{-- CTA --}}
-                <div class="text-center mt-10" data-animate>
-                    <a href="{{ route('public.gallery') }}"
-                       class="btn-secondary text-sm font-semibold px-8 py-3 rounded-full inline-flex items-center gap-2 transition-all">
-                        {{ __('home.gallery_cta') }}
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                        </svg>
-                    </a>
+                <div class="text-center mt-10" data-animate="fade-up">
+                    @if (Route::has('public.gallery'))
+                        <a href="{{ route('public.gallery') }}"
+                           x-navigate
+                           class="btn-outline text-sm font-semibold px-8 py-3 rounded-xl inline-flex items-center gap-2">
+                            {{ __('home.gallery_cta') }}
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </a>
+                    @endif
                 </div>
             @endif
 
@@ -700,18 +795,22 @@
         {{-- ================================================================
              ALPINE.JS LIGHTBOX
              Full-screen overlay, arrow navigation, escape to close.
+             Dark backdrop — solid color (NO gradient per BR-001).
         ================================================================ --}}
         <div
             x-show="open"
             x-cloak
-            class="fixed inset-0 z-50 flex items-center justify-center"
-            style="background-color: rgba(0, 0, 0, 0.92);"
-            @click.self="open = false">
+            class="fixed inset-0 z-[100] flex items-center justify-center"
+            style="background-color: rgba(0, 0, 0, 0.93);"
+            @click.self="open = false"
+            role="dialog"
+            aria-modal="true"
+            :aria-label="photos[idx]?.caption || '{{ __('home.gallery_photo_alt') }}'">
 
             {{-- Close button --}}
             <button
                 @click="open = false"
-                class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-colors"
+                class="absolute top-4 right-4 z-10 w-11 h-11 flex items-center justify-center rounded-full transition-colors"
                 style="background-color: rgba(255,255,255,0.12); color: white;"
                 aria-label="{{ __('ui.close') }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
@@ -722,7 +821,7 @@
             {{-- Prev arrow --}}
             <button
                 @click.stop="prev()"
-                class="absolute left-4 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-colors"
+                class="absolute left-4 z-10 w-11 h-11 flex items-center justify-center rounded-full transition-colors"
                 style="background-color: rgba(255,255,255,0.12); color: white;"
                 aria-label="{{ __('ui.previous') }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
@@ -736,7 +835,7 @@
                     :src="photos[idx]?.src"
                     :alt="photos[idx]?.caption"
                     class="max-h-[75vh] max-w-full rounded-lg object-contain"
-                    style="box-shadow: 0 25px 60px rgba(0,0,0,0.6);">
+                    style="box-shadow: 0 25px 60px rgba(0,0,0,0.7);">
                 <p
                     x-show="photos[idx]?.caption"
                     x-text="photos[idx]?.caption"
@@ -752,7 +851,7 @@
             {{-- Next arrow --}}
             <button
                 @click.stop="next()"
-                class="absolute right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full transition-colors"
+                class="absolute right-4 z-10 w-11 h-11 flex items-center justify-center rounded-full transition-colors"
                 style="background-color: rgba(255,255,255,0.12); color: white;"
                 aria-label="{{ __('ui.next') }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
@@ -764,26 +863,210 @@
 
     </section>
 
+
     {{-- ================================================================
-         FOUNDER & PATRON SECTION (F-021)
-         Navy background. Split layout: Founder (left) + Patron (right).
-         Circular portrait with gold ring. Monogram placeholder when
-         no photo uploaded. Playfair Display quotes in italic.
+         FOUNDER & PATRON SPOTLIGHT SECTION
+         Navy background. Two-column: Founder (left) + Patron (right).
+         Circular portrait with gold ring. Prestigious Playfair typography.
          ================================================================ --}}
+    @if ($founder || $patron)
+        <section class="py-20 lg:py-28" style="background-color: #002850;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+                {{-- Section Label --}}
+                <div class="text-center mb-16" data-animate="fade-up">
+                    <span class="text-xs font-bold tracking-widest uppercase block mb-3"
+                          style="color: #c8a03c;">
+                        {{ __('home.our_leadership') }}
+                    </span>
+                    <h2 class="font-heading font-bold"
+                        style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.75rem, 4vw, 2.5rem);
+                               color: #ffffff;">
+                        {{ __('home.section_founder_intro') }}
+                    </h2>
+                </div>
+
+                {{-- Two-column split: Founder | Patron --}}
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+
+                    {{-- ── Founder ── --}}
+                    @if ($founder)
+                    <div class="flex flex-col items-center text-center" data-animate="fade-right">
+
+                        {{-- Portrait Circle with double-ring effect --}}
+                        <div class="relative mb-10">
+                            {{-- Outer decorative ring --}}
+                            <div class="absolute -inset-3 rounded-full"
+                                 style="border: 1px solid rgba(200,160,60,0.25);"></div>
+                            <div class="w-48 h-48 rounded-full overflow-hidden"
+                                 style="border: 3px solid #c8a03c;">
+                                @if ($founder->photo_path)
+                                    <img
+                                        src="{{ asset($founder->photo_path) }}"
+                                        alt="{{ $founder->name }}"
+                                        class="w-full h-full rounded-full object-cover object-top"
+                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                    <div class="w-full h-full rounded-full items-center justify-center hidden"
+                                         style="background-color: rgba(200,0,120,0.15); display: none;">
+                                        <span class="font-heading font-bold select-none"
+                                              style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #c80078;">
+                                            {{ \App\Models\FounderProfile::initials($founder->name) }}
+                                        </span>
+                                    </div>
+                                @else
+                                    <div class="w-full h-full rounded-full flex items-center justify-center"
+                                         style="background-color: rgba(200,0,120,0.15);">
+                                        <span class="font-heading font-bold select-none"
+                                              style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #c80078;">
+                                            {{ \App\Models\FounderProfile::initials($founder->name) }}
+                                        </span>
+                                    </div>
+                                @endif
+                            </div>
+                            {{-- Magenta role badge --}}
+                            <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap
+                                        text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full"
+                                 style="background-color: #c80078; color: #ffffff;">
+                                {{ __('home.founder_label') }}
+                            </div>
+                        </div>
+
+                        {{-- Name --}}
+                        <h3 class="font-heading font-bold mt-4 mb-1"
+                            style="font-family: 'Playfair Display', serif;
+                                   font-size: 1.5rem;
+                                   color: #ffffff;">
+                            {{ $founder->name }}
+                        </h3>
+
+                        {{-- Title --}}
+                        <p class="text-xs font-semibold tracking-wider uppercase mb-7"
+                           style="color: #c8a03c;">
+                            {{ $founder->title() }}
+                        </p>
+
+                        {{-- Quote / Message --}}
+                        <blockquote
+                            class="font-heading relative"
+                            style="font-family: 'Playfair Display', serif;
+                                   font-size: 1.05rem;
+                                   font-style: italic;
+                                   line-height: 1.75;
+                                   color: rgba(255,255,255,0.75);
+                                   max-width: 400px;">
+                            <span class="absolute -top-8 -left-2 text-6xl leading-none select-none"
+                                  aria-hidden="true"
+                                  style="color: rgba(200,160,60,0.25); font-family: 'Playfair Display', serif;">&ldquo;</span>
+                            {{ $founder->message() }}
+                        </blockquote>
+
+                        {{-- Gold divider --}}
+                        <div class="mt-8 h-px w-16 mx-auto" style="background-color: rgba(200,160,60,0.4);"></div>
+
+                    </div>
+                    @endif
+
+                    {{-- ── Patron ── --}}
+                    @if ($patron)
+                    <div class="flex flex-col items-center text-center" data-animate="fade-left">
+
+                        {{-- Portrait Circle with double-ring effect --}}
+                        <div class="relative mb-10">
+                            {{-- Outer decorative ring --}}
+                            <div class="absolute -inset-3 rounded-full"
+                                 style="border: 1px solid rgba(200,160,60,0.25);"></div>
+                            <div class="w-48 h-48 rounded-full overflow-hidden"
+                                 style="border: 3px solid #c8a03c;">
+                                @if ($patron->photo_path)
+                                    <img
+                                        src="{{ asset($patron->photo_path) }}"
+                                        alt="{{ $patron->name }}"
+                                        class="w-full h-full rounded-full object-cover object-top"
+                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                                    <div class="w-full h-full rounded-full items-center justify-center hidden"
+                                         style="background-color: rgba(200,160,60,0.12); display: none;">
+                                        <span class="font-heading font-bold select-none"
+                                              style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #c8a03c;">
+                                            {{ \App\Models\PatronProfile::initials($patron->name) }}
+                                        </span>
+                                    </div>
+                                @else
+                                    <div class="w-full h-full rounded-full flex items-center justify-center"
+                                         style="background-color: rgba(200,160,60,0.12);">
+                                        <span class="font-heading font-bold select-none"
+                                              style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #c8a03c;">
+                                            {{ \App\Models\PatronProfile::initials($patron->name) }}
+                                        </span>
+                                    </div>
+                                @endif
+                            </div>
+                            {{-- Gold role badge --}}
+                            <div class="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap
+                                        text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full"
+                                 style="background-color: #c8a03c; color: #002850;">
+                                {{ __('home.patron_label') }}
+                            </div>
+                        </div>
+
+                        {{-- Name --}}
+                        <h3 class="font-heading font-bold mt-4 mb-1"
+                            style="font-family: 'Playfair Display', serif;
+                                   font-size: 1.5rem;
+                                   color: #ffffff;">
+                            {{ $patron->name }}
+                        </h3>
+
+                        {{-- Title --}}
+                        <p class="text-xs font-semibold tracking-wider uppercase mb-7"
+                           style="color: #c8a03c;">
+                            {{ $patron->title() }}
+                        </p>
+
+                        {{-- Quote --}}
+                        <blockquote
+                            class="font-heading relative"
+                            style="font-family: 'Playfair Display', serif;
+                                   font-size: 1.05rem;
+                                   font-style: italic;
+                                   line-height: 1.75;
+                                   color: rgba(255,255,255,0.75);
+                                   max-width: 400px;">
+                            <span class="absolute -top-8 -left-2 text-6xl leading-none select-none"
+                                  aria-hidden="true"
+                                  style="color: rgba(200,160,60,0.25); font-family: 'Playfair Display', serif;">&ldquo;</span>
+                            {{ $patron->quote() }}
+                        </blockquote>
+
+                        {{-- Gold divider --}}
+                        <div class="mt-8 h-px w-16 mx-auto" style="background-color: rgba(200,160,60,0.4);"></div>
+
+                    </div>
+                    @endif
+
+                </div>
+
+            </div>
+        </section>
+    @endif
+
+
     {{-- ================================================================
-         PARTNERS LOGO STRIP (F-024)
+         PARTNERS LOGO STRIP
          Off-white background. Greyscale logos, full color on hover.
-         Section hidden when no published partners.
+         Normalized to uniform display size.
          ================================================================ --}}
     @if ($partners->isNotEmpty())
-        <section class="py-14" style="background-color: #f8fafc;">
-            <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <section class="py-16" style="background-color: #f8f5f0;">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                <p class="text-center text-xs font-bold tracking-widest uppercase mb-8" style="color: #143c64;" data-animate>
-                    {{ __('home.our_partners') }}
-                </p>
+                <div class="text-center mb-10" data-animate="fade-up">
+                    <p class="text-xs font-bold tracking-widest uppercase" style="color: #143c64;">
+                        {{ __('home.our_partners') }}
+                    </p>
+                </div>
 
-                <div class="flex flex-wrap items-center justify-center gap-8 lg:gap-12" data-animate>
+                <div class="flex flex-wrap items-center justify-center gap-8 lg:gap-14" data-animate="fade-up">
                     @foreach ($partners as $partner)
                         @php $logoSrc = $partner->logo_path ? asset($partner->logo_path) : null; @endphp
 
@@ -792,34 +1075,37 @@
                                target="_blank"
                                rel="noopener noreferrer"
                                title="{{ $partner->name }}"
-                               class="flex items-center justify-center transition-all duration-300"
-                               style="filter: grayscale(100%); opacity: 0.6;"
+                               aria-label="{{ $partner->name }}"
+                               class="flex items-center justify-center rounded transition-all duration-300 focus-visible:outline focus-visible:outline-2"
+                               style="filter: grayscale(100%); opacity: 0.55; width: 140px; height: 56px; --tw-outline-color: #c80078;"
                                onmouseover="this.style.filter='grayscale(0%)'; this.style.opacity='1';"
-                               onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.6';">
+                               onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.55';">
                                 @if ($logoSrc)
                                     <img src="{{ $logoSrc }}"
                                          alt="{{ $partner->name }}"
-                                         class="h-10 sm:h-12 w-auto object-contain max-w-[120px]"
+                                         class="max-h-12 w-auto max-w-[130px] object-contain"
                                          loading="lazy"
                                          onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                                    <span class="hidden text-sm font-semibold" style="color: #143c64;">{{ $partner->name }}</span>
+                                    <span class="hidden text-sm font-semibold text-center" style="color: #143c64;">{{ $partner->name }}</span>
                                 @else
-                                    <span class="text-sm font-semibold" style="color: #143c64;">{{ $partner->name }}</span>
+                                    <span class="text-sm font-semibold text-center" style="color: #143c64;">{{ $partner->name }}</span>
                                 @endif
                             </a>
                         @else
-                            <div class="flex items-center justify-center transition-all duration-300"
-                                 style="filter: grayscale(100%); opacity: 0.6;"
-                                 title="{{ $partner->name }}">
+                            <div class="flex items-center justify-center rounded transition-all duration-300"
+                                 style="filter: grayscale(100%); opacity: 0.55; width: 140px; height: 56px;"
+                                 title="{{ $partner->name }}"
+                                 onmouseover="this.style.filter='grayscale(0%)'; this.style.opacity='1';"
+                                 onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.55';">
                                 @if ($logoSrc)
                                     <img src="{{ $logoSrc }}"
                                          alt="{{ $partner->name }}"
-                                         class="h-10 sm:h-12 w-auto object-contain max-w-[120px]"
+                                         class="max-h-12 w-auto max-w-[130px] object-contain"
                                          loading="lazy"
                                          onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-                                    <span class="hidden text-sm font-semibold" style="color: #143c64;">{{ $partner->name }}</span>
+                                    <span class="hidden text-sm font-semibold text-center" style="color: #143c64;">{{ $partner->name }}</span>
                                 @else
-                                    <span class="text-sm font-semibold" style="color: #143c64;">{{ $partner->name }}</span>
+                                    <span class="text-sm font-semibold text-center" style="color: #143c64;">{{ $partner->name }}</span>
                                 @endif
                             </div>
                         @endif
@@ -830,13 +1116,13 @@
         </section>
     @endif
 
+
     {{-- ================================================================
-         NEWSLETTER SUBSCRIPTION SECTION (F-025)
+         NEWSLETTER SUBSCRIPTION SECTION
          Off-white background. Single email field + subscribe button.
-         Gale-powered: validateState, toast on success, clear on done.
-         Honeypot protected. Duplicate email silently succeeds (BR-001).
+         Gale-powered. Honeypot protected.
          ================================================================ --}}
-    <section class="py-20 lg:py-24" style="background-color: #f8f5f0;">
+    <section class="py-20 lg:py-24" style="background-color: #ffffff;">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
             <div data-animate="fade-up"
@@ -844,8 +1130,8 @@
 
                 {{-- Decorative Gold icon --}}
                 <div class="flex justify-center mb-6">
-                    <div class="w-14 h-14 rounded-full flex items-center justify-center"
-                         style="background-color: rgba(200,160,60,0.12);">
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center"
+                         style="background-color: rgba(200,160,60,0.1); border: 1px solid rgba(200,160,60,0.2);">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                              stroke-width="1.5" style="color: #c8a03c;" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -884,11 +1170,12 @@
                             placeholder="{{ __('home.newsletter_placeholder') }}"
                             aria-label="{{ __('home.newsletter_placeholder') }}"
                             autocomplete="email"
-                            class="w-full px-5 py-3.5 rounded-xl border text-sm focus:outline-none"
+                            class="w-full px-5 py-3.5 rounded-xl border text-sm focus:outline-none focus-visible:ring-2"
                             style="border-color: rgba(0,40,80,0.15);
                                    color: #002850;
-                                   background-color: #ffffff;">
-                        <p x-message="newsletter_email" class="mt-1 text-xs text-red-600 text-left"></p>
+                                   background-color: #f8f5f0;
+                                   --tw-ring-color: #c80078;">
+                        <p x-message="newsletter_email" class="mt-1 text-xs text-left" style="color: #dc2626;"></p>
                     </div>
 
                     <button
@@ -915,191 +1202,35 @@
         </div>
     </section>
 
-    @if ($founder || $patron)
-        <section class="py-20 lg:py-28" style="background-color: #002850;">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-                {{-- Section Label --}}
-                <div class="text-center mb-16" data-animate="fade-up">
-                    <span class="text-xs font-bold tracking-widest uppercase"
-                          style="color: #c8a03c;">
-                        {{ __('home.our_leadership') }}
-                    </span>
-                </div>
-
-                {{-- Two-column split: Founder | Patron --}}
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-
-                    {{-- ── Founder ── --}}
-                    @if ($founder)
-                    <div class="flex flex-col items-center text-center" data-animate="fade-right">
-
-                        {{-- Portrait Circle --}}
-                        <div class="relative mb-8">
-                            <div class="w-44 h-44 rounded-full overflow-hidden"
-                                 style="border: 3px solid #c8a03c; padding: 3px; background-color: #002850;">
-                                @if ($founder->photo_path)
-                                    <img
-                                        src="{{ asset($founder->photo_path) }}"
-                                        alt="{{ $founder->name }}"
-                                        class="w-full h-full rounded-full object-cover object-top">
-                                @else
-                                    {{-- Monogram placeholder --}}
-                                    <div class="w-full h-full rounded-full flex items-center justify-center"
-                                         style="background-color: rgba(200,0,120,0.15);">
-                                        <span class="font-heading font-bold select-none"
-                                              style="font-family: 'Playfair Display', serif;
-                                                     font-size: 2.5rem;
-                                                     color: #c80078;">
-                                            {{ \App\Models\FounderProfile::initials($founder->name) }}
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                            {{-- Gold role badge --}}
-                            <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap
-                                        text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full"
-                                 style="background-color: #c80078; color: #ffffff;">
-                                {{ __('home.founder_label') }}
-                            </div>
-                        </div>
-
-                        {{-- Name --}}
-                        <h3 class="font-heading font-bold mt-4 mb-1"
-                            style="font-family: 'Playfair Display', serif;
-                                   font-size: 1.5rem;
-                                   color: #ffffff;">
-                            {{ $founder->name }}
-                        </h3>
-
-                        {{-- Title --}}
-                        <p class="text-xs font-semibold tracking-wider uppercase mb-6"
-                           style="color: #c8a03c;">
-                            {{ $founder->title() }}
-                        </p>
-
-                        {{-- Quote / Message --}}
-                        <blockquote
-                            class="font-heading relative"
-                            style="font-family: 'Playfair Display', serif;
-                                   font-size: 1.05rem;
-                                   font-style: italic;
-                                   line-height: 1.75;
-                                   color: rgba(255,255,255,0.75);
-                                   max-width: 400px;">
-                            <span class="absolute -top-6 -left-2 text-5xl leading-none select-none"
-                                  aria-hidden="true"
-                                  style="color: rgba(200,160,60,0.3); font-family: 'Playfair Display', serif;">"</span>
-                            {{ $founder->message() }}
-                        </blockquote>
-
-                        {{-- Gold divider --}}
-                        <div class="mt-8 h-px w-12 mx-auto" style="background-color: rgba(200,160,60,0.4);"></div>
-
-                    </div>
-                    @endif
-
-                    {{-- ── Patron ── --}}
-                    @if ($patron)
-                    <div class="flex flex-col items-center text-center" data-animate="fade-left">
-
-                        {{-- Portrait Circle --}}
-                        <div class="relative mb-8">
-                            <div class="w-44 h-44 rounded-full overflow-hidden"
-                                 style="border: 3px solid #c8a03c; padding: 3px; background-color: #002850;">
-                                @if ($patron->photo_path)
-                                    <img
-                                        src="{{ asset($patron->photo_path) }}"
-                                        alt="{{ $patron->name }}"
-                                        class="w-full h-full rounded-full object-cover object-top">
-                                @else
-                                    {{-- Monogram placeholder --}}
-                                    <div class="w-full h-full rounded-full flex items-center justify-center"
-                                         style="background-color: rgba(200,160,60,0.12);">
-                                        <span class="font-heading font-bold select-none"
-                                              style="font-family: 'Playfair Display', serif;
-                                                     font-size: 2.5rem;
-                                                     color: #c8a03c;">
-                                            {{ \App\Models\PatronProfile::initials($patron->name) }}
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
-                            {{-- Gold role badge --}}
-                            <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap
-                                        text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full"
-                                 style="background-color: #c8a03c; color: #002850;">
-                                {{ __('home.patron_label') }}
-                            </div>
-                        </div>
-
-                        {{-- Name --}}
-                        <h3 class="font-heading font-bold mt-4 mb-1"
-                            style="font-family: 'Playfair Display', serif;
-                                   font-size: 1.5rem;
-                                   color: #ffffff;">
-                            {{ $patron->name }}
-                        </h3>
-
-                        {{-- Title --}}
-                        <p class="text-xs font-semibold tracking-wider uppercase mb-6"
-                           style="color: #c8a03c;">
-                            {{ $patron->title() }}
-                        </p>
-
-                        {{-- Quote --}}
-                        <blockquote
-                            class="font-heading relative"
-                            style="font-family: 'Playfair Display', serif;
-                                   font-size: 1.05rem;
-                                   font-style: italic;
-                                   line-height: 1.75;
-                                   color: rgba(255,255,255,0.75);
-                                   max-width: 400px;">
-                            <span class="absolute -top-6 -left-2 text-5xl leading-none select-none"
-                                  aria-hidden="true"
-                                  style="color: rgba(200,160,60,0.3); font-family: 'Playfair Display', serif;">"</span>
-                            {{ $patron->quote() }}
-                        </blockquote>
-
-                        {{-- Gold divider --}}
-                        <div class="mt-8 h-px w-12 mx-auto" style="background-color: rgba(200,160,60,0.4);"></div>
-
-                    </div>
-                    @endif
-
-                </div>
-
-            </div>
-        </section>
-    @endif
-
 
     {{-- ================================================================
-         DONATION CALL-TO-ACTION SECTION (F-026)
-         Full-width Navy bg + donate.jpg image with solid dark overlay.
-         Admin-managed headline + copy. Two CTAs: Magenta "Faire un Don"
-         + white outline "Promesse de Don". No CSS gradients (BR-003).
+         DONATION CALL-TO-ACTION SECTION
+         Full-width Magenta background (#c80078) — spec AC requires it.
+         Admin-managed headline + copy. Two CTAs.
          ================================================================ --}}
     @if ($donationCta)
         <section
-            class="relative py-28 lg:py-36 overflow-hidden"
-            style="background-color: #002850;">
+            class="relative py-24 lg:py-32 overflow-hidden"
+            style="background-color: #c80078;">
 
-            {{-- Background image --}}
-            <div
-                class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style="background-image: url('{{ asset($donationCta->bg_image_path) }}');"></div>
-
-            {{-- Solid dark overlay — NO gradient (BR-003) --}}
-            <div class="absolute inset-0" style="background-color: rgba(0, 20, 60, 0.78);"></div>
+            {{-- Subtle texture: overlapping large circles — solid, NO gradient --}}
+            <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full opacity-10" style="background-color: #a8006a;"></div>
+            <div class="absolute -bottom-20 -left-20 w-80 h-80 rounded-full opacity-10" style="background-color: #a8006a;"></div>
 
             {{-- Content --}}
             <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
-                {{-- Gold accent decoration --}}
+                {{-- Eyebrow label --}}
+                <div class="flex justify-center mb-6" data-animate="fade-up">
+                    <span class="text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full"
+                          style="background-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9);">
+                        {{ __('home.section_donate_cta_label') }}
+                    </span>
+                </div>
+
+                {{-- Gold accent line --}}
                 <div class="flex justify-center mb-8" data-animate="fade-up">
-                    <div class="h-px w-16" style="background-color: #c8a03c;"></div>
+                    <div class="h-0.5 w-16" style="background-color: #c8a03c;"></div>
                 </div>
 
                 {{-- Headline --}}
@@ -1113,15 +1244,10 @@
                     {{ $donationCta->headline() }}
                 </h2>
 
-                {{-- Gold underline accent --}}
-                <div class="flex justify-center mb-8" data-animate="fade-up">
-                    <div class="h-0.5 w-20" style="background-color: #c8a03c;"></div>
-                </div>
-
                 {{-- Copy --}}
                 <p
                     class="text-base sm:text-lg leading-relaxed mb-12 mx-auto"
-                    style="color: rgba(255,255,255,0.82); max-width: 560px;"
+                    style="color: rgba(255,255,255,0.88); max-width: 560px;"
                     data-animate="fade-up">
                     {{ $donationCta->copy() }}
                 </p>
@@ -1129,21 +1255,28 @@
                 {{-- CTAs --}}
                 <div class="flex flex-col sm:flex-row gap-4 items-center justify-center" data-animate="fade-up">
 
-                    {{-- Primary: filled Magenta --}}
-                    <a
-                        href="/faire-un-don"
-                        class="btn-primary text-base font-semibold px-10 py-4 rounded-xl w-full sm:w-auto text-center"
-                        style="min-width: 220px;">
-                        {{ __('home.donate_now') }}
-                    </a>
+                    {{-- Primary: white filled button --}}
+                    @if (Route::has('public.donate'))
+                        <a
+                            href="{{ route('public.donate') }}"
+                            x-navigate
+                            class="inline-flex items-center justify-center text-base font-semibold px-10 py-4 rounded-xl w-full sm:w-auto text-center transition-all duration-150"
+                            style="background-color: #ffffff; color: #c80078; min-width: 220px;"
+                            onmouseover="this.style.backgroundColor='#f8f5f0'"
+                            onmouseout="this.style.backgroundColor='#ffffff'">
+                            {{ __('home.donate_now') }}
+                        </a>
 
-                    {{-- Secondary: white outline --}}
-                    <a
-                        href="/faire-un-don#promesse"
-                        class="btn-secondary text-base font-semibold px-10 py-4 rounded-xl w-full sm:w-auto text-center"
-                        style="min-width: 220px;">
-                        {{ __('home.pledge_donation') }}
-                    </a>
+                        {{-- Secondary: white outline --}}
+                        <a
+                            href="{{ route('public.donate') }}#promesse"
+                            class="inline-flex items-center justify-center text-base font-semibold px-10 py-4 rounded-xl w-full sm:w-auto text-center transition-all duration-150"
+                            style="background-color: transparent; color: #ffffff; border: 2px solid rgba(255,255,255,0.75); min-width: 220px;"
+                            onmouseover="this.style.borderColor='#ffffff'; this.style.backgroundColor='rgba(255,255,255,0.1)'"
+                            onmouseout="this.style.borderColor='rgba(255,255,255,0.75)'; this.style.backgroundColor='transparent'">
+                            {{ __('home.pledge_donation') }}
+                        </a>
+                    @endif
 
                 </div>
 
