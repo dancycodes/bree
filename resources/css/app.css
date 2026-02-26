@@ -95,23 +95,65 @@ h1, h2, h3, h4, h5, h6 {
 .bg-off-white { background-color: #f8f5f0; }
 
 /* ============================================================
-   Button Components
+   Button Components — Canonical System (F-041)
+   Three variants: primary (magenta), secondary (navy/white border),
+   outline (transparent + magenta border).
+   All share identical padding, font, radius, and transition base.
+   Border-radius is set via Tailwind modifier (rounded-lg / rounded-full)
+   on the element — the component sets no radius so it is fully composable.
    ============================================================ */
 
-.btn-primary {
+/* Shared button base — not applied directly, used via cascade */
+.btn-primary,
+.btn-secondary,
+.btn-outline {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.625rem 1.5rem;
-    background-color: #c80078;
-    color: #ffffff;
+    gap: 0.5rem;
+    padding: 0.625rem 1.5rem;        /* py-2.5 px-6 */
+    font-family: var(--font-sans);
     font-weight: 600;
-    font-size: 0.875rem;
-    border-radius: 0.5rem;
-    border: 2px solid #c80078;
-    transition: background-color 150ms ease, border-color 150ms ease;
+    font-size: 0.875rem;             /* text-sm */
+    letter-spacing: 0.025em;         /* tracking-wide */
+    line-height: 1.25;
+    border-width: 2px;
+    border-style: solid;
     cursor: pointer;
     text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 200ms ease,
+                border-color 200ms ease,
+                color 200ms ease,
+                box-shadow 200ms ease,
+                opacity 200ms ease;
+}
+
+/* Focus ring — accessible magenta ring for all button variants */
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-outline:focus-visible {
+    outline: 3px solid #c80078;
+    outline-offset: 2px;
+}
+
+/* Disabled state — consistent across all variants */
+.btn-primary:disabled,
+.btn-secondary:disabled,
+.btn-outline:disabled,
+.btn-primary[aria-disabled="true"],
+.btn-secondary[aria-disabled="true"],
+.btn-outline[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Primary — magenta fill */
+.btn-primary {
+    background-color: #c80078;
+    border-color: #c80078;
+    color: #ffffff;
 }
 
 .btn-primary:hover {
@@ -119,45 +161,60 @@ h1, h2, h3, h4, h5, h6 {
     border-color: #a8006a;
 }
 
+/* Secondary — white outline on dark backgrounds */
 .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.625rem 1.5rem;
     background-color: transparent;
+    border-color: #ffffff;
     color: #ffffff;
-    font-weight: 600;
-    font-size: 0.875rem;
-    border-radius: 0.5rem;
-    border: 2px solid #ffffff;
-    transition: background-color 150ms ease, color 150ms ease;
-    cursor: pointer;
-    text-decoration: none;
 }
 
 .btn-secondary:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.12);
 }
 
+/* Outline — transparent with magenta border, fills on hover */
 .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.625rem 1.5rem;
     background-color: transparent;
+    border-color: #c80078;
     color: #c80078;
-    font-weight: 600;
-    font-size: 0.875rem;
-    border-radius: 0.5rem;
-    border: 2px solid #c80078;
-    transition: background-color 150ms ease, color 150ms ease;
-    cursor: pointer;
-    text-decoration: none;
 }
 
 .btn-outline:hover {
     background-color: #c80078;
     color: #ffffff;
+}
+
+/* Outline navy variant — navy border on light backgrounds */
+.btn-outline-navy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.5rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.025em;
+    line-height: 1.25;
+    border: 2px solid #143c64;
+    background-color: transparent;
+    color: #143c64;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 200ms ease,
+                color 200ms ease,
+                border-color 200ms ease;
+}
+
+.btn-outline-navy:hover {
+    background-color: #143c64;
+    color: #ffffff;
+}
+
+.btn-outline-navy:focus-visible {
+    outline: 3px solid #c80078;
+    outline-offset: 2px;
 }
 
 /* ============================================================
@@ -401,20 +458,70 @@ body.overflow-hidden {
 }
 
 /* ============================================================
-   Micro-interaction Polish — Card Hover Lift
-   Applied to article cards inside stagger-animated grids.
+   Canonical Card System — F-041
+   .card-lift: hover lift animation — apply to any content card.
+   Works on articles inside data-stagger grids and standalone cards.
+   Base shadow/border should be set on the card element itself.
    Respects prefers-reduced-motion.
    ============================================================ */
 
+.card-lift {
+    transition: transform 300ms ease, box-shadow 300ms ease;
+}
+
+.card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card-lift,
+    .card-lift:hover {
+        transform: none !important;
+        transition: box-shadow 200ms ease;
+    }
+}
+
+/* Legacy: data-stagger article cards also get card-lift behaviour */
 @media (prefers-reduced-motion: no-preference) {
-    [data-stagger] article,
-    .card-lift {
-        transition: transform 200ms ease, box-shadow 200ms ease;
+    [data-stagger] article {
+        transition: transform 300ms ease, box-shadow 300ms ease;
     }
 
-    [data-stagger] article:hover,
-    .card-lift:hover {
+    [data-stagger] article:hover {
         transform: translateY(-4px);
-        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.10);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+    }
+}
+
+/* Icon buttons — social links, arrows (40x40, rounded-full, brand fill on hover) */
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;    /* w-10 = 40px */
+    height: 2.5rem;   /* h-10 = 40px */
+    border-radius: 9999px;
+    transition: background-color 200ms ease, color 200ms ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-icon:focus-visible {
+    outline: 3px solid #c80078;
+    outline-offset: 2px;
+}
+
+/* Footer & contact social icon hover — CSS-only, no Alpine JS needed */
+.footer-social-icon:hover,
+.contact-social-icon:hover {
+    background-color: #c80078 !important;
+    transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .footer-social-icon:hover,
+    .contact-social-icon:hover {
+        transform: none;
     }
 }

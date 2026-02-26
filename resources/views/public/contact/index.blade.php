@@ -179,7 +179,7 @@
                                        target="_blank"
                                        rel="noopener noreferrer"
                                        aria-label="{{ $social['label'] }}"
-                                       class="contact-social-icon w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200"
+                                       class="contact-social-icon w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200"
                                        style="background-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8);">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                             <path d="{{ $social['icon'] }}"/>

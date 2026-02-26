@@ -614,8 +614,8 @@
 
                 <a href="{{ route('public.donate') }}"
                    x-navigate
-                   class="inline-flex items-center justify-center gap-3 px-8 py-4 text-sm font-semibold rounded-full text-white transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4"
-                   style="background-color: #c80078; min-width: 200px;">
+                   class="btn-primary rounded-full px-8 py-4 text-sm"
+                   style="min-width: 200px;">
                     {{ __('about.cta_donate') }}
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/>
@@ -625,10 +625,8 @@
                 @if (Route::has('public.volunteers'))
                     <a href="{{ route('public.volunteers') }}"
                        x-navigate
-                       class="inline-flex items-center justify-center gap-2 px-8 py-4 text-sm font-semibold rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 hover:text-white"
-                       style="color: #002850; border: 2px solid #002850;"
-                       @mouseover="$el.style.backgroundColor='#002850'; $el.style.color='#ffffff';"
-                       @mouseout="$el.style.backgroundColor='transparent'; $el.style.color='#002850';">
+                       class="btn-outline-navy rounded-full px-8 py-4 text-sm"
+                       style="min-width: 200px;">
                         {{ __('about.cta_volunteer') }}
                     </a>
                 @endif

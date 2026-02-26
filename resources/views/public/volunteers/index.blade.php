@@ -13,15 +13,6 @@
         box-shadow: 0 0 0 3px rgba(200, 0, 120, 0.12);
     }
 
-    /* ── Benefit card hover ── */
-    .vol-benefit-card {
-        transition: box-shadow 0.25s ease;
-    }
-    .vol-benefit-card:hover {
-        box-shadow: 0 12px 36px rgba(0, 20, 50, 0.10);
-        transform: translateY(-4px);
-    }
-
     /* ── Program area card transition ── */
     .vol-area-btn {
         transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
@@ -36,13 +27,6 @@
     }
     .vol-avail-btn:hover {
         box-shadow: 0 2px 8px rgba(200, 0, 120, 0.15);
-    }
-
-    /* ── Reduced motion: skip hover lifts ── */
-    @media (prefers-reduced-motion: reduce) {
-        .vol-benefit-card:hover {
-            transform: none !important;
-        }
     }
 </style>
 @endpush
@@ -112,8 +96,7 @@
             <div class="mt-8" data-animate="fade-up" data-delay="0.3">
                 <a href="#vol-form"
                    onclick="document.getElementById('vol-form').scrollIntoView({behavior:'smooth'}); return false;"
-                   class="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-sm font-bold transition-opacity hover:opacity-90 focus-visible:outline-white"
-                   style="background-color: #c80078; color: #ffffff;">
+                   class="btn-primary rounded-xl px-7 py-3.5 text-sm">
                     {{ __('volunteers.hero_cta') }}
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -146,7 +129,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" data-stagger>
 
                 {{-- Benefit 1: Field experience --}}
-                <div class="vol-benefit-card bg-white rounded-2xl p-7"
+                <div class="vol-benefit-card card-lift bg-white rounded-2xl p-7"
                      style="border: 1px solid #e8e4de;"
                      data-animate="fade-up">
                     <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
@@ -164,7 +147,7 @@
                 </div>
 
                 {{-- Benefit 2: Real impact --}}
-                <div class="vol-benefit-card bg-white rounded-2xl p-7"
+                <div class="vol-benefit-card card-lift bg-white rounded-2xl p-7"
                      style="border: 1px solid #e8e4de;"
                      data-animate="fade-up">
                     <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
@@ -182,7 +165,7 @@
                 </div>
 
                 {{-- Benefit 3: Community --}}
-                <div class="vol-benefit-card bg-white rounded-2xl p-7"
+                <div class="vol-benefit-card card-lift bg-white rounded-2xl p-7"
                      style="border: 1px solid #e8e4de;"
                      data-animate="fade-up">
                     <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
@@ -200,7 +183,7 @@
                 </div>
 
                 {{-- Benefit 4: Recognition --}}
-                <div class="vol-benefit-card bg-white rounded-2xl p-7"
+                <div class="vol-benefit-card card-lift bg-white rounded-2xl p-7"
                      style="border: 1px solid #e8e4de;"
                      data-animate="fade-up">
                     <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"

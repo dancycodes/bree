@@ -417,10 +417,8 @@
                                 <a href="{{ $siteSettings[$social['key']] }}"
                                    target="_blank" rel="noopener noreferrer"
                                    aria-label="{{ $social['name'] }}"
-                                   class="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200"
-                                   style="background-color: rgba(255,255,255,0.1);"
-                                   @mouseover="$el.style.backgroundColor='#c80078'; $el.style.transform='translateY(-2px)';"
-                                   @mouseout="$el.style.backgroundColor='rgba(255,255,255,0.1)'; $el.style.transform='translateY(0)';">
+                                   class="footer-social-icon w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200"
+                                   style="background-color: rgba(255,255,255,0.1);">
                                     <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                         <path d="{{ $social['icon'] }}"/>
                                     </svg>
