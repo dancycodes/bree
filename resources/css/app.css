@@ -287,6 +287,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================================
+   Mobile Navigation — Slide-in panel transitions
+   translate-x-full/translate-x-0 driven by Alpine x-transition
+   ============================================================ */
+
+#mobile-menu-panel {
+    will-change: transform;
+}
+
+/* Ensure body scroll lock class works with fixed header */
+body.overflow-hidden {
+    overflow: hidden;
+}
+
+/* ============================================================
    Micro-interaction Polish — Card Hover Lift
    Applied to article cards inside stagger-animated grids.
    Respects prefers-reduced-motion.

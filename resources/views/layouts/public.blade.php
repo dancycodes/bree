@@ -73,8 +73,37 @@
                 window.addEventListener('scroll', () => {
                     this.scrolled = window.scrollY > 20;
                 });
+
+                // Auto-close on Gale navigation
+                document.addEventListener('gale:navigating', () => {
+                    this.mobileOpen = false;
+                });
+
+                // Auto-close on orientation change
+                window.addEventListener('orientationchange', () => {
+                    this.mobileOpen = false;
+                });
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth >= 1024) {
+                        this.mobileOpen = false;
+                    }
+                });
+            },
+            openMenu() {
+                this.mobileOpen = true;
+                document.body.classList.add('overflow-hidden');
+                this.$nextTick(() => {
+                    const closeBtn = document.getElementById('mobile-menu-close');
+                    if (closeBtn) { closeBtn.focus(); }
+                });
+            },
+            closeMenu() {
+                this.mobileOpen = false;
+                document.body.classList.remove('overflow-hidden');
             }
-        }">
+        }"
+        @keydown.escape.window="closeMenu()"
+        x-id="['mobile-menu']">
     <header
         class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
         :class="scrolled ? 'shadow-lg' : ''"
@@ -156,82 +185,185 @@
                     @endif
                 </div>
 
-                {{-- Mobile Hamburger --}}
+                {{-- Mobile Hamburger — min 44x44px touch target --}}
                 <button
-                    @click="mobileOpen = !mobileOpen"
-                    class="lg:hidden flex flex-col gap-1.5 p-2 rounded-md transition-colors"
-                    :aria-label="mobileOpen ? '{{ __('ui.close') }}' : 'Menu'"
-                    aria-expanded="false"
-                    :aria-expanded="mobileOpen.toString()">
-                    <span class="block w-6 h-0.5 rounded-full transition-all duration-300"
-                          style="background-color: rgba(255,255,255,0.9);"
-                          :class="mobileOpen ? 'rotate-45 translate-y-2' : ''"></span>
-                    <span class="block w-6 h-0.5 rounded-full transition-all duration-300"
-                          style="background-color: rgba(255,255,255,0.9);"
-                          :class="mobileOpen ? 'opacity-0' : ''"></span>
-                    <span class="block w-6 h-0.5 rounded-full transition-all duration-300"
-                          style="background-color: rgba(255,255,255,0.9);"
-                          :class="mobileOpen ? '-rotate-45 -translate-y-2' : ''"></span>
+                    @click="mobileOpen ? closeMenu() : openMenu()"
+                    class="lg:hidden flex items-center justify-center rounded-md transition-colors"
+                    style="min-width: 44px; min-height: 44px; color: rgba(255,255,255,0.9);"
+                    :aria-label="mobileOpen ? '{{ __('ui.close_menu') }}' : '{{ __('nav.open_menu') }}'"
+                    :aria-expanded="mobileOpen.toString()"
+                    aria-controls="mobile-menu-panel">
+                    <span class="flex flex-col gap-1.5 w-6">
+                        <span class="block w-full h-0.5 rounded-full transition-all duration-300"
+                              style="background-color: currentColor;"
+                              :class="mobileOpen ? 'rotate-45 translate-y-2' : ''"></span>
+                        <span class="block w-full h-0.5 rounded-full transition-all duration-300"
+                              style="background-color: currentColor;"
+                              :class="mobileOpen ? 'opacity-0 scale-x-0' : ''"></span>
+                        <span class="block w-full h-0.5 rounded-full transition-all duration-300"
+                              style="background-color: currentColor;"
+                              :class="mobileOpen ? '-rotate-45 -translate-y-2' : ''"></span>
+                    </span>
                 </button>
             </div>
         </div>
     </header>
 
-    {{-- Mobile Menu Overlay — sibling to header, outside it to avoid stacking context --}}
-    <div
-        :style="`background-color:#002850; top:4.5rem; display:${mobileOpen ? 'flex' : 'none'}; opacity:${mobileOpen ? '1' : '0'}; transition: opacity 0.3s ease;`"
-        class="fixed left-0 right-0 bottom-0 z-40 flex-col overflow-y-auto"
-        style="background-color:#002850; top:4.5rem; display:none;">
+    {{-- ============================================================
+         MOBILE MENU — Full-height slide-in panel from right
+         Backdrop + panel use Alpine x-show with CSS transitions
+         ============================================================ --}}
 
-        <div class="flex flex-col justify-center px-8 py-12 min-h-full">
-            <nav class="flex flex-col gap-1">
+    {{-- Backdrop: semi-transparent overlay, click closes menu --}}
+    <div
+        x-show="mobileOpen"
+        @click="closeMenu()"
+        x-transition:enter="transition-opacity ease-out duration-300"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition-opacity ease-in duration-200"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0"
+        class="fixed inset-0 z-40 lg:hidden"
+        style="background-color: rgba(0,20,50,0.72); display: none;"
+        aria-hidden="true"></div>
+
+    {{-- Slide-in panel from right --}}
+    <div
+        id="mobile-menu-panel"
+        x-show="mobileOpen"
+        x-transition:enter="transition-transform ease-out duration-300"
+        x-transition:enter-start="translate-x-full"
+        x-transition:enter-end="translate-x-0"
+        x-transition:leave="transition-transform ease-in duration-200"
+        x-transition:leave-start="translate-x-0"
+        x-transition:leave-end="translate-x-full"
+        role="dialog"
+        aria-modal="true"
+        aria-label="{{ __('nav.mobile_menu') }}"
+        class="fixed top-0 right-0 bottom-0 z-50 lg:hidden flex flex-col overflow-y-auto"
+        style="background-color: #002850; width: min(85vw, 360px); display: none; box-shadow: -8px 0 40px rgba(0,0,0,0.4);">
+
+        {{-- Panel Header: logo + close button --}}
+        <div class="flex items-center justify-between px-6 py-4"
+             style="border-bottom: 1px solid rgba(255,255,255,0.08); min-height: 4.5rem;">
+            <a href="{{ route('public.home') }}"
+               x-navigate
+               @click="closeMenu()"
+               class="flex items-center">
+                <img src="{{ asset('images/logo.png') }}"
+                     alt="{{ config('app.name') }}"
+                     class="h-9 w-auto object-contain"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                <span style="display:none; color:#ffffff; font-family:'Playfair Display',serif; font-weight:700; font-size:1rem;">BREE</span>
+            </a>
+
+            {{-- Close "X" button — min 44x44px touch target --}}
+            <button
+                id="mobile-menu-close"
+                @click="closeMenu()"
+                class="flex items-center justify-center rounded-md transition-colors"
+                style="min-width: 44px; min-height: 44px; color: rgba(255,255,255,0.7);"
+                aria-label="{{ __('ui.close_menu') }}"
+                @mouseover="$el.style.color='#ffffff'; $el.style.backgroundColor='rgba(255,255,255,0.08)'"
+                @mouseout="$el.style.color='rgba(255,255,255,0.7)'; $el.style.backgroundColor='transparent'">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        {{-- Nav Links — min 48px touch targets --}}
+        <nav class="flex-1 px-6 py-6 flex flex-col" aria-label="{{ __('nav.mobile_menu') }}">
+            <ul class="flex flex-col" role="list">
                 @foreach ($navLinks as $link)
                     @if (Route::has($link['route']))
-                        <a href="{{ route($link['route']) }}"
-                           @click="mobileOpen = false"
-                           class="text-3xl font-medium py-3 border-b transition-colors duration-150 block"
-                           style="font-family: 'Playfair Display', serif; color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.1);"
-                           @mouseover="$el.style.color='#c8a03c'"
-                           @mouseout="$el.style.color='rgba(255,255,255,0.85)'">
-                            {{ $link['label'] }}
-                        </a>
+                        @php $isMobileActive = request()->routeIs($link['match']); @endphp
+                        <li>
+                            <a href="{{ route($link['route']) }}"
+                               x-navigate
+                               @click="closeMenu()"
+                               class="flex items-center w-full transition-colors duration-150"
+                               style="
+                                   font-family: 'Playfair Display', serif;
+                                   font-size: 1.2rem;
+                                   font-weight: 500;
+                                   min-height: 52px;
+                                   padding: 0.75rem 0;
+                                   border-bottom: 1px solid rgba(255,255,255,0.07);
+                                   color: {{ $isMobileActive ? '#c8a03c' : 'rgba(255,255,255,0.85)' }};
+                                   {{ $isMobileActive ? 'padding-left: 0.75rem; border-left: 3px solid #c80078;' : '' }}
+                               "
+                               @mouseover="$el.style.color='#ffffff'"
+                               @mouseout="$el.style.color='{{ $isMobileActive ? '#c8a03c' : 'rgba(255,255,255,0.85)' }}'">
+                                {{ $link['label'] }}
+                            </a>
+                        </li>
                     @endif
                 @endforeach
+            </ul>
 
-                @if (Route::has('public.donate'))
+            {{-- Donate CTA — prominent magenta button --}}
+            @if (Route::has('public.donate'))
+                <div class="mt-6">
                     <a href="{{ route('public.donate') }}"
-                       @click="mobileOpen = false"
-                       class="mt-6 btn-primary text-center text-base py-3.5 rounded-xl w-full block">
+                       x-navigate
+                       @click="closeMenu()"
+                       class="flex items-center justify-center w-full rounded-xl font-bold text-base text-white"
+                       style="background-color: #c80078; min-height: 52px; padding: 0.875rem 1.5rem; text-transform: uppercase; letter-spacing: 0.08em; transition: background-color 150ms ease; border: 2px solid #c80078;"
+                       @mouseover="$el.style.backgroundColor='#a8006a'; $el.style.borderColor='#a8006a'"
+                       @mouseout="$el.style.backgroundColor='#c80078'; $el.style.borderColor='#c80078'">
                         {{ __('nav.donate') }}
                     </a>
-                @endif
-            </nav>
+                </div>
+            @endif
+        </nav>
 
-            {{-- Mobile Language Switcher --}}
-            <div class="mt-10 flex items-center gap-4">
+        {{-- Panel Footer: Language switcher + contact --}}
+        <div class="px-6 pb-8 pt-4" style="border-top: 1px solid rgba(255,255,255,0.08);">
+
+            {{-- Language Switcher --}}
+            <div class="flex items-center gap-2 mb-5" role="group" aria-label="{{ __('nav.language') }}">
+                <span class="text-xs font-bold tracking-widest uppercase" style="color: rgba(255,255,255,0.35);">{{ __('nav.language') }}:</span>
                 <a href="{{ route('lang.switch', 'fr') }}"
                    aria-label="Passer au français"
-                   class="text-sm font-bold tracking-widest transition-colors px-3 py-1.5 rounded-md"
-                   style="{{ app()->getLocale() === 'fr' ? 'color: #c8a03c; background: rgba(200,160,60,0.15);' : 'color: rgba(255,255,255,0.4);' }}">
+                   aria-current="{{ app()->getLocale() === 'fr' ? 'true' : 'false' }}"
+                   class="text-xs font-bold tracking-widest rounded-md transition-colors"
+                   style="
+                       padding: 0.4rem 0.75rem;
+                       min-height: 36px;
+                       display: inline-flex;
+                       align-items: center;
+                       {{ app()->getLocale() === 'fr' ? 'color: #c8a03c; background: rgba(200,160,60,0.15); border: 1px solid rgba(200,160,60,0.3);' : 'color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.12);' }}
+                   ">
                     FR
                 </a>
                 <a href="{{ route('lang.switch', 'en') }}"
                    aria-label="Switch to English"
-                   class="text-sm font-bold tracking-widest transition-colors px-3 py-1.5 rounded-md"
-                   style="{{ app()->getLocale() === 'en' ? 'color: #c8a03c; background: rgba(200,160,60,0.15);' : 'color: rgba(255,255,255,0.4);' }}">
+                   aria-current="{{ app()->getLocale() === 'en' ? 'true' : 'false' }}"
+                   class="text-xs font-bold tracking-widest rounded-md transition-colors"
+                   style="
+                       padding: 0.4rem 0.75rem;
+                       min-height: 36px;
+                       display: inline-flex;
+                       align-items: center;
+                       {{ app()->getLocale() === 'en' ? 'color: #c8a03c; background: rgba(200,160,60,0.15); border: 1px solid rgba(200,160,60,0.3);' : 'color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.12);' }}
+                   ">
                     EN
                 </a>
             </div>
 
-            {{-- Mobile Contact --}}
-            <div class="mt-auto pt-8 text-xs" style="color: rgba(255,255,255,0.4);">
-                @if($siteSettings['contact_email'] ?? null)
-                    <p>{{ $siteSettings['contact_email'] }}</p>
-                @endif
-                @if($siteSettings['contact_phone'] ?? null)
-                    <p>{{ $siteSettings['contact_phone'] }}</p>
-                @endif
-            </div>
+            {{-- Contact info --}}
+            @if(!empty($siteSettings['contact_email'] ?? '') || !empty($siteSettings['contact_phone'] ?? ''))
+                <div class="text-xs space-y-1" style="color: rgba(255,255,255,0.35);">
+                    @if(!empty($siteSettings['contact_email'] ?? ''))
+                        <p>{{ $siteSettings['contact_email'] }}</p>
+                    @endif
+                    @if(!empty($siteSettings['contact_phone'] ?? ''))
+                        <p>{{ $siteSettings['contact_phone'] }}</p>
+                    @endif
+                </div>
+            @endif
         </div>
     </div>
     </div>{{-- end x-data wrapper --}}

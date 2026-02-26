@@ -14,6 +14,7 @@ return [
     'search' => 'Search',
     'filter' => 'Filter',
     'close' => 'Close',
+    'close_menu' => 'Close menu',
     'previous' => 'Previous',
     'next' => 'Next',
     'confirm' => 'Confirm',

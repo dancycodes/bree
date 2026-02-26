@@ -13,6 +13,9 @@ return [
     'donate' => 'Make a Donation',
     'contact' => 'Contact',
     'language' => 'Language',
+    'primary' => 'Primary navigation',
+    'open_menu' => 'Open menu',
+    'mobile_menu' => 'Navigation menu',
 
     // Admin sidebar — group headings
     'group' => [
