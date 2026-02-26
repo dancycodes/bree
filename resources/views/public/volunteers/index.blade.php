@@ -92,12 +92,8 @@
             </span>
 
             {{-- Main headline --}}
-            <h1 class="font-bold"
-                style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(2rem, 5vw, 3.5rem);
-                       color: #ffffff;
-                       line-height: 1.1;
-                       max-width: 720px;"
+            <h1 class="bree-hero-h1"
+                style="color: #ffffff; max-width: 720px;"
                 data-animate="fade-up" data-delay="0.1">
                 {{ __('volunteers.hero_heading') }}
             </h1>
@@ -140,11 +136,7 @@
                       style="color: #c80078;">
                     {{ __('volunteers.benefits_label') }}
                 </span>
-                <h2 class="font-bold"
-                    style="font-family: 'Playfair Display', serif;
-                           font-size: clamp(1.5rem, 3.5vw, 2.25rem);
-                           color: #002850;
-                           line-height: 1.15;">
+                <h2 class="bree-section-h2">
                     {{ __('volunteers.benefits_heading') }}
                 </h2>
                 <div class="mt-4 mx-auto h-0.5 w-12 rounded-full" style="background-color: #c8a03c;"></div>
@@ -270,8 +262,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
                     </div>
-                    <h2 class="font-bold text-2xl mb-3"
-                        style="font-family: 'Playfair Display', serif; color: #002850;">
+                    <h2 class="bree-subsection-h3 mb-3"
+                        style="color: #002850;">
                         {{ __('volunteers.success_heading') }}
                     </h2>
                     <p class="text-sm leading-relaxed mb-8 max-w-sm mx-auto" style="color: #64748b;">
@@ -293,11 +285,8 @@
                               style="color: #c80078;">
                             {{ __('volunteers.form_label') }}
                         </span>
-                        <h2 class="font-bold"
-                            style="font-family: 'Playfair Display', serif;
-                                   font-size: clamp(1.4rem, 3vw, 2rem);
-                                   color: #002850;
-                                   line-height: 1.15;">
+                        <h2 class="bree-subsection-h3"
+                            style="color: #002850;">
                             {{ __('volunteers.form_heading') }}
                         </h2>
                         <div class="mt-4 mx-auto h-0.5 w-10 rounded-full" style="background-color: #c80078;"></div>

@@ -18,15 +18,15 @@
 
         <div class="relative z-10 h-full flex flex-col justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
 
-            <nav class="mb-4" aria-label="Breadcrumb">
-                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.7);">
+            <nav class="mb-4" aria-label="{{ __('ui.breadcrumb') }}">
+                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
                            x-navigate
-                           class="hover:text-white transition-colors">{{ __('nav.home') }}</a>
+                           class="hover:text-white transition-colors focus-visible:outline-white">{{ __('nav.home') }}</a>
                     </li>
-                    <li style="color: rgba(255,255,255,0.4);">/</li>
-                    <li style="color: #ffffff;">{{ __('privacy.title') }}</li>
+                    <li aria-hidden="true" style="color: rgba(255,255,255,0.3);">/</li>
+                    <li style="color: #ffffff;" aria-current="page">{{ __('privacy.title') }}</li>
                 </ol>
             </nav>
 
@@ -36,11 +36,8 @@
                 {{ __('privacy.hero_label') }}
             </span>
 
-            <h1 class="font-bold"
-                style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(1.75rem, 4vw, 2.75rem);
-                       color: #ffffff;
-                       line-height: 1.1;"
+            <h1 class="bree-hero-h1 max-w-3xl"
+                style="color: #ffffff;"
                 data-animate="fade-up">
                 {{ __('privacy.hero_heading') }}
             </h1>

@@ -144,10 +144,7 @@
                     </span>
                 </div>
                 <div class="text-center mb-14" data-animate="fade-up">
-                    <h2 class="font-heading font-bold"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.5rem, 3vw, 2.25rem);
-                               color: #002850;">
+                    <h2 class="bree-section-h2">
                         {{ __('home.section_impact_intro') }}
                     </h2>
                 </div>
@@ -213,10 +210,8 @@
                     <span class="text-xs font-bold tracking-widest uppercase block mb-3" style="color: #c8a03c;">
                         {{ __('home.our_vision') }}
                     </span>
-                    <h2 class="font-heading font-bold"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.75rem, 4vw, 2.5rem);
-                               color: #ffffff;">
+                    <h2 class="bree-section-h2"
+                        style="color: #ffffff;">
                         {{ __('home.section_mission_heading') }}
                     </h2>
                 </div>
@@ -312,11 +307,7 @@
                           style="color: #c8a03c;">
                         {{ __('home.our_programs') }}
                     </span>
-                    <h2 class="font-heading font-bold"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.75rem, 4vw, 2.75rem);
-                               color: #002850;
-                               font-weight: 700;">
+                    <h2 class="bree-section-h2">
                         {{ __('home.section_programs_title') }}
                     </h2>
                 </div>
@@ -411,11 +402,7 @@
                           style="color: #c8a03c;">
                         {{ __('home.latest_news') }}
                     </span>
-                    <h2 class="font-heading"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.75rem, 4vw, 2.75rem);
-                               color: #002850;
-                               font-weight: 700;">
+                    <h2 class="bree-section-h2">
                         {{ __('home.section_news_title') }}
                     </h2>
                 </div>
@@ -556,11 +543,7 @@
                           style="color: #c8a03c;">
                         {{ __('home.upcoming_events') }}
                     </span>
-                    <h2 class="font-heading"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.75rem, 4vw, 2.75rem);
-                               color: #002850;
-                               font-weight: 700;">
+                    <h2 class="bree-section-h2">
                         {{ __('home.section_events_title') }}
                     </h2>
                 </div>
@@ -710,10 +693,7 @@
                 <p class="text-xs font-bold tracking-widest uppercase mb-3" style="color: #c80078;">
                     {{ __('home.gallery_eyebrow') }}
                 </p>
-                <h2 class="font-heading font-bold mb-2"
-                    style="font-family: 'Playfair Display', serif;
-                           font-size: clamp(1.75rem, 4vw, 2.75rem);
-                           color: #002850;">
+                <h2 class="bree-section-h2 mb-2">
                     {{ __('home.gallery_title') }}
                 </h2>
             </div>
@@ -879,10 +859,8 @@
                           style="color: #c8a03c;">
                         {{ __('home.our_leadership') }}
                     </span>
-                    <h2 class="font-heading font-bold"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.75rem, 4vw, 2.5rem);
-                               color: #ffffff;">
+                    <h2 class="bree-section-h2"
+                        style="color: #ffffff;">
                         {{ __('home.section_founder_intro') }}
                     </h2>
                 </div>
@@ -1141,10 +1119,7 @@
                 </div>
 
                 {{-- Headline --}}
-                <h2 class="font-heading font-bold mb-4"
-                    style="font-family: 'Playfair Display', serif;
-                           font-size: clamp(1.75rem, 4vw, 2.5rem);
-                           color: #002850;">
+                <h2 class="bree-section-h2 mb-4">
                     {{ __('home.newsletter_headline') }}
                 </h2>
 
@@ -1235,11 +1210,8 @@
 
                 {{-- Headline --}}
                 <h2
-                    class="font-heading font-bold mb-6"
-                    style="font-family: 'Playfair Display', serif;
-                           font-size: clamp(2rem, 5vw, 3.5rem);
-                           color: #ffffff;
-                           line-height: 1.15;"
+                    class="bree-section-h2 mb-6"
+                    style="color: #ffffff;"
                     data-animate="fade-up">
                     {{ $donationCta->headline() }}
                 </h2>
