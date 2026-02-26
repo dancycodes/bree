@@ -13,11 +13,11 @@
             title_en: {{ json_encode($member->title_en) }},
             bio_fr: {{ json_encode($member->bio_fr ?? '') }},
             bio_en: {{ json_encode($member->bio_en ?? '') }},
-            photo_path: {{ json_encode($member->photo_path ?? '') }},
             is_published: {{ $member->is_published ? 'true' : 'false' }},
-            activeLang: 'fr'
+            activeLang: 'fr',
+            photoFileName: null
         }"
-        x-sync="['name','title_fr','title_en','bio_fr','bio_en','photo_path','is_published']">
+        x-sync="['name','title_fr','title_en','bio_fr','bio_en','is_published']">
 
         {{-- Back link --}}
         <div class="mb-5">
@@ -114,32 +114,42 @@
             {{-- Sidebar --}}
             <div class="space-y-5">
 
-                {{-- Photo --}}
+                {{-- Photo upload --}}
                 <div class="bg-white rounded-2xl shadow-sm p-5">
                     <h3 class="text-sm font-semibold mb-4" style="color: #143c64;">Photo</h3>
 
-                    <template x-if="photo_path">
+                    @if ($member->photo_path)
                         <div class="w-24 h-24 rounded-full overflow-hidden mx-auto mb-3">
-                            <img :src="'/' + photo_path" alt="Preview" class="w-full h-full object-cover">
+                            <img src="{{ asset($member->photo_path) }}" alt="Photo actuelle" class="w-full h-full object-cover">
                         </div>
-                    </template>
-                    <template x-if="!photo_path">
+                    @else
                         <div class="w-24 h-24 rounded-full mx-auto mb-3 flex items-center justify-center"
                              style="background-color: rgba(200,0,120,0.08); border: 2px dashed rgba(200,0,120,0.3);">
                             <span class="text-xs font-bold" style="color: #c80078;">
                                 {{ $member->initials() }}
                             </span>
                         </div>
-                    </template>
+                    @endif
 
-                    <label class="block text-xs font-medium mb-1.5" style="color: #475569;">
-                        Chemin de l'image
+                    <label class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-semibold cursor-pointer transition-opacity hover:opacity-80"
+                           style="background-color: #f1f5f9; color: #475569;">
+                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span x-text="photoFileName ?? 'Choisir une photo'" class="truncate" style="max-width: 140px;"></span>
+                        <input type="file" name="photo" x-files accept="image/jpeg,image/png,image/webp"
+                               @change="photoFileName = $event.target.files[0]?.name ?? null"
+                               class="hidden">
                     </label>
-                    <input x-model="photo_path" x-name="photo_path" type="text"
-                           class="w-full text-xs px-3 py-2 rounded-lg border focus:outline-none font-mono"
-                           style="border-color: #e2e8f0; color: #1e293b;"
-                           placeholder="images/team/nom.jpg">
-                    <p x-message="photo_path" class="text-xs mt-1" style="color: #ef4444;"></p>
+                    <p class="text-xs mt-1.5" style="color: #cbd5e1;">JPEG, PNG, WebP — max 5 Mo</p>
+                    <button type="button"
+                            @click="$action.post('{{ route('admin.about.team.uploadPhoto', $member) }}')"
+                            :disabled="$fetching() || !photoFileName"
+                            class="w-full mt-3 py-2.5 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+                            style="background-color: #143c64;">
+                        <span x-show="!$fetching()">Téléverser la photo</span>
+                        <span x-show="$fetching()">Téléversement…</span>
+                    </button>
                 </div>
 
                 {{-- Published --}}

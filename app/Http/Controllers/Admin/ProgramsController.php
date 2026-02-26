@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ProgramCard;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProgramsController extends Controller
 {
@@ -35,7 +36,6 @@ class ProgramsController extends Controller
             'description_en' => 'required|string|max:300',
             'long_description_fr' => 'nullable|string|max:2000',
             'long_description_en' => 'nullable|string|max:2000',
-            'image_path' => 'required|string|max:255',
             'color' => 'required|string|size:7',
             'stats_fr' => 'nullable|array|max:6',
             'stats_en' => 'nullable|array|max:6',
@@ -56,12 +56,30 @@ class ProgramsController extends Controller
             'description_en' => strip_tags($validated['description_en']),
             'long_description_fr' => isset($validated['long_description_fr']) ? strip_tags($validated['long_description_fr']) : null,
             'long_description_en' => isset($validated['long_description_en']) ? strip_tags($validated['long_description_en']) : null,
-            'image_path' => $validated['image_path'],
             'color' => $validated['color'],
             'stats_fr' => $statsFr,
             'stats_en' => $statsEn,
         ]);
 
         return gale()->dispatch('toast', ['message' => 'Programme mis à jour', 'type' => 'success']);
+    }
+
+    public function uploadImage(Request $request, ProgramCard $program): mixed
+    {
+        $this->authorize('programs.edit');
+
+        $request->validate(['image' => 'required|image|mimes:jpeg,jpg,png,webp|max:5120']);
+
+        if ($program->image_path && str_starts_with($program->image_path, 'storage/')) {
+            $old = str_replace('storage/', '', $program->image_path);
+            if (Storage::disk('public')->exists($old)) {
+                Storage::disk('public')->delete($old);
+            }
+        }
+
+        $path = $request->file('image')->store('programs', 'public');
+        $program->update(['image_path' => 'storage/'.$path]);
+
+        return gale()->redirect(route('admin.programs.edit', $program));
     }
 }

@@ -389,6 +389,7 @@
          3 most recent published articles. White background.
          Card: thumbnail, category badge (Magenta), date, title (Navy).
          ================================================================ --}}
+    @if ($latestNews->isNotEmpty())
     <section class="py-20 lg:py-28" style="background-color: #ffffff;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -504,22 +505,11 @@
                     @endforeach
                 </div>
 
-            @else
-
-                {{-- Empty State --}}
-                <div class="text-center py-20" data-animate="fade-up">
-                    <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1" style="color: rgba(0,40,80,0.2);" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9H3.375A1.125 1.125 0 002.25 8.25v8.625c0 .621.504 1.125 1.125 1.125h11.25c.621 0 1.125-.504 1.125-1.125V7.5a1.125 1.125 0 00-1.125-1.125H15"/>
-                    </svg>
-                    <p class="text-base" style="color: #9aacbb;">
-                        {{ __('home.no_news') }}
-                    </p>
-                </div>
-
             @endif
 
         </div>
     </section>
+    @endif
 
 
     {{-- ================================================================
@@ -527,6 +517,7 @@
          Off-white background. Max 3 future events, soonest first.
          Card: large day (Magenta) + month (Navy) + title + location.
          ================================================================ --}}
+    @if ($upcomingEvents->isNotEmpty())
     <section class="py-20 lg:py-28" style="background-color: #f8f5f0;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -634,22 +625,11 @@
                     @endforeach
                 </div>
 
-            @else
-
-                {{-- Empty State --}}
-                <div class="text-center py-20" data-animate="fade-up">
-                    <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1" style="color: rgba(0,40,80,0.2);" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 9v7.5"/>
-                    </svg>
-                    <p class="text-base" style="color: #9aacbb;">
-                        {{ __('home.no_events') }}
-                    </p>
-                </div>
-
             @endif
 
         </div>
     </section>
+    @endif
 
 
     {{-- ================================================================
@@ -657,6 +637,7 @@
          White background. 4x2 grid desktop, 2-col mobile.
          Hover: caption overlay fades in (solid, NO gradient per BR-001).
          ================================================================ --}}
+    @if ($galleryPhotos->isNotEmpty())
     @php
         $galleryItems = $galleryPhotos->map(fn ($p) => [
             'src'     => asset($p->path),
@@ -689,16 +670,7 @@
                 </h2>
             </div>
 
-            @if ($galleryPhotos->isEmpty())
-                {{-- Empty state --}}
-                <div class="text-center py-16" data-animate="fade-up">
-                    <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1" style="color: rgba(0,40,80,0.2);" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
-                    </svg>
-                    <p class="text-sm" style="color: #94a3b8;">{{ __('home.gallery_empty') }}</p>
-                </div>
-            @else
-                {{-- Photo Grid: 4-col desktop, 2-col mobile --}}
+            {{-- Photo Grid: 4-col desktop, 2-col mobile --}}
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-4" data-animate="fade-up">
                     @foreach ($galleryPhotos as $idx => $photo)
                         @php
@@ -758,7 +730,6 @@
                         </a>
                     @endif
                 </div>
-            @endif
 
         </div>
 
@@ -832,6 +803,7 @@
         </div>
 
     </section>
+    @endif
 
 
     {{-- ================================================================

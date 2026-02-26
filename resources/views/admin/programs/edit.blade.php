@@ -14,11 +14,11 @@
             description_en: {{ json_encode($program->description_en) }},
             long_description_fr: {{ json_encode($program->long_description_fr ?? '') }},
             long_description_en: {{ json_encode($program->long_description_en ?? '') }},
-            image_path: {{ json_encode($program->image_path) }},
             color: {{ json_encode($program->color) }},
             stats_fr: @json($program->stats_fr ?? []),
             stats_en: @json($program->stats_en ?? []),
             activeLang: 'fr',
+            imageFileName: null,
             addStat() {
                 if (this.stats_fr.length < 6) {
                     this.stats_fr.push({ number: '', label: '' });
@@ -32,7 +32,7 @@
                 }
             }
         }"
-        x-sync="['name_fr','name_en','description_fr','description_en','long_description_fr','long_description_en','image_path','color','stats_fr','stats_en']">
+        x-sync="['name_fr','name_en','description_fr','description_en','long_description_fr','long_description_en','color','stats_fr','stats_en']">
 
         {{-- Back link --}}
         <div class="mb-5 flex items-center justify-between">
@@ -202,24 +202,42 @@
             {{-- Sidebar: image + color + save --}}
             <div class="space-y-5">
 
-                {{-- Program image --}}
+                {{-- Program image upload --}}
                 <div class="bg-white rounded-2xl shadow-sm p-5">
                     <h3 class="text-sm font-semibold mb-4" style="color: #143c64;">Image du programme</h3>
 
-                    <div class="rounded-xl overflow-hidden mb-3" style="height: 140px;">
-                        <img :src="'/' + image_path"
-                             alt="Preview"
-                             class="w-full h-full object-cover">
-                    </div>
+                    @if ($program->image_path)
+                        <div class="rounded-xl overflow-hidden mb-3" style="height: 140px;">
+                            <img src="{{ asset($program->image_path) }}"
+                                 alt="Image actuelle"
+                                 class="w-full h-full object-cover">
+                        </div>
+                    @else
+                        <div class="rounded-xl mb-3 flex items-center justify-center"
+                             style="height: 140px; background-color: #f8f5f0; border: 2px dashed #c8a03c40;">
+                            <span class="text-xs" style="color: #94a3b8;">Aucune image configurée</span>
+                        </div>
+                    @endif
 
-                    <label class="block text-xs font-medium mb-1.5" style="color: #475569;">
-                        Chemin de l'image
+                    <label class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-sm font-semibold cursor-pointer transition-opacity hover:opacity-80"
+                           style="background-color: #f1f5f9; color: #475569;">
+                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span x-text="imageFileName ?? 'Choisir une image'" class="truncate" style="max-width: 140px;"></span>
+                        <input type="file" name="image" x-files accept="image/jpeg,image/png,image/webp"
+                               @change="imageFileName = $event.target.files[0]?.name ?? null"
+                               class="hidden">
                     </label>
-                    <input x-model="image_path" x-name="image_path" type="text"
-                           class="w-full text-xs px-3 py-2 rounded-lg border focus:outline-none font-mono"
-                           style="border-color: #e2e8f0; color: #1e293b;">
-                    <p class="text-xs mt-1" style="color: #cbd5e1;">Ex: images/sections/program-protege.jpg</p>
-                    <p x-message="image_path" class="text-xs mt-1" style="color: #ef4444;"></p>
+                    <p class="text-xs mt-1.5" style="color: #cbd5e1;">JPEG, PNG, WebP — max 5 Mo</p>
+                    <button type="button"
+                            @click="$action.post('{{ route('admin.programs.uploadImage', $program) }}')"
+                            :disabled="$fetching() || !imageFileName"
+                            class="w-full mt-3 py-2.5 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+                            style="background-color: {{ $program->color }};">
+                        <span x-show="!$fetching()">Téléverser l'image</span>
+                        <span x-show="$fetching()">Téléversement…</span>
+                    </button>
                 </div>
 
                 {{-- Color accent --}}

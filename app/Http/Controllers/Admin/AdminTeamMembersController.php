@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\TeamMember;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminTeamMembersController extends Controller
 {
@@ -66,7 +67,6 @@ class AdminTeamMembersController extends Controller
             'title_en' => 'required|string|max:200',
             'bio_fr' => 'nullable|string|max:2000',
             'bio_en' => 'nullable|string|max:2000',
-            'photo_path' => 'nullable|string|max:255',
             'is_published' => 'boolean',
         ]);
 
@@ -76,7 +76,6 @@ class AdminTeamMembersController extends Controller
             'title_en' => strip_tags($validated['title_en']),
             'bio_fr' => isset($validated['bio_fr']) ? strip_tags($validated['bio_fr']) : null,
             'bio_en' => isset($validated['bio_en']) ? strip_tags($validated['bio_en']) : null,
-            'photo_path' => $validated['photo_path'] ?? null,
             'is_published' => $validated['is_published'] ?? false,
         ]);
 
@@ -107,6 +106,25 @@ class AdminTeamMembersController extends Controller
         }
 
         return gale()->dispatch('toast', ['message' => 'Ordre mis à jour', 'type' => 'success']);
+    }
+
+    public function uploadPhoto(Request $request, TeamMember $member): mixed
+    {
+        $this->authorize('about.edit');
+
+        $request->validate(['photo' => 'required|image|mimes:jpeg,jpg,png,webp|max:5120']);
+
+        if ($member->photo_path && str_starts_with($member->photo_path, 'storage/')) {
+            $old = str_replace('storage/', '', $member->photo_path);
+            if (Storage::disk('public')->exists($old)) {
+                Storage::disk('public')->delete($old);
+            }
+        }
+
+        $path = $request->file('photo')->store('team', 'public');
+        $member->update(['photo_path' => 'storage/'.$path]);
+
+        return gale()->redirect(route('admin.about.team.edit', $member));
     }
 
     public function togglePublished(TeamMember $member): mixed

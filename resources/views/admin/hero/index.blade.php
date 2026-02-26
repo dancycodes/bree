@@ -23,11 +23,11 @@
                 cta2_label_fr: {{ Js::from($hero->cta2_label_fr) }},
                 cta2_label_en: {{ Js::from($hero->cta2_label_en) }},
                 cta2_url:      {{ Js::from($hero->cta2_url) }},
-                bg_image_path: {{ Js::from($hero->bg_image_path) }},
-                activeLang: 'fr'
+                activeLang: 'fr',
+                heroImageFileName: null
             }"
-            
-            x-sync="['tagline_fr','tagline_en','subtitle_fr','subtitle_en','cta1_label_fr','cta1_label_en','cta1_url','cta2_label_fr','cta2_label_en','cta2_url','bg_image_path']">
+
+            x-sync="['tagline_fr','tagline_en','subtitle_fr','subtitle_en','cta1_label_fr','cta1_label_en','cta1_url','cta2_label_fr','cta2_label_en','cta2_url']">
 
             {{-- Card header --}}
             <div class="bg-white rounded-2xl shadow-sm overflow-hidden" style="border: 1px solid #e2e8f0;">
@@ -168,21 +168,40 @@
                         </div>
                     </div>
 
-                    {{-- Background image --}}
+                    {{-- Background image upload --}}
                     <div>
                         <label class="block text-xs font-semibold mb-2" style="color: #374151;">Image de fond</label>
-                        <div class="rounded-xl overflow-hidden mb-3" style="height: 120px;">
-                            <img :src="'/' + bg_image_path"
-                                 alt="Aperçu hero"
-                                 class="w-full h-full object-cover"
-                                 onerror="this.style.display='none'">
-                        </div>
-                        <input x-model="bg_image_path" x-name="bg_image_path" type="text"
-                               class="w-full px-3.5 py-2.5 rounded-xl text-sm font-mono"
-                               style="border: 1px solid #e2e8f0; outline: none;"
-                               placeholder="images/sections/hero.jpg">
-                        <p class="mt-1 text-xs" style="color: #94a3b8;">Chemin relatif depuis public/ (ex: images/sections/hero.jpg)</p>
-                        <p x-message="bg_image_path" class="mt-1 text-xs" style="color: #ef4444;"></p>
+                        @if ($hero->bg_image_path)
+                            <div class="rounded-xl overflow-hidden mb-3" style="height: 120px;">
+                                <img src="{{ asset($hero->bg_image_path) }}"
+                                     alt="Aperçu hero"
+                                     class="w-full h-full object-cover">
+                            </div>
+                        @else
+                            <div class="rounded-xl mb-3 flex items-center justify-center"
+                                 style="height: 120px; background-color: #f8f5f0; border: 2px dashed #c8a03c40;">
+                                <span class="text-xs" style="color: #94a3b8;">Aucune image configurée</span>
+                            </div>
+                        @endif
+                        <label class="flex items-center justify-center gap-2 w-full py-2 rounded-xl text-xs font-semibold cursor-pointer transition-opacity hover:opacity-80"
+                               style="background-color: #f1f5f9; color: #475569;">
+                            <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span x-text="heroImageFileName ?? 'Choisir une image'" class="truncate" style="max-width: 180px;"></span>
+                            <input type="file" name="hero_image" x-files accept="image/jpeg,image/png,image/webp"
+                                   @change="heroImageFileName = $event.target.files[0]?.name ?? null"
+                                   class="hidden">
+                        </label>
+                        <p class="mt-1 text-xs" style="color: #cbd5e1;">JPEG, PNG, WebP — max 5 Mo</p>
+                        <button type="button"
+                                @click="$action.post('{{ route('admin.hero.uploadImage') }}')"
+                                :disabled="$fetching() || !heroImageFileName"
+                                class="w-full mt-3 py-2 rounded-xl text-xs font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+                                style="background-color: #143c64;">
+                            <span x-show="!$fetching()">Téléverser l'image</span>
+                            <span x-show="$fetching()">Téléversement…</span>
+                        </button>
                     </div>
 
                     {{-- Save --}}
@@ -210,10 +229,10 @@
                 cta_headline_en: {{ Js::from($cta->headline_en) }},
                 cta_copy_fr:     {{ Js::from($cta->copy_fr) }},
                 cta_copy_en:     {{ Js::from($cta->copy_en) }},
-                cta_bg_path:     {{ Js::from($cta->bg_image_path) }},
-                ctaLang: 'fr'
+                ctaLang: 'fr',
+                ctaImageFileName: null
             }"
-            x-sync="['cta_headline_fr','cta_headline_en','cta_copy_fr','cta_copy_en','cta_bg_path']">
+            x-sync="['cta_headline_fr','cta_headline_en','cta_copy_fr','cta_copy_en']">
 
             <div class="bg-white rounded-2xl shadow-sm overflow-hidden" style="border: 1px solid #e2e8f0;">
                 <div class="px-6 py-4" style="border-bottom: 1px solid #f1f5f9;">
@@ -281,20 +300,40 @@
                         <p x-message="cta_copy_en" class="mt-1 text-xs" style="color: #ef4444;"></p>
                     </div>
 
-                    {{-- Background image --}}
+                    {{-- Background image upload --}}
                     <div>
                         <label class="block text-xs font-semibold mb-2" style="color: #374151;">Image de fond</label>
-                        <div class="rounded-xl overflow-hidden mb-3" style="height: 100px;">
-                            <img :src="'/' + cta_bg_path"
-                                 alt="Aperçu section don"
-                                 class="w-full h-full object-cover"
-                                 onerror="this.style.display='none'">
-                        </div>
-                        <input x-model="cta_bg_path" x-name="cta_bg_path" type="text"
-                               class="w-full px-3.5 py-2.5 rounded-xl text-sm font-mono"
-                               style="border: 1px solid #e2e8f0; outline: none;"
-                               placeholder="images/sections/donate.jpg">
-                        <p x-message="cta_bg_path" class="mt-1 text-xs" style="color: #ef4444;"></p>
+                        @if ($cta->bg_image_path)
+                            <div class="rounded-xl overflow-hidden mb-3" style="height: 100px;">
+                                <img src="{{ asset($cta->bg_image_path) }}"
+                                     alt="Aperçu section don"
+                                     class="w-full h-full object-cover">
+                            </div>
+                        @else
+                            <div class="rounded-xl mb-3 flex items-center justify-center"
+                                 style="height: 100px; background-color: #f8f5f0; border: 2px dashed #c8a03c40;">
+                                <span class="text-xs" style="color: #94a3b8;">Aucune image configurée</span>
+                            </div>
+                        @endif
+                        <label class="flex items-center justify-center gap-2 w-full py-2 rounded-xl text-xs font-semibold cursor-pointer transition-opacity hover:opacity-80"
+                               style="background-color: #f1f5f9; color: #475569;">
+                            <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span x-text="ctaImageFileName ?? 'Choisir une image'" class="truncate" style="max-width: 180px;"></span>
+                            <input type="file" name="cta_image" x-files accept="image/jpeg,image/png,image/webp"
+                                   @change="ctaImageFileName = $event.target.files[0]?.name ?? null"
+                                   class="hidden">
+                        </label>
+                        <p class="mt-1 text-xs" style="color: #cbd5e1;">JPEG, PNG, WebP — max 5 Mo</p>
+                        <button type="button"
+                                @click="$action.post('{{ route('admin.hero.cta.uploadImage') }}')"
+                                :disabled="$fetching() || !ctaImageFileName"
+                                class="w-full mt-3 py-2 rounded-xl text-xs font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+                                style="background-color: #143c64;">
+                            <span x-show="!$fetching()">Téléverser l'image</span>
+                            <span x-show="$fetching()">Téléversement…</span>
+                        </button>
                     </div>
 
                     {{-- Save --}}

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DonationCtaSection;
 use App\Models\HeroSection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AdminHeroContentController extends Controller
 {
@@ -59,13 +60,33 @@ class AdminHeroContentController extends Controller
             'cta2_label_fr' => 'required|string|max:80',
             'cta2_label_en' => 'required|string|max:80',
             'cta2_url' => 'required|string|max:500',
-            'bg_image_path' => 'required|string|max:255',
         ]);
 
         $hero = HeroSection::where('is_active', true)->firstOrFail();
         $hero->update(array_map('strip_tags', $validated));
 
         return gale()->dispatch('toast', ['message' => 'Hero mis à jour', 'type' => 'success']);
+    }
+
+    public function uploadHeroImage(Request $request): mixed
+    {
+        $this->authorize('content.edit');
+
+        $request->validate(['hero_image' => 'required|image|mimes:jpeg,jpg,png,webp|max:5120']);
+
+        $hero = HeroSection::where('is_active', true)->firstOrFail();
+
+        if ($hero->bg_image_path && str_starts_with($hero->bg_image_path, 'storage/')) {
+            $old = str_replace('storage/', '', $hero->bg_image_path);
+            if (Storage::disk('public')->exists($old)) {
+                Storage::disk('public')->delete($old);
+            }
+        }
+
+        $path = $request->file('hero_image')->store('hero', 'public');
+        $hero->update(['bg_image_path' => 'storage/'.$path]);
+
+        return gale()->redirect(route('admin.hero.index'));
     }
 
     public function updateCta(Request $request): mixed
@@ -77,7 +98,6 @@ class AdminHeroContentController extends Controller
             'cta_headline_en' => 'required|string|max:200',
             'cta_copy_fr' => 'required|string|max:500',
             'cta_copy_en' => 'required|string|max:500',
-            'cta_bg_path' => 'required|string|max:255',
         ]);
 
         $cta = DonationCtaSection::where('is_active', true)->firstOrFail();
@@ -86,9 +106,29 @@ class AdminHeroContentController extends Controller
             'headline_en' => strip_tags($validated['cta_headline_en']),
             'copy_fr' => strip_tags($validated['cta_copy_fr']),
             'copy_en' => strip_tags($validated['cta_copy_en']),
-            'bg_image_path' => strip_tags($validated['cta_bg_path']),
         ]);
 
         return gale()->dispatch('toast', ['message' => 'Section don mise à jour', 'type' => 'success']);
+    }
+
+    public function uploadCtaImage(Request $request): mixed
+    {
+        $this->authorize('content.edit');
+
+        $request->validate(['cta_image' => 'required|image|mimes:jpeg,jpg,png,webp|max:5120']);
+
+        $cta = DonationCtaSection::where('is_active', true)->firstOrFail();
+
+        if ($cta->bg_image_path && str_starts_with($cta->bg_image_path, 'storage/')) {
+            $old = str_replace('storage/', '', $cta->bg_image_path);
+            if (Storage::disk('public')->exists($old)) {
+                Storage::disk('public')->delete($old);
+            }
+        }
+
+        $path = $request->file('cta_image')->store('cta', 'public');
+        $cta->update(['bg_image_path' => 'storage/'.$path]);
+
+        return gale()->redirect(route('admin.hero.index'));
     }
 }

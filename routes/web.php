@@ -33,13 +33,13 @@ use App\Http\Controllers\Public\DonationController;
 use App\Http\Controllers\Public\EventsController;
 use App\Http\Controllers\Public\GalleryController;
 use App\Http\Controllers\Public\HomeController;
+use App\Http\Controllers\Public\LegalController;
 use App\Http\Controllers\Public\NewsController;
 use App\Http\Controllers\Public\NewsletterController;
 use App\Http\Controllers\Public\PartnersController;
 use App\Http\Controllers\Public\ProgramsController;
 use App\Http\Controllers\Public\SitemapController;
 use App\Http\Controllers\Public\VolunteerController;
-use App\Http\Controllers\Public\LegalController;
 use App\Http\Controllers\Public\WebhookController;
 use Illuminate\Support\Facades\Route;
 
@@ -71,8 +71,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // About — Founder Profile
     Route::get('/a-propos/fondatrice', [FounderProfileController::class, 'edit'])->name('about.founder.edit');
     Route::patch('/a-propos/fondatrice', [FounderProfileController::class, 'update'])->name('about.founder.update');
+    Route::post('/a-propos/fondatrice/photo', [FounderProfileController::class, 'uploadPhoto'])->name('about.founder.uploadPhoto');
     Route::get('/a-propos/marraine', [PatronProfileController::class, 'edit'])->name('about.patron.edit');
     Route::patch('/a-propos/marraine', [PatronProfileController::class, 'update'])->name('about.patron.update');
+    Route::post('/a-propos/marraine/photo', [PatronProfileController::class, 'uploadPhoto'])->name('about.patron.uploadPhoto');
     Route::get('/a-propos/jalons', [MilestonesController::class, 'index'])->name('about.milestones.index');
     Route::post('/a-propos/jalons', [MilestonesController::class, 'store'])->name('about.milestones.store');
     Route::patch('/a-propos/jalons/{milestone}', [MilestonesController::class, 'update'])->name('about.milestones.update');
@@ -84,6 +86,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('/a-propos/equipe/reorder', [AdminTeamMembersController::class, 'reorder'])->name('about.team.reorder');
     Route::get('/a-propos/equipe/{member}/edit', [AdminTeamMembersController::class, 'edit'])->name('about.team.edit');
     Route::patch('/a-propos/equipe/{member}', [AdminTeamMembersController::class, 'update'])->name('about.team.update');
+    Route::post('/a-propos/equipe/{member}/photo', [AdminTeamMembersController::class, 'uploadPhoto'])->name('about.team.uploadPhoto');
     Route::delete('/a-propos/equipe/{member}', [AdminTeamMembersController::class, 'destroy'])->name('about.team.destroy');
     Route::post('/a-propos/equipe/{member}/toggle', [AdminTeamMembersController::class, 'togglePublished'])->name('about.team.toggle');
 
@@ -91,6 +94,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/programmes', [AdminProgramsController::class, 'index'])->name('programs.index');
     Route::get('/programmes/{program:slug}/edit', [AdminProgramsController::class, 'edit'])->name('programs.edit');
     Route::patch('/programmes/{program:slug}', [AdminProgramsController::class, 'update'])->name('programs.update');
+    Route::post('/programmes/{program:slug}/image', [AdminProgramsController::class, 'uploadImage'])->name('programs.uploadImage');
     Route::get('/programmes/{program:slug}/activites', [ProgramActivitiesController::class, 'index'])->name('programs.activities.index');
     Route::post('/programmes/{program:slug}/activites', [ProgramActivitiesController::class, 'store'])->name('programs.activities.store');
     Route::patch('/programmes/activites/{activity}', [ProgramActivitiesController::class, 'update'])->name('programs.activities.update');
@@ -206,7 +210,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // Hero & Donation CTA Content
     Route::get('/contenu/hero', [AdminHeroContentController::class, 'index'])->name('hero.index');
     Route::patch('/contenu/hero', [AdminHeroContentController::class, 'updateHero'])->name('hero.update');
+    Route::post('/contenu/hero/image', [AdminHeroContentController::class, 'uploadHeroImage'])->name('hero.uploadImage');
     Route::patch('/contenu/hero/cta', [AdminHeroContentController::class, 'updateCta'])->name('hero.cta.update');
+    Route::post('/contenu/hero/cta/image', [AdminHeroContentController::class, 'uploadCtaImage'])->name('hero.cta.uploadImage');
 
     // Impact Stats
     Route::get('/statistiques', [AdminStatCountersController::class, 'index'])->name('stats.index');

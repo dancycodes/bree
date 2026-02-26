@@ -29,10 +29,10 @@ it('homepage renders gallery section with published photos', function () {
         ->assertSee('gallery-placeholder.jpg');
 });
 
-it('homepage shows gallery empty state when no published photos', function () {
+it('homepage hides gallery section when no published photos', function () {
     $this->get(route('public.home'))
         ->assertSuccessful()
-        ->assertSee('Aucune photo disponible pour le moment');
+        ->assertDontSee('Nos Activités en Images');
 });
 
 it('homepage does not show photos from unpublished albums', function () {
@@ -53,7 +53,7 @@ it('homepage does not show photos from unpublished albums', function () {
 
     $this->get(route('public.home'))
         ->assertSuccessful()
-        ->assertSee('Aucune photo disponible pour le moment');
+        ->assertDontSee('Nos Activités en Images');
 });
 
 it('homepage shows at most 8 photos in gallery preview', function () {
