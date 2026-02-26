@@ -224,6 +224,69 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================================
+   Header Navigation — Desktop Nav Links
+   Navy header background, white text, magenta underline active
+   ============================================================ */
+
+.bree-nav-link {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    font-family: var(--font-sans);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.82);
+    text-decoration: none;
+    transition: color 150ms ease;
+    white-space: nowrap;
+}
+
+@media (min-width: 1280px) {
+    .bree-nav-link {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+    }
+}
+
+.bree-nav-link:hover {
+    color: #ffffff;
+}
+
+.bree-nav-link--active {
+    color: #c8a03c;
+}
+
+.bree-nav-link--active:hover {
+    color: #dcc864;
+}
+
+.bree-nav-underline {
+    position: absolute;
+    bottom: 0;
+    left: 0.5rem;
+    right: 0.5rem;
+    height: 2px;
+    border-radius: 9999px;
+    background-color: #c80078;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 200ms ease;
+}
+
+.bree-nav-link--active .bree-nav-underline {
+    transform: scaleX(1);
+}
+
+.bree-nav-link:hover .bree-nav-underline {
+    transform: scaleX(1);
+}
+
+/* ============================================================
    Micro-interaction Polish — Card Hover Lift
    Applied to article cards inside stagger-animated grids.
    Respects prefers-reduced-motion.
