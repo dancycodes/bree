@@ -184,12 +184,9 @@
                                 $hasThumbnail = ! empty($article->thumbnail_path);
                             @endphp
 
-                            <article class="group bg-white rounded-2xl overflow-hidden flex flex-col"
+                            <article class="group card-lift bg-white rounded-2xl overflow-hidden flex flex-col"
                                      style="border: 1px solid rgba(0,0,0,0.05);
-                                            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-                                            transition: transform 0.25s ease, box-shadow 0.25s ease;"
-                                     onmouseenter="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,0.12)';"
-                                     onmouseleave="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 12px rgba(0,0,0,0.06)';"
+                                            box-shadow: 0 2px 12px rgba(0,0,0,0.06);"
                                      >
 
                                 {{-- Thumbnail — 16:9 ratio --}}
@@ -200,10 +197,7 @@
                                     @if ($hasThumbnail)
                                         <img src="{{ asset($article->thumbnail_path) }}"
                                              alt="{{ $article->title() }}"
-                                             class="absolute inset-0 w-full h-full object-cover transition-transform duration-300"
-                                             style="transform: scale(1);"
-                                             onmouseenter="this.style.transform='scale(1.03)';"
-                                             onmouseleave="this.style.transform='scale(1)';"
+                                             class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                              loading="lazy">
                                     @else
                                         {{-- Flat color placeholder when no thumbnail — BR-001 (no gradient) --}}

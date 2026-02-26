@@ -151,9 +151,7 @@
                     @if (Route::has('public.donate'))
                         <a href="{{ route('public.donate') }}?programme={{ $program->slug }}"
                            x-navigate
-                           class="inline-flex items-center gap-3 px-7 py-3.5 text-sm font-bold rounded-full
-                                  text-white transition-opacity duration-200 hover:opacity-85"
-                           style="background-color: {{ $program->color }};">
+                           class="btn-primary rounded-full px-7 py-3.5 text-sm">
                             {{ __('programs.donate_for_program', ['name' => $program->name()]) }}
                             <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                  viewBox="0 0 24 24" stroke-width="2.5" aria-hidden="true">
