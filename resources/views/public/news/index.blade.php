@@ -3,6 +3,15 @@
 @section('title', __('news.page_title') . ' — ' . config('app.name'))
 @section('meta_description', __('news.meta_description'))
 
+@push('head')
+<style>
+@keyframes gridFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+@endpush
+
 @section('content')
 
     {{-- ================================================================
@@ -75,13 +84,14 @@
              x-navigate.key.articles>
 
             @fragment('articles-grid')
-            <div id="articles-grid">
+            {{-- CSS-only fade-in on every fragment swap — avoids GSAP opacity:0 issues --}}
+            <div id="articles-grid" style="animation: gridFadeIn 0.35s ease both;">
 
                 {{-- ------------------------------------------------
                      Category filter pills
                      Scrolls horizontally on mobile — no multi-row wrap.
                      ------------------------------------------------ --}}
-                <div class="relative mb-12" data-animate="fade-up">
+                <div class="relative mb-12">
                     {{-- Scrollable pill row — hidden scrollbar --}}
                     <div class="flex items-center gap-2 overflow-x-auto pb-1"
                          style="scrollbar-width: none; -ms-overflow-style: none;">
@@ -130,15 +140,16 @@
 
                     </div>
                     {{-- Fade edge to hint at horizontal scrollability on mobile --}}
-                    <div class="absolute right-0 top-0 bottom-1 w-8 pointer-events-none sm:hidden"
-                         style="background: linear-gradient(to left, #f8f5f0, transparent);"></div>
+                    {{-- Subtle right-edge fade hint for mobile horizontal scroll --}}
+                    <div class="absolute right-0 top-0 bottom-1 w-6 pointer-events-none sm:hidden"
+                         style="background-color: rgba(248,245,240,0.85);"></div>
                 </div>
 
                 {{-- ------------------------------------------------
                      Empty state
                      ------------------------------------------------ --}}
                 @if ($articles->isEmpty())
-                    <div class="py-24 text-center" data-animate="fade-up">
+                    <div class="py-24 text-center">
                         <div class="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center"
                              style="background-color: rgba(200,0,120,0.08);">
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -169,7 +180,7 @@
                          Article cards grid — 3 col desktop, 2 tablet, 1 mobile
                          Each card: 16:9 thumbnail, category badge, title, excerpt, date.
                          ------------------------------------------------ --}}
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" data-stagger="0.06">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         @foreach ($articles as $article)
                             @php
                                 $catColor = $article->newsCategory?->color ?: '#c80078';
@@ -182,7 +193,7 @@
                                             transition: transform 0.25s ease, box-shadow 0.25s ease;"
                                      onmouseenter="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,0.12)';"
                                      onmouseleave="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 12px rgba(0,0,0,0.06)';"
-                                     data-animate="fade-up">
+                                     >
 
                                 {{-- Thumbnail — 16:9 ratio --}}
                                 <a href="{{ route('public.news.show', $article) }}"
