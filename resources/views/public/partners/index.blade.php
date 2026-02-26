@@ -339,9 +339,7 @@
                         {{-- Organization & Contact --}}
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <div>
-                                <label for="field-org-name"
-                                       class="block text-sm font-semibold mb-2"
-                                       style="color: #1e293b;">
+                                <label for="field-org-name" class="bree-form-label">
                                     {{ __('partners.field_org_name') }}
                                     <span aria-hidden="true" style="color: #c80078;">*</span>
                                 </label>
@@ -350,17 +348,11 @@
                                        x-name="orgName"
                                        type="text"
                                        autocomplete="organization"
-                                       required
-                                       class="w-full text-sm px-4 py-3 rounded-xl border bg-white focus:outline-none focus:ring-2 transition-colors"
-                                       style="border-color: #d1d5db; color: #1e293b;"
-                                       onfocus="this.style.borderColor='#c80078'; this.style.boxShadow='0 0 0 3px rgba(200,0,120,0.12)'"
-                                       onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
-                                <p x-message="orgName" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                                       class="bree-form-field">
+                                <p x-message="orgName" class="bree-form-error"></p>
                             </div>
                             <div>
-                                <label for="field-contact-name"
-                                       class="block text-sm font-semibold mb-2"
-                                       style="color: #1e293b;">
+                                <label for="field-contact-name" class="bree-form-label">
                                     {{ __('partners.field_contact_name') }}
                                     <span aria-hidden="true" style="color: #c80078;">*</span>
                                 </label>
@@ -369,21 +361,15 @@
                                        x-name="contactName"
                                        type="text"
                                        autocomplete="name"
-                                       required
-                                       class="w-full text-sm px-4 py-3 rounded-xl border bg-white focus:outline-none transition-colors"
-                                       style="border-color: #d1d5db; color: #1e293b;"
-                                       onfocus="this.style.borderColor='#c80078'; this.style.boxShadow='0 0 0 3px rgba(200,0,120,0.12)'"
-                                       onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
-                                <p x-message="contactName" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                                       class="bree-form-field">
+                                <p x-message="contactName" class="bree-form-error"></p>
                             </div>
                         </div>
 
                         {{-- Email & Phone --}}
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <div>
-                                <label for="field-email"
-                                       class="block text-sm font-semibold mb-2"
-                                       style="color: #1e293b;">
+                                <label for="field-email" class="bree-form-label">
                                     {{ __('partners.field_email') }}
                                     <span aria-hidden="true" style="color: #c80078;">*</span>
                                 </label>
@@ -392,17 +378,11 @@
                                        x-name="email"
                                        type="email"
                                        autocomplete="email"
-                                       required
-                                       class="w-full text-sm px-4 py-3 rounded-xl border bg-white focus:outline-none transition-colors"
-                                       style="border-color: #d1d5db; color: #1e293b;"
-                                       onfocus="this.style.borderColor='#c80078'; this.style.boxShadow='0 0 0 3px rgba(200,0,120,0.12)'"
-                                       onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
-                                <p x-message="email" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                                       class="bree-form-field">
+                                <p x-message="email" class="bree-form-error"></p>
                             </div>
                             <div>
-                                <label for="field-phone"
-                                       class="block text-sm font-semibold mb-2"
-                                       style="color: #1e293b;">
+                                <label for="field-phone" class="bree-form-label">
                                     {{ __('partners.field_phone') }}
                                 </label>
                                 <input id="field-phone"
@@ -410,18 +390,13 @@
                                        x-name="phone"
                                        type="tel"
                                        autocomplete="tel"
-                                       class="w-full text-sm px-4 py-3 rounded-xl border bg-white focus:outline-none transition-colors"
-                                       style="border-color: #d1d5db; color: #1e293b;"
-                                       onfocus="this.style.borderColor='#c80078'; this.style.boxShadow='0 0 0 3px rgba(200,0,120,0.12)'"
-                                       onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
+                                       class="bree-form-field">
                             </div>
                         </div>
 
                         {{-- Partnership type --}}
                         <div>
-                            <label for="field-partnership-type"
-                                   class="block text-sm font-semibold mb-2"
-                                   style="color: #1e293b;">
+                            <label for="field-partnership-type" class="bree-form-label">
                                 {{ __('partners.field_partnership_type') }}
                                 <span aria-hidden="true" style="color: #c80078;">*</span>
                             </label>
@@ -429,11 +404,7 @@
                                 <select id="field-partnership-type"
                                         x-model="partnershipType"
                                         x-name="partnershipType"
-                                        required
-                                        class="w-full text-sm px-4 py-3 rounded-xl border bg-white focus:outline-none appearance-none pr-10 transition-colors"
-                                        style="border-color: #d1d5db; color: #1e293b;"
-                                        onfocus="this.style.borderColor='#c80078'; this.style.boxShadow='0 0 0 3px rgba(200,0,120,0.12)'"
-                                        onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'">
+                                        class="bree-form-field select-bree-field">
                                     <option value="">— {{ __('partners.partnership_type_placeholder') }} —</option>
                                     <option value="financial">{{ __('partners.partnership_type_financial') }}</option>
                                     <option value="technical">{{ __('partners.partnership_type_technical') }}</option>
@@ -447,14 +418,12 @@
                                     </svg>
                                 </div>
                             </div>
-                            <p x-message="partnershipType" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                            <p x-message="partnershipType" class="bree-form-error"></p>
                         </div>
 
                         {{-- Motivation / proposal --}}
                         <div>
-                            <label for="field-motivation"
-                                   class="block text-sm font-semibold mb-2"
-                                   style="color: #1e293b;">
+                            <label for="field-motivation" class="bree-form-label">
                                 {{ __('partners.field_motivation') }}
                                 <span aria-hidden="true" style="color: #c80078;">*</span>
                             </label>
@@ -462,13 +431,10 @@
                                       x-model="motivation"
                                       x-name="motivation"
                                       rows="6"
-                                      required
                                       placeholder="{{ __('partners.motivation_hint') }}"
-                                      class="w-full text-sm px-4 py-3 rounded-xl border bg-white focus:outline-none resize-y transition-colors"
-                                      style="border-color: #d1d5db; color: #1e293b; line-height: 1.7;"
-                                      onfocus="this.style.borderColor='#c80078'; this.style.boxShadow='0 0 0 3px rgba(200,0,120,0.12)'"
-                                      onblur="this.style.borderColor='#d1d5db'; this.style.boxShadow='none'"></textarea>
-                            <p x-message="motivation" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                                      class="bree-form-field"
+                                      style="min-height: 160px;"></textarea>
+                            <p x-message="motivation" class="bree-form-error"></p>
                         </div>
 
                         {{-- Honeypot --}}
@@ -478,8 +444,9 @@
                         <button
                             @click="$action('{{ route('public.partners.store') }}')"
                             :disabled="$fetching()"
-                            class="w-full py-4 rounded-2xl text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2"
-                            style="background-color: #c80078; outline-color: #c80078;">
+                            class="btn-primary w-full rounded-xl"
+                            style="height: 48px;"
+                            :class="$fetching() ? 'opacity-65 cursor-not-allowed' : ''">
                             <span x-show="!$fetching()">{{ __('partners.form_submit') }}</span>
                             <span x-show="$fetching()" class="flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">

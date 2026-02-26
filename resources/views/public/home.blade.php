@@ -1145,12 +1145,8 @@
                             placeholder="{{ __('home.newsletter_placeholder') }}"
                             aria-label="{{ __('home.newsletter_placeholder') }}"
                             autocomplete="email"
-                            class="w-full px-5 py-3.5 rounded-xl border text-sm focus:outline-none focus-visible:ring-2"
-                            style="border-color: rgba(0,40,80,0.15);
-                                   color: #002850;
-                                   background-color: #f8f5f0;
-                                   --tw-ring-color: #c80078;">
-                        <p x-message="newsletter_email" class="mt-1 text-xs text-left" style="color: #dc2626;"></p>
+                            class="bree-form-field">
+                        <p x-message="newsletter_email" class="bree-form-error text-left"></p>
                     </div>
 
                     <button
