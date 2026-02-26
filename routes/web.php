@@ -39,6 +39,7 @@ use App\Http\Controllers\Public\PartnersController;
 use App\Http\Controllers\Public\ProgramsController;
 use App\Http\Controllers\Public\SitemapController;
 use App\Http\Controllers\Public\VolunteerController;
+use App\Http\Controllers\Public\LegalController;
 use App\Http\Controllers\Public\WebhookController;
 use Illuminate\Support\Facades\Route;
 
@@ -273,6 +274,14 @@ Route::post('/contact/envoyer', [ContactController::class, 'store'])
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'store'])
     ->name('newsletter.subscribe')
     ->middleware(['throttle:5,1', \Spatie\Honeypot\ProtectAgainstSpam::class]);
+
+/*
+|--------------------------------------------------------------------------
+| Legal Pages
+|--------------------------------------------------------------------------
+*/
+Route::get('/mentions-legales', [LegalController::class, 'mentions'])->name('legal.mentions');
+Route::get('/politique-confidentialite', [LegalController::class, 'privacy'])->name('legal.privacy');
 
 /*
 |--------------------------------------------------------------------------
