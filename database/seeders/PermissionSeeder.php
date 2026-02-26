@@ -16,6 +16,7 @@ class PermissionSeeder extends Seeder
      */
     private array $permissionGroups = [
         'news' => ['view', 'create', 'edit', 'delete'],
+'about' => ['view', 'create', 'edit', 'delete'],
         'events' => ['view', 'create', 'edit', 'delete'],
         'gallery' => ['view', 'create', 'edit', 'delete'],
         'programs' => ['view', 'edit'],
