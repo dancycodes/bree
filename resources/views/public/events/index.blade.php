@@ -3,32 +3,72 @@
 @section('title', __('events.page_title') . ' — ' . config('app.name'))
 @section('meta_description', __('events.meta_description'))
 
+@push('head')
+<style>
+@keyframes pastFadeIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+/* Past event card grayscale + muted treatment */
+.event-card-past {
+    opacity: 0.72;
+    filter: grayscale(0.55);
+    transition: opacity 0.25s ease, filter 0.25s ease, box-shadow 0.25s ease;
+}
+.event-card-past:hover {
+    opacity: 0.88;
+    filter: grayscale(0.25);
+    box-shadow: 0 6px 28px rgba(0,20,50,0.12);
+}
+/* Upcoming card hover */
+.event-card-upcoming {
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.event-card-upcoming:hover {
+    box-shadow: 0 8px 32px rgba(0,20,50,0.10);
+    border-color: rgba(200,0,120,0.18) !important;
+}
+/* Thumbnail placeholder when no image */
+.event-thumb-placeholder {
+    background-color: #002850;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+@endpush
+
 @section('content')
 
     {{-- ================================================================
          PAGE HERO
          ================================================================ --}}
-    <section class="relative overflow-hidden" style="height: clamp(280px, 35vw, 420px);">
+    <section class="relative overflow-hidden" style="height: clamp(300px, 38vw, 440px);">
 
         <img src="{{ asset('images/sections/events-placeholder.jpg') }}"
              alt="{{ __('events.page_title') }}"
-             class="absolute inset-0 w-full h-full object-cover">
+             class="absolute inset-0 w-full h-full object-cover"
+             loading="eager">
 
+        {{-- Solid dark overlay — NO gradient per brand rules --}}
         <div class="absolute inset-0" style="background-color: rgba(0,20,60,0.78);"></div>
 
-        <div class="relative z-10 h-full flex flex-col justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+        {{-- Left magenta accent bar --}}
+        <div class="absolute left-0 top-0 bottom-0 w-1" style="background-color: #c80078;"></div>
 
-            <nav class="mb-5" aria-label="Breadcrumb">
-                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.6);">
+        <div class="relative z-10 h-full flex flex-col justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+
+            <nav class="mb-5" aria-label="{{ __('ui.breadcrumb') }}">
+                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
-                           class="hover:text-white transition-colors"
-                           style="color: rgba(255,255,255,0.6);">
+                           x-navigate
+                           class="hover:text-white transition-colors focus-visible:outline-white">
                             {{ __('nav.home') }}
                         </a>
                     </li>
-                    <li style="color: rgba(255,255,255,0.4);">/</li>
-                    <li style="color: #ffffff;">{{ __('events.page_title') }}</li>
+                    <li aria-hidden="true" style="color: rgba(255,255,255,0.3);">/</li>
+                    <li style="color: #ffffff;" aria-current="page">{{ __('events.page_title') }}</li>
                 </ol>
             </nav>
 
@@ -38,16 +78,22 @@
                 {{ __('events.hero_label') }}
             </span>
 
-            <h1 class="font-heading font-bold"
+            <h1 class="font-bold max-w-3xl"
                 style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(1.75rem, 4vw, 3rem);
+                       font-size: clamp(2rem, 4.5vw, 3.5rem);
                        color: #ffffff;
                        line-height: 1.1;"
                 data-animate="fade-up">
                 {{ __('events.hero_heading') }}
             </h1>
 
-            <div class="mt-5 h-1 w-16 rounded-full" style="background-color: #c8a03c;"></div>
+            <p class="mt-4 max-w-xl text-sm leading-relaxed"
+               style="color: rgba(255,255,255,0.68);"
+               data-animate="fade-up">
+                {{ __('events.meta_description') }}
+            </p>
+
+            <div class="mt-6 h-0.5 w-16" style="background-color: #c8a03c;"></div>
 
         </div>
 
@@ -59,16 +105,27 @@
     <section class="py-20" style="background-color: #f8f5f0;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <h2 class="font-heading font-bold mb-10"
-                style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(1.5rem, 3vw, 2.25rem);
-                       color: #002850;"
-                data-animate="fade-up">
-                {{ __('events.upcoming_title') }}
-            </h2>
+            {{-- Section heading --}}
+            <div class="flex items-center gap-4 mb-10" data-animate="fade-up">
+                <div class="w-1 h-10 rounded-full flex-shrink-0" style="background-color: #c80078;"></div>
+                <div>
+                    <p class="text-xs font-bold tracking-widest uppercase mb-1" style="color: #c80078;">
+                        {{ __('events.hero_label') }}
+                    </p>
+                    <h2 class="font-bold"
+                        style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.5rem, 3vw, 2.25rem);
+                               color: #002850;
+                               line-height: 1.15;">
+                        {{ __('events.upcoming_title') }}
+                    </h2>
+                </div>
+            </div>
 
             @if ($upcoming->isEmpty())
-                <div class="py-16 text-center rounded-2xl bg-white shadow-sm" data-animate="fade-up">
+                {{-- Empty state --}}
+                <div class="py-16 text-center rounded-2xl bg-white" data-animate="fade-up"
+                     style="border: 1px solid rgba(0,0,0,0.06);">
                     <div class="w-16 h-16 mx-auto mb-5 rounded-full flex items-center justify-center"
                          style="background-color: rgba(200,0,120,0.08);">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"
@@ -77,51 +134,95 @@
                                   d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
                         </svg>
                     </div>
-                    <p class="text-base font-medium mb-1" style="color: #143c64;">{{ __('events.no_upcoming') }}</p>
+                    <p class="text-base font-semibold mb-1" style="color: #143c64;">{{ __('events.no_upcoming') }}</p>
                     <p class="text-sm" style="color: #94a3b8;">{{ __('events.no_upcoming_sub') }}</p>
                 </div>
             @else
-                <div class="space-y-6" data-stagger="0.07">
+                <div class="space-y-5" data-stagger="0.07">
                     @foreach ($upcoming as $event)
-                        <article class="bg-white rounded-2xl shadow-sm overflow-hidden transition-all hover:shadow-md"
-                                 style="border: 1px solid rgba(0,0,0,0.04);"
+                        @php
+                            $regCount = $event->registrations_count ?? 0;
+                            $hasCapacity = $event->registration_required && $event->max_capacity;
+                            $isFull = $hasCapacity && $regCount >= $event->max_capacity;
+                            $isLastFew = $hasCapacity && !$isFull && ($event->max_capacity - $regCount) <= max(1, intval($event->max_capacity * 0.15));
+                        @endphp
+                        <article class="event-card-upcoming bg-white rounded-2xl overflow-hidden"
+                                 style="border: 1px solid rgba(0,0,0,0.06);"
                                  data-animate="fade-up">
                             <div class="flex flex-col sm:flex-row">
 
                                 {{-- Date block --}}
-                                <div class="sm:w-32 flex-shrink-0 flex flex-row sm:flex-col items-center justify-center gap-3 sm:gap-0 p-5 sm:p-0"
-                                     style="background-color: #c80078;">
+                                <div class="sm:w-28 flex-shrink-0 flex flex-row sm:flex-col items-center justify-center gap-3 sm:gap-0 p-4 sm:p-0"
+                                     style="background-color: #c80078; min-height: 140px;">
                                     <span class="font-bold leading-none text-white"
-                                          style="font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 3.5rem);">
+                                          style="font-family: 'Playfair Display', serif; font-size: clamp(2.25rem, 4.5vw, 3rem);">
                                         {{ $event->event_date->format('d') }}
                                     </span>
-                                    <span class="text-sm font-semibold uppercase tracking-widest"
-                                          style="color: rgba(255,255,255,0.85);">
-                                        {{ $event->event_date->translatedFormat('M Y') }}
+                                    <span class="text-xs font-bold uppercase tracking-widest"
+                                          style="color: rgba(255,255,255,0.82);">
+                                        {{ $event->event_date->translatedFormat('M') }}
+                                    </span>
+                                    <span class="text-xs font-medium"
+                                          style="color: rgba(255,255,255,0.65);">
+                                        {{ $event->event_date->format('Y') }}
                                     </span>
                                 </div>
 
                                 {{-- Thumbnail --}}
-                                <div class="hidden md:block sm:w-52 flex-shrink-0 overflow-hidden"
-                                     style="height: 160px;">
-                                    <img src="{{ asset($event->thumbnail_path ?? 'images/sections/events-placeholder.jpg') }}"
-                                         alt="{{ $event->title() }}"
-                                         class="w-full h-full object-cover">
+                                <div class="hidden md:block sm:w-48 flex-shrink-0 overflow-hidden" style="min-height: 140px;">
+                                    @if ($event->thumbnail_path)
+                                        <img src="{{ asset($event->thumbnail_path) }}"
+                                             alt="{{ $event->title() }}"
+                                             class="w-full h-full object-cover"
+                                             style="min-height: 140px;">
+                                    @else
+                                        <div class="event-thumb-placeholder w-full h-full" style="min-height: 140px;">
+                                            <span class="text-white text-center px-4 text-xs font-semibold leading-snug opacity-60">
+                                                {{ $event->title() }}
+                                            </span>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 {{-- Content --}}
-                                <div class="flex-1 p-6 flex flex-col justify-between">
+                                <div class="flex-1 p-5 sm:p-6 flex flex-col justify-between">
                                     <div>
-                                        <h3 class="font-heading font-bold mb-2"
+
+                                        {{-- Capacity badge --}}
+                                        @if ($event->registration_required)
+                                            <div class="mb-3">
+                                                @if ($isFull)
+                                                    <span class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full"
+                                                          style="background-color: rgba(239,68,68,0.10); color: #dc2626;">
+                                                        <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background-color: #dc2626;"></span>
+                                                        {{ __('events.capacity_full') }}
+                                                    </span>
+                                                @elseif ($isLastFew)
+                                                    <span class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full"
+                                                          style="background-color: rgba(200,160,60,0.12); color: #a07020;">
+                                                        <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background-color: #c8a03c;"></span>
+                                                        {{ __('events.capacity_last') }}
+                                                    </span>
+                                                @else
+                                                    <span class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full"
+                                                          style="background-color: rgba(22,163,74,0.10); color: #15803d;">
+                                                        <span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background-color: #16a34a;"></span>
+                                                        {{ __('events.capacity_available') }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        @endif
+
+                                        <h3 class="font-bold mb-2 leading-snug"
                                             style="font-family: 'Playfair Display', serif;
-                                                   font-size: 1.2rem;
+                                                   font-size: clamp(1rem, 2vw, 1.2rem);
                                                    color: #002850;
                                                    line-height: 1.3;">
                                             {{ $event->title() }}
                                         </h3>
 
                                         {{-- Location + time --}}
-                                        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mb-3">
+                                        <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 mb-3">
                                             @if ($event->location())
                                                 <span class="flex items-center gap-1.5 text-xs font-medium"
                                                       style="color: #475569;">
@@ -148,16 +249,20 @@
                                             @endif
                                         </div>
 
-                                        @if ($event->description_fr || $event->description_en)
+                                        @php
+                                            $desc = app()->getLocale() === 'fr' ? $event->description_fr : $event->description_en;
+                                        @endphp
+                                        @if ($desc)
                                             <p class="text-sm leading-relaxed line-clamp-2" style="color: #5a6a7a;">
-                                                {{ app()->getLocale() === 'fr' ? $event->description_fr : $event->description_en }}
+                                                {{ $desc }}
                                             </p>
                                         @endif
                                     </div>
 
                                     <div class="mt-4">
                                         <a href="{{ route('public.events.show', $event) }}"
-                                           class="inline-flex items-center gap-1.5 text-xs font-semibold transition-opacity hover:opacity-75"
+                                           x-navigate
+                                           class="inline-flex items-center gap-1.5 text-xs font-bold transition-opacity hover:opacity-75"
                                            style="color: #c80078;">
                                             {{ __('events.view_event') }}
                                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -185,38 +290,64 @@
         <section class="py-20 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                <h2 class="font-heading font-bold mb-10"
-                    style="font-family: 'Playfair Display', serif;
-                           font-size: clamp(1.5rem, 3vw, 2.25rem);
-                           color: #002850;"
-                    data-animate="fade-up">
-                    {{ __('events.past_title') }}
-                </h2>
+                {{-- Section heading --}}
+                <div class="flex items-center gap-4 mb-10" data-animate="fade-up">
+                    <div class="w-1 h-10 rounded-full flex-shrink-0" style="background-color: #94a3b8;"></div>
+                    <div>
+                        <p class="text-xs font-bold tracking-widest uppercase mb-1" style="color: #94a3b8;">
+                            {{ __('events.hero_label') }}
+                        </p>
+                        <h2 class="font-bold"
+                            style="font-family: 'Playfair Display', serif;
+                                   font-size: clamp(1.5rem, 3vw, 2.25rem);
+                                   color: #475569;
+                                   line-height: 1.15;">
+                            {{ __('events.past_title') }}
+                        </h2>
+                    </div>
+                </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" data-stagger="0.06">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach ($past as $event)
-                        <article class="rounded-2xl overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-md"
-                                 style="border: 1px solid #e2e8f0;"
-                                 data-animate="fade-up">
+                        <article class="event-card-past rounded-2xl overflow-hidden bg-white"
+                                 style="animation: pastFadeIn 0.55s ease both; animation-delay: {{ $loop->index * 0.07 }}s;
+                                        border: 1px solid #e2e8f0;">
 
-                            {{-- Thumbnail --}}
-                            <div class="overflow-hidden relative" style="height: 160px;">
-                                <img src="{{ asset($event->thumbnail_path ?? 'images/sections/events-placeholder.jpg') }}"
-                                     alt="{{ $event->title() }}"
-                                     class="w-full h-full object-cover opacity-70">
-                                {{-- Date badge --}}
-                                <div class="absolute top-3 left-3 px-3 py-1.5 rounded-lg"
-                                     style="background-color: rgba(0,40,80,0.88);">
+                            {{-- Thumbnail with past badge overlay --}}
+                            <div class="overflow-hidden relative" style="height: 168px;">
+                                @if ($event->thumbnail_path)
+                                    <img src="{{ asset($event->thumbnail_path) }}"
+                                         alt="{{ $event->title() }}"
+                                         class="w-full h-full object-cover">
+                                @else
+                                    <div class="event-thumb-placeholder w-full h-full">
+                                        <span class="text-white text-center px-4 text-xs font-semibold leading-snug opacity-50">
+                                            {{ $event->title() }}
+                                        </span>
+                                    </div>
+                                @endif
+
+                                {{-- Date badge top-left --}}
+                                <div class="absolute top-3 left-3 px-2.5 py-1.5 rounded-lg"
+                                     style="background-color: rgba(0,40,80,0.85);">
                                     <span class="text-xs font-bold text-white">
                                         {{ $event->event_date->translatedFormat('d M Y') }}
+                                    </span>
+                                </div>
+
+                                {{-- Past event badge top-right --}}
+                                <div class="absolute top-3 right-3 px-2 py-1 rounded-md"
+                                     style="background-color: rgba(0,0,0,0.55);">
+                                    <span class="text-xs font-semibold" style="color: rgba(255,255,255,0.8);">
+                                        {{ __('events.past_badge') }}
                                     </span>
                                 </div>
                             </div>
 
                             {{-- Content --}}
                             <div class="p-5" style="background-color: #f8f5f0;">
-                                <h3 class="font-semibold mb-2 leading-snug"
-                                    style="font-size: 0.95rem; color: #002850;">
+                                <h3 class="font-semibold mb-2 leading-snug line-clamp-2"
+                                    style="font-size: 0.95rem; color: #334155; line-height: 1.4;">
                                     {{ $event->title() }}
                                 </h3>
 
@@ -234,8 +365,9 @@
                                 @endif
 
                                 <a href="{{ route('public.events.show', $event) }}"
+                                   x-navigate
                                    class="inline-flex items-center gap-1 text-xs font-semibold transition-opacity hover:opacity-75"
-                                   style="color: #143c64;">
+                                   style="color: #475569;">
                                     {{ __('events.view_event') }}
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                          stroke-width="2.5">
