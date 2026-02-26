@@ -46,16 +46,10 @@ class NewsCategorySeeder extends Seeder
                 'slug' => 'rapports',
                 'color' => '#475569',
             ],
-            [
-                'name_fr' => 'Dons',
-                'name_en' => 'Donations',
-                'slug' => 'dons',
-                'color' => '#c8a03c',
-            ],
         ];
 
         foreach ($categories as $category) {
-            NewsCategory::firstOrCreate(
+            NewsCategory::updateOrCreate(
                 ['slug' => $category['slug']],
                 $category,
             );

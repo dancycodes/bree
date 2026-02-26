@@ -33,5 +33,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProgramCardSeeder::class);
         $this->call(TeamMemberSeeder::class);
         $this->call(PartnerSeeder::class);
+        $this->call(NewsCategorySeeder::class);
+        $this->call(NewsArticleSeeder::class);
     }
 }
