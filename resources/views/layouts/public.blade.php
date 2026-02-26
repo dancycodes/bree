@@ -101,6 +101,7 @@
                             ['route' => 'public.events',   'label' => __('nav.events')],
                             ['route' => 'public.gallery',  'label' => __('nav.gallery')],
                             ['route' => 'public.partners', 'label' => __('nav.partners')],
+                            ['route' => 'public.contact',  'label' => __('nav.contact')],
                         ];
                     @endphp
 
