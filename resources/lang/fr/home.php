@@ -31,4 +31,15 @@ return [
     'gallery_cta' => 'Voir toute la galerie',
     'gallery_empty' => 'Aucune photo disponible pour le moment',
     'gallery_photo_alt' => 'Photo de la Fondation BREE',
+
+    // Section titles (used in section headings on homepage)
+    'section_news_title' => 'Restez Informé',
+    'section_events_title' => 'Agenda des Événements',
+    'section_programs_title' => 'Nos Programmes d\'Action',
+    'section_impact_intro' => 'Des chiffres qui témoignent',
+    'section_mission_heading' => 'Notre Raison d\'Être',
+    'section_donate_cta_label' => 'Agissez Maintenant',
+    'section_founder_intro' => 'Celles qui portent la vision',
+    'section_gallery_cta_alt' => 'Voir toute la galerie',
+    'section_partners_title' => 'Ils nous font confiance',
 ];

@@ -31,4 +31,15 @@ return [
     'gallery_cta' => 'View the full gallery',
     'gallery_empty' => 'No photos available yet',
     'gallery_photo_alt' => 'Fondation BREE photo',
+
+    // Section titles (used in section headings on homepage)
+    'section_news_title' => 'Stay Informed',
+    'section_events_title' => 'Events Agenda',
+    'section_programs_title' => 'Our Action Programs',
+    'section_impact_intro' => 'Numbers that speak volumes',
+    'section_mission_heading' => 'Our Purpose',
+    'section_donate_cta_label' => 'Take Action Now',
+    'section_founder_intro' => 'Those who carry the vision',
+    'section_gallery_cta_alt' => 'View the full gallery',
+    'section_partners_title' => 'They trust us',
 ];
