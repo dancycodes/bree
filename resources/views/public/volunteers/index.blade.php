@@ -5,14 +5,6 @@
 
 @push('head')
 <style>
-    /* ── Volunteer form field focus (magenta ring) ── */
-    .vol-field:focus {
-        outline: none;
-        border-color: #c80078 !important;
-        background-color: #ffffff !important;
-        box-shadow: 0 0 0 3px rgba(200, 0, 120, 0.12);
-    }
-
     /* ── Program area card transition ── */
     .vol-area-btn {
         transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
@@ -289,10 +281,8 @@
                         {{-- Name row --}}
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label for="vol-first-name"
-                                       class="block text-xs font-bold uppercase tracking-wider mb-2"
-                                       style="color: #143c64;">
-                                    {{ __('volunteers.field_first_name') }} <span style="color: #c80078;">*</span>
+                                <label for="vol-first-name" class="bree-form-label">
+                                    {{ __('volunteers.field_first_name') }} <span style="color: #c80078;" aria-hidden="true">*</span>
                                 </label>
                                 <input id="vol-first-name"
                                        x-model="firstName"
@@ -300,15 +290,12 @@
                                        type="text"
                                        autocomplete="given-name"
                                        placeholder="{{ __('volunteers.placeholder_first_name') }}"
-                                       class="vol-field w-full rounded-xl text-sm px-4 transition-all"
-                                       style="border: 1.5px solid #e2e8f0; background-color: #ffffff; color: #1e293b; height: 52px;">
-                                <p x-message="firstName" class="mt-1.5 text-xs font-medium" style="color: #dc2626; min-height: 1rem;"></p>
+                                       class="bree-form-field">
+                                <p x-message="firstName" class="bree-form-error"></p>
                             </div>
                             <div>
-                                <label for="vol-last-name"
-                                       class="block text-xs font-bold uppercase tracking-wider mb-2"
-                                       style="color: #143c64;">
-                                    {{ __('volunteers.field_last_name') }} <span style="color: #c80078;">*</span>
+                                <label for="vol-last-name" class="bree-form-label">
+                                    {{ __('volunteers.field_last_name') }} <span style="color: #c80078;" aria-hidden="true">*</span>
                                 </label>
                                 <input id="vol-last-name"
                                        x-model="lastName"
@@ -316,19 +303,16 @@
                                        type="text"
                                        autocomplete="family-name"
                                        placeholder="{{ __('volunteers.placeholder_last_name') }}"
-                                       class="vol-field w-full rounded-xl text-sm px-4 transition-all"
-                                       style="border: 1.5px solid #e2e8f0; background-color: #ffffff; color: #1e293b; height: 52px;">
-                                <p x-message="lastName" class="mt-1.5 text-xs font-medium" style="color: #dc2626; min-height: 1rem;"></p>
+                                       class="bree-form-field">
+                                <p x-message="lastName" class="bree-form-error"></p>
                             </div>
                         </div>
 
                         {{-- Email & Phone --}}
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label for="vol-email"
-                                       class="block text-xs font-bold uppercase tracking-wider mb-2"
-                                       style="color: #143c64;">
-                                    {{ __('volunteers.field_email') }} <span style="color: #c80078;">*</span>
+                                <label for="vol-email" class="bree-form-label">
+                                    {{ __('volunteers.field_email') }} <span style="color: #c80078;" aria-hidden="true">*</span>
                                 </label>
                                 <input id="vol-email"
                                        x-model="email"
@@ -336,14 +320,11 @@
                                        type="email"
                                        autocomplete="email"
                                        placeholder="{{ __('volunteers.placeholder_email') }}"
-                                       class="vol-field w-full rounded-xl text-sm px-4 transition-all"
-                                       style="border: 1.5px solid #e2e8f0; background-color: #ffffff; color: #1e293b; height: 52px;">
-                                <p x-message="email" class="mt-1.5 text-xs font-medium" style="color: #dc2626; min-height: 1rem;"></p>
+                                       class="bree-form-field">
+                                <p x-message="email" class="bree-form-error"></p>
                             </div>
                             <div>
-                                <label for="vol-phone"
-                                       class="block text-xs font-bold uppercase tracking-wider mb-2"
-                                       style="color: #143c64;">
+                                <label for="vol-phone" class="bree-form-label">
                                     {{ __('volunteers.field_phone') }}
                                 </label>
                                 <input id="vol-phone"
@@ -352,17 +333,14 @@
                                        type="tel"
                                        autocomplete="tel"
                                        placeholder="{{ __('volunteers.placeholder_phone') }}"
-                                       class="vol-field w-full rounded-xl text-sm px-4 transition-all"
-                                       style="border: 1.5px solid #e2e8f0; background-color: #ffffff; color: #1e293b; height: 52px;">
-                                <p x-message="phone" class="mt-1.5 text-xs font-medium" style="color: #dc2626; min-height: 1rem;"></p>
+                                       class="bree-form-field">
+                                <p x-message="phone" class="bree-form-error"></p>
                             </div>
                         </div>
 
                         {{-- City / Country --}}
                         <div>
-                            <label for="vol-city"
-                                   class="block text-xs font-bold uppercase tracking-wider mb-2"
-                                   style="color: #143c64;">
+                            <label for="vol-city" class="bree-form-label">
                                 {{ __('volunteers.field_city') }}
                             </label>
                             <input id="vol-city"
@@ -370,15 +348,13 @@
                                    x-name="cityCountry"
                                    type="text"
                                    placeholder="{{ __('volunteers.placeholder_city') }}"
-                                   class="vol-field w-full rounded-xl text-sm px-4 transition-all"
-                                   style="border: 1.5px solid #e2e8f0; background-color: #ffffff; color: #1e293b; height: 52px;">
+                                   class="bree-form-field">
                         </div>
 
                         {{-- Areas of interest (program checkbox cards) --}}
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider mb-3"
-                                   style="color: #143c64;">
-                                {{ __('volunteers.field_areas') }} <span style="color: #c80078;">*</span>
+                            <label class="bree-form-label mb-3">
+                                {{ __('volunteers.field_areas') }} <span style="color: #c80078;" aria-hidden="true">*</span>
                             </label>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 @foreach ([
@@ -417,9 +393,8 @@
 
                         {{-- Availability (pill select) --}}
                         <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider mb-3"
-                                   style="color: #143c64;">
-                                {{ __('volunteers.field_availability') }} <span style="color: #c80078;">*</span>
+                            <label class="bree-form-label mb-3">
+                                {{ __('volunteers.field_availability') }} <span style="color: #c80078;" aria-hidden="true">*</span>
                             </label>
                             <div class="flex flex-wrap gap-3">
                                 @foreach ([
@@ -444,9 +419,7 @@
 
                         {{-- Motivation textarea --}}
                         <div>
-                            <label for="vol-motivation"
-                                   class="block text-xs font-bold uppercase tracking-wider mb-2"
-                                   style="color: #143c64;">
+                            <label for="vol-motivation" class="bree-form-label">
                                 {{ __('volunteers.field_motivation') }}
                             </label>
                             <textarea id="vol-motivation"
@@ -454,16 +427,16 @@
                                       x-name="motivation"
                                       rows="6"
                                       placeholder="{{ __('volunteers.placeholder_motivation') }}"
-                                      class="vol-field w-full rounded-xl text-sm px-4 py-3 resize-y transition-all"
-                                      style="border: 1.5px solid #e2e8f0; background-color: #ffffff; color: #1e293b; min-height: 200px; line-height: 1.7;"></textarea>
+                                      class="bree-form-field"
+                                      style="min-height: 200px;"></textarea>
                         </div>
 
                         {{-- Submit button --}}
                         <button type="submit"
                                 :disabled="$fetching()"
-                                class="w-full rounded-xl font-bold text-sm text-white transition-all"
-                                style="background-color: #c80078; height: 54px; letter-spacing: 0.04em;"
-                                :style="$fetching() ? 'opacity: 0.65; cursor: not-allowed;' : 'opacity: 1;'">
+                                class="btn-primary w-full rounded-xl"
+                                style="height: 48px;"
+                                :class="$fetching() ? 'opacity-65 cursor-not-allowed' : ''">
                             <span x-show="!$fetching()" class="flex items-center justify-center gap-2">
                                 {{ __('volunteers.form_submit') }}
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

@@ -381,8 +381,7 @@
 
                                     {{-- Name --}}
                                     <div>
-                                        <label class="block text-xs font-semibold uppercase tracking-wider mb-1.5"
-                                               style="color: #475569;">
+                                        <label class="bree-form-label">
                                             {{ __('events.register_name') }}
                                             <span style="color: #c80078;" aria-hidden="true">*</span>
                                         </label>
@@ -391,17 +390,13 @@
                                                type="text"
                                                autocomplete="name"
                                                placeholder="{{ __('events.register_name') }}"
-                                               class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none transition-colors"
-                                               style="border-color: #e2e8f0; color: #1e293b; background-color: #fafafa;"
-                                               @focus="$el.style.borderColor='#c80078'; $el.style.backgroundColor='#ffffff'"
-                                               @blur="$el.style.borderColor='#e2e8f0'; $el.style.backgroundColor='#fafafa'">
-                                        <p x-message="reg_name" class="text-xs mt-1" style="color: #ef4444;"></p>
+                                               class="bree-form-field">
+                                        <p x-message="reg_name" class="bree-form-error"></p>
                                     </div>
 
                                     {{-- Email --}}
                                     <div>
-                                        <label class="block text-xs font-semibold uppercase tracking-wider mb-1.5"
-                                               style="color: #475569;">
+                                        <label class="bree-form-label">
                                             {{ __('events.register_email') }}
                                             <span style="color: #c80078;" aria-hidden="true">*</span>
                                         </label>
@@ -410,11 +405,8 @@
                                                type="email"
                                                autocomplete="email"
                                                placeholder="{{ __('events.register_email') }}"
-                                               class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none transition-colors"
-                                               style="border-color: #e2e8f0; color: #1e293b; background-color: #fafafa;"
-                                               @focus="$el.style.borderColor='#c80078'; $el.style.backgroundColor='#ffffff'"
-                                               @blur="$el.style.borderColor='#e2e8f0'; $el.style.backgroundColor='#fafafa'">
-                                        <p x-message="reg_email" class="text-xs mt-1" style="color: #ef4444;"></p>
+                                               class="bree-form-field">
+                                        <p x-message="reg_email" class="bree-form-error"></p>
                                     </div>
 
                                 </div>
@@ -422,10 +414,9 @@
                                 <button
                                     @click="$action('{{ route('public.events.register', $event) }}')"
                                     :disabled="$fetching()"
-                                    class="w-full mt-5 py-3.5 rounded-xl text-sm font-bold text-white transition-opacity disabled:opacity-50"
-                                    style="background-color: #c80078; letter-spacing: 0.03em;"
-                                    @mouseover="if (!$el.disabled) $el.style.backgroundColor='#a8006a'"
-                                    @mouseout="$el.style.backgroundColor='#c80078'">
+                                    class="btn-primary w-full mt-5 rounded-xl"
+                                    style="height: 48px;"
+                                    :class="$fetching() ? 'opacity-65 cursor-not-allowed' : ''">
                                     <span x-show="!$fetching()">{{ __('events.register_submit') }}</span>
                                     <span x-show="$fetching()" class="inline-flex items-center gap-2 justify-center">
                                         <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">

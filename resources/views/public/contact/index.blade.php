@@ -252,64 +252,57 @@
 
                                 {{-- Name --}}
                                 <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider mb-2"
-                                           style="color: #143c64;">
+                                    <label class="bree-form-label">
                                         {{ __('contact.form_name_label') }}
                                     </label>
                                     <input type="text"
                                            x-name="contactName"
                                            x-model="contactName"
                                            placeholder="{{ __('contact.form_name_placeholder') }}"
-                                           class="contact-field w-full rounded-xl text-sm px-4 transition-all"
-                                           style="border: 1.5px solid #e2e8f0; background-color: #fafafa; color: #1e293b; height: 52px;"
+                                           class="bree-form-field"
                                            autocomplete="name">
-                                    <p x-message="contactName" class="mt-1.5 text-xs font-medium" style="color: #dc2626; min-height: 1rem;"></p>
+                                    <p x-message="contactName" class="bree-form-error"></p>
                                 </div>
 
                                 {{-- Email --}}
                                 <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider mb-2"
-                                           style="color: #143c64;">
+                                    <label class="bree-form-label">
                                         {{ __('contact.form_email_label') }}
                                     </label>
                                     <input type="email"
                                            x-name="contactEmail"
                                            x-model="contactEmail"
                                            placeholder="{{ __('contact.form_email_placeholder') }}"
-                                           class="contact-field w-full rounded-xl text-sm px-4 transition-all"
-                                           style="border: 1.5px solid #e2e8f0; background-color: #fafafa; color: #1e293b; height: 52px;"
+                                           class="bree-form-field"
                                            autocomplete="email">
-                                    <p x-message="contactEmail" class="mt-1.5 text-xs font-medium" style="color: #dc2626; min-height: 1rem;"></p>
+                                    <p x-message="contactEmail" class="bree-form-error"></p>
                                 </div>
 
                                 {{-- Subject --}}
                                 <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider mb-2"
-                                           style="color: #143c64;">
+                                    <label class="bree-form-label">
                                         {{ __('contact.form_subject_label') }}
                                     </label>
                                     <input type="text"
                                            x-name="contactSubject"
                                            x-model="contactSubject"
                                            placeholder="{{ __('contact.form_subject_placeholder') }}"
-                                           class="contact-field w-full rounded-xl text-sm px-4 transition-all"
-                                           style="border: 1.5px solid #e2e8f0; background-color: #fafafa; color: #1e293b; height: 52px;">
-                                    <p x-message="contactSubject" class="mt-1.5 text-xs font-medium" style="color: #dc2626; min-height: 1rem;"></p>
+                                           class="bree-form-field">
+                                    <p x-message="contactSubject" class="bree-form-error"></p>
                                 </div>
 
                                 {{-- Message --}}
                                 <div>
-                                    <label class="block text-xs font-bold uppercase tracking-wider mb-2"
-                                           style="color: #143c64;">
+                                    <label class="bree-form-label">
                                         {{ __('contact.form_message_label') }}
                                     </label>
                                     <textarea x-name="contactMessage"
                                               x-model="contactMessage"
                                               rows="6"
                                               placeholder="{{ __('contact.form_message_placeholder') }}"
-                                              class="contact-field w-full rounded-xl text-sm px-4 py-3 transition-all resize-y"
-                                              style="border: 1.5px solid #e2e8f0; background-color: #fafafa; color: #1e293b; min-height: 160px;"></textarea>
-                                    <p x-message="contactMessage" class="mt-1.5 text-xs font-medium" style="color: #dc2626; min-height: 1rem;"></p>
+                                              class="bree-form-field"
+                                              style="min-height: 160px;"></textarea>
+                                    <p x-message="contactMessage" class="bree-form-error"></p>
                                 </div>
 
                                 <button type="submit"
@@ -345,25 +338,6 @@
 
 @push('head')
 <style>
-    /* ── Contact field focus ring (magenta) ── */
-    .contact-field:focus {
-        outline: none;
-        border-color: #c80078 !important;
-        background-color: #ffffff !important;
-        box-shadow: 0 0 0 3px rgba(200, 0, 120, 0.12);
-    }
-
-    /* ── Social icon hover (navy default → magenta on hover) ── */
-    .contact-social-icon {
-        color: rgba(255, 255, 255, 0.75);
-    }
-
-    .contact-social-icon:hover {
-        background-color: #c80078 !important;
-        color: #ffffff;
-        transform: translateY(-2px);
-    }
-
     /* ── GSAP entrance: info panel and form panel ── */
     .contact-info-panel,
     .contact-form-panel {
