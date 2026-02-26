@@ -393,7 +393,9 @@
                     &copy; {{ date('Y') }} {{ config('app.name') }}. Tous droits réservés.
                 </p>
                 <div class="flex gap-4 text-xs" style="color: rgba(255,255,255,0.4);">
+                    {{-- TODO: replace href="#" with route('legal.mentions') once F-023 creates the page --}}
                     <a href="#" class="hover:text-white transition-colors">Mentions légales</a>
+                    {{-- TODO: replace href="#" with route('legal.confidentialite') once F-024 creates the page --}}
                     <a href="#" class="hover:text-white transition-colors">Confidentialité</a>
                 </div>
             </div>
