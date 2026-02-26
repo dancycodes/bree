@@ -295,15 +295,15 @@
                     </h4>
                     <ul class="space-y-3 text-sm">
                         @foreach ([
-                            'BREE PROTÈGE',
-                            'BREE ÉLÈVE',
-                            'BREE RESPIRE',
+                            ['label' => 'BREE PROTÈGE', 'slug' => 'bree-protege'],
+                            ['label' => 'BREE ÉLÈVE',   'slug' => 'bree-eleve'],
+                            ['label' => 'BREE RESPIRE', 'slug' => 'bree-respire'],
                         ] as $program)
                             <li>
-                                <a href="#"
+                                <a href="{{ route('public.programs.show', $program['slug']) }}"
                                    class="transition-colors duration-150 hover:text-white"
                                    style="color: rgba(255,255,255,0.6);">
-                                    {{ $program }}
+                                    {{ $program['label'] }}
                                 </a>
                             </li>
                         @endforeach
