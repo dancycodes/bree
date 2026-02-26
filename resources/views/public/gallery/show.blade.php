@@ -358,8 +358,8 @@
 
                             <img :src="photos[activeIndex].url"
                                  :alt="photos[activeIndex].caption"
-                                 @load="imgLoading = false"
-                                 @error="imgLoading = false"
+                                 x-on:load="imgLoading = false"
+                                 x-on:error="imgLoading = false"
                                  class="max-h-[75vh] max-w-full object-contain rounded-lg shadow-2xl"
                                  :style="imgLoading ? 'opacity: 0;' : 'opacity: 1; transition: opacity 0.2s ease;'"
                                  style="display: block;">
