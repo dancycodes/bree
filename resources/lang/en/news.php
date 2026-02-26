@@ -15,4 +15,5 @@ return [
     'related_articles' => 'Related articles',
     'share' => 'Share',
     'foundation_author' => 'BREE Foundation',
+    'category_label' => 'Category',
 ];
