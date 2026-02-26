@@ -15,9 +15,12 @@ class NewsController extends Controller
             abort(404);
         }
 
+        $article->load('newsCategory');
+
         $related = NewsArticle::published()
+            ->with('newsCategory')
             ->where('id', '!=', $article->id)
-            ->when($article->category_slug, fn ($q) => $q->where('category_slug', $article->category_slug))
+            ->when($article->news_category_id, fn ($q) => $q->where('news_category_id', $article->news_category_id))
             ->limit(3)
             ->get();
 
@@ -26,19 +29,26 @@ class NewsController extends Controller
 
     public function index(Request $request): mixed
     {
-        $category = $request->input('category', 'all');
-
-        $query = NewsArticle::published();
-
-        if ($category !== 'all') {
-            $query->byCategory($category);
-        }
-
-        $articles = $query->paginate(9)->withQueryString();
+        $categorySlug = $request->input('category', 'all');
 
         $categories = NewsCategory::query()
             ->orderBy('name_fr')
             ->get();
+
+        $activeCategory = $categorySlug !== 'all'
+            ? $categories->firstWhere('slug', $categorySlug)
+            : null;
+
+        $query = NewsArticle::published()->with('newsCategory');
+
+        if ($activeCategory !== null) {
+            $query->byCategory($activeCategory->id);
+        }
+
+        $articles = $query->paginate(9)->withQueryString();
+
+        // Pass the slug for active state matching in the view
+        $category = $categorySlug;
 
         if ($request->isGaleNavigate('articles')) {
             return gale()->fragment('public.news.index', 'articles-grid', compact('articles', 'category', 'categories'));

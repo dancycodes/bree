@@ -73,12 +73,14 @@ class NewsArticlesController extends Controller
 
         $categoryFr = 'Actualités';
         $categoryEn = 'News';
+        $newsCategoryId = null;
 
         if ($request->input('category_slug')) {
             $cat = NewsCategory::where('slug', $request->input('category_slug'))->first();
             if ($cat) {
                 $categoryFr = $cat->name_fr;
                 $categoryEn = $cat->name_en;
+                $newsCategoryId = $cat->id;
             }
         }
 
@@ -96,6 +98,7 @@ class NewsArticlesController extends Controller
             'content_fr' => $request->input('content_fr'),
             'content_en' => $request->input('content_en'),
             'category_slug' => $request->input('category_slug') ?: null,
+            'news_category_id' => $newsCategoryId,
             'category_fr' => $categoryFr,
             'category_en' => $categoryEn,
             'status' => $request->input('status'),
@@ -139,12 +142,14 @@ class NewsArticlesController extends Controller
 
         $categoryFr = 'Actualités';
         $categoryEn = 'News';
+        $newsCategoryId = null;
 
         if ($request->input('category_slug')) {
             $cat = NewsCategory::where('slug', $request->input('category_slug'))->first();
             if ($cat) {
                 $categoryFr = $cat->name_fr;
                 $categoryEn = $cat->name_en;
+                $newsCategoryId = $cat->id;
             }
         }
 
@@ -170,6 +175,7 @@ class NewsArticlesController extends Controller
             'content_fr' => $request->input('content_fr'),
             'content_en' => $request->input('content_en'),
             'category_slug' => $request->input('category_slug') ?: null,
+            'news_category_id' => $newsCategoryId,
             'category_fr' => $categoryFr,
             'category_en' => $categoryEn,
             'status' => $request->input('status'),

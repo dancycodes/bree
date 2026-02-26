@@ -23,7 +23,7 @@ class HomeController extends Controller
         $counters = StatCounter::active()->get();
         $mission = MissionSection::active();
         $programs = ProgramCard::active()->get();
-        $latestNews = NewsArticle::published()->limit(3)->get();
+        $latestNews = NewsArticle::published()->with('newsCategory')->limit(3)->get();
         $founder = FounderProfile::active();
         $patron = PatronProfile::active();
         $upcomingEvents = FoundationEvent::upcoming()->limit(3)->get();
