@@ -65,11 +65,8 @@
             @endif
 
             {{-- Title --}}
-            <h1 class="font-heading font-bold max-w-3xl"
-                style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(1.65rem, 4.5vw, 3rem);
-                       color: #ffffff;
-                       line-height: 1.15;"
+            <h1 class="bree-hero-h1 max-w-3xl"
+                style="color: #ffffff;"
                 data-animate="fade-up">
                 {{ $article->title() }}
             </h1>

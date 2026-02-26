@@ -18,18 +18,17 @@
 
         <div class="relative z-10 h-full flex flex-col justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
 
-            <nav class="mb-5" aria-label="Breadcrumb">
-                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.6);">
+            <nav class="mb-5" aria-label="{{ __('ui.breadcrumb') }}">
+                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
                            x-navigate
-                           class="hover:text-white transition-colors"
-                           style="color: rgba(255,255,255,0.6);">
+                           class="hover:text-white transition-colors focus-visible:outline-white">
                             {{ __('nav.home') }}
                         </a>
                     </li>
-                    <li style="color: rgba(255,255,255,0.4);">/</li>
-                    <li style="color: #ffffff;">{{ __('contact.page_title') }}</li>
+                    <li aria-hidden="true" style="color: rgba(255,255,255,0.3);">/</li>
+                    <li style="color: #ffffff;" aria-current="page">{{ __('contact.page_title') }}</li>
                 </ol>
             </nav>
 
@@ -39,11 +38,8 @@
                 {{ __('contact.hero_label') }}
             </span>
 
-            <h1 class="font-heading font-bold"
-                style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(1.75rem, 4vw, 3rem);
-                       color: #ffffff;
-                       line-height: 1.1;"
+            <h1 class="bree-hero-h1 max-w-3xl"
+                style="color: #ffffff;"
                 data-animate="fade-up">
                 {{ __('contact.hero_heading') }}
             </h1>
@@ -78,8 +74,8 @@
                             {{ __('contact.hero_label') }}
                         </span>
 
-                        <h2 class="font-heading font-bold text-2xl mb-2"
-                            style="font-family: 'Playfair Display', serif; color: #ffffff;">
+                        <h2 class="bree-subsection-h3 mb-2"
+                            style="color: #ffffff;">
                             {{ __('contact.info_heading') }}
                         </h2>
 
@@ -220,8 +216,8 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
                             </div>
-                            <h3 class="font-heading font-bold text-2xl mb-3"
-                                style="font-family: 'Playfair Display', serif; color: #143c64;">
+                            <h3 class="bree-subsection-h3 mb-3"
+                                style="color: #143c64;">
                                 {{ __('contact.form_success_heading') }}
                             </h3>
                             <p class="text-sm leading-relaxed mb-8 max-w-sm mx-auto"
@@ -242,8 +238,8 @@
                                 {{ __('contact.hero_label') }}
                             </span>
 
-                            <h2 class="font-heading font-bold text-2xl mb-2"
-                                style="font-family: 'Playfair Display', serif; color: #002850;">
+                            <h2 class="bree-subsection-h3 mb-2"
+                                style="color: #002850;">
                                 {{ __('contact.form_heading') }}
                             </h2>
 

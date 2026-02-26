@@ -90,12 +90,8 @@
                 @endif
             </div>
 
-            <h1 class="font-bold"
-                style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(1.75rem, 4vw, 3rem);
-                       color: #ffffff;
-                       line-height: 1.15;
-                       max-width: 800px;"
+            <h1 class="bree-hero-h1"
+                style="color: #ffffff; max-width: 800px;"
                 data-animate="fade-up">
                 {{ $event->title() }}
             </h1>

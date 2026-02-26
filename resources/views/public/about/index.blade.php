@@ -43,13 +43,8 @@
                 {{ __('about.hero_label') }}
             </span>
 
-            <h1 class="font-heading font-bold"
-                style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(2.2rem, 5.5vw, 4.5rem);
-                       color: #ffffff;
-                       line-height: 1.1;
-                       letter-spacing: -0.01em;
-                       max-width: 700px;"
+            <h1 class="bree-hero-h1 max-w-3xl"
+                style="color: #ffffff;"
                 data-animate="fade-up">
                 {{ __('about.hero_heading') }}
             </h1>
@@ -98,12 +93,7 @@
                           style="color: #c80078;">
                         {{ __('about.story_label') }}
                     </span>
-                    <h2 style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.85rem, 3.5vw, 2.85rem);
-                               color: #002850;
-                               line-height: 1.2;
-                               font-weight: 700;
-                               margin-bottom: 1.75rem;">
+                    <h2 class="bree-section-h2 mb-7">
                         {{ __('about.story_heading') }}
                     </h2>
 
@@ -182,12 +172,8 @@
                             {{ __('about.founder_label') }}
                         </span>
 
-                        <h2 style="font-family: 'Playfair Display', serif;
-                                   font-size: clamp(1.85rem, 3.5vw, 2.85rem);
-                                   color: #ffffff;
-                                   line-height: 1.15;
-                                   font-weight: 700;
-                                   margin-bottom: 0.5rem;">
+                        <h2 class="bree-section-h2 mb-2"
+                            style="color: #ffffff;">
                             {{ $founder->name }}
                         </h2>
 
@@ -239,11 +225,7 @@
                           style="color: #c8a03c; letter-spacing: 0.2em;">
                         {{ __('about.timeline_label') }}
                     </span>
-                    <h2 style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.85rem, 3.5vw, 2.75rem);
-                               color: #002850;
-                               font-weight: 700;
-                               line-height: 1.2;">
+                    <h2 class="bree-section-h2">
                         {{ __('about.timeline_heading') }}
                     </h2>
                 </div>
@@ -391,12 +373,7 @@
                             {{ __('about.patron_label') }}
                         </span>
 
-                        <h2 style="font-family: 'Playfair Display', serif;
-                                   font-size: clamp(1.85rem, 3.5vw, 2.85rem);
-                                   color: #002850;
-                                   line-height: 1.15;
-                                   font-weight: 700;
-                                   margin-bottom: 0.5rem;">
+                        <h2 class="bree-section-h2 mb-2">
                             {{ $patron->name }}
                         </h2>
 
@@ -485,11 +462,8 @@
                       style="color: #c8a03c; letter-spacing: 0.2em;">
                     {{ __('about.values_label') }}
                 </span>
-                <h2 style="font-family: 'Playfair Display', serif;
-                           font-size: clamp(1.85rem, 3.5vw, 2.75rem);
-                           color: #ffffff;
-                           font-weight: 700;
-                           line-height: 1.2;">
+                <h2 class="bree-section-h2"
+                    style="color: #ffffff;">
                     {{ __('about.values_heading') }}
                 </h2>
             </div>
@@ -541,11 +515,7 @@
                           style="color: #c80078; letter-spacing: 0.2em;">
                         {{ __('about.team_label') }}
                     </span>
-                    <h2 style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.85rem, 3.5vw, 2.75rem);
-                               color: #002850;
-                               font-weight: 700;
-                               line-height: 1.2;">
+                    <h2 class="bree-section-h2">
                         {{ __('about.team_heading') }}
                     </h2>
                 </div>
@@ -632,12 +602,7 @@
                 {{ __('about.cta_label') }}
             </span>
 
-            <h2 style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(1.85rem, 3.5vw, 2.75rem);
-                       color: #002850;
-                       font-weight: 700;
-                       line-height: 1.2;
-                       margin-bottom: 1.25rem;">
+            <h2 class="bree-section-h2 mb-5">
                 {{ __('about.cta_heading') }}
             </h2>
 
