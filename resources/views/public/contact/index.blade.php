@@ -81,10 +81,10 @@
                                 <div>
                                     <p class="text-xs font-semibold uppercase tracking-wider mb-1"
                                        style="color: rgba(255,255,255,0.5);">{{ __('contact.info_email_label') }}</p>
-                                    <a href="mailto:{{ __('contact.info_email') }}"
+                                    <a href="mailto:{{ $siteSettings['contact_email'] ?? config('mail.from.address') }}"
                                        class="text-sm font-medium hover:opacity-80 transition-opacity"
                                        style="color: #ffffff;">
-                                        {{ __('contact.info_email') }}
+                                        {{ $siteSettings['contact_email'] ?? config('mail.from.address') }}
                                     </a>
                                 </div>
                             </li>
@@ -100,10 +100,10 @@
                                 <div>
                                     <p class="text-xs font-semibold uppercase tracking-wider mb-1"
                                        style="color: rgba(255,255,255,0.5);">{{ __('contact.info_phone_label') }}</p>
-                                    <a href="tel:{{ preg_replace('/\s/', '', __('contact.info_phone')) }}"
+                                    <a href="tel:{{ preg_replace('/\s/', '', $siteSettings['contact_phone'] ?? '') }}"
                                        class="text-sm font-medium hover:opacity-80 transition-opacity"
                                        style="color: #ffffff;">
-                                        {{ __('contact.info_phone') }}
+                                        {{ $siteSettings['contact_phone'] ?? '' }}
                                     </a>
                                 </div>
                             </li>
@@ -121,7 +121,7 @@
                                     <p class="text-xs font-semibold uppercase tracking-wider mb-1"
                                        style="color: rgba(255,255,255,0.5);">{{ __('contact.info_address_label') }}</p>
                                     <p class="text-sm font-medium" style="color: #ffffff;">
-                                        {{ __('contact.info_address') }}
+                                        {{ $siteSettings['contact_address'] ?? '' }}
                                     </p>
                                 </div>
                             </li>

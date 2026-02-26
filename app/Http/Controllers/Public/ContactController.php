@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Mail\ContactAdminNotification;
 use App\Models\ContactMessage;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -13,7 +14,9 @@ class ContactController extends Controller
 {
     public function index(): mixed
     {
-        return gale()->view('public.contact.index', [], web: true);
+        $siteSettings = SiteSetting::allSettings();
+
+        return gale()->view('public.contact.index', compact('siteSettings'), web: true);
     }
 
     public function store(Request $request): mixed
