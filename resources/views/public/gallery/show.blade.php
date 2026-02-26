@@ -137,6 +137,7 @@
              LIGHTBOX OVERLAY
              ================================================================ --}}
         <div
+            x-cloak
             x-show="open"
             x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0"
@@ -145,9 +146,7 @@
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
             class="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
-            style="display: none;"
-            @click.self="close()"
-            x-trap="open">
+            @click.self="close()">
 
             {{-- Close button --}}
             <button
