@@ -37,11 +37,11 @@
             </nav>
 
             {{-- Category badge --}}
-            @if ($article->category_fr)
+            @if ($article->newsCategory || $article->category_fr)
                 <span class="inline-block self-start text-xs font-bold px-3 py-1 rounded-full mb-4"
                       style="background-color: #c80078; color: #ffffff;"
                       data-animate="fade-up">
-                    {{ $article->category() }}
+                    {{ $article->categoryLabel() }}
                 </span>
             @endif
 
@@ -181,13 +181,13 @@
                         </div>
 
                         {{-- Category info --}}
-                        @if ($article->category_fr)
+                        @if ($article->newsCategory || $article->category_fr)
                             <div class="mt-6 pt-5" style="border-top: 1px solid #f1f5f9;">
                                 <p class="text-xs font-medium mb-2" style="color: #94a3b8;">Catégorie</p>
-                                <a href="{{ route('public.news', ['category' => $article->category_slug]) }}"
+                                <a href="{{ route('public.news', ['category' => $article->newsCategory?->slug ?? $article->category_slug]) }}"
                                    class="inline-block text-xs font-semibold px-3 py-1.5 rounded-full transition-opacity hover:opacity-75"
                                    style="background-color: #c8007812; color: #c80078;">
-                                    {{ $article->category() }}
+                                    {{ $article->categoryLabel() }}
                                 </a>
                             </div>
                         @endif
@@ -229,10 +229,10 @@
                             </a>
                             <div class="p-5">
                                 <div class="flex items-center gap-2 mb-2">
-                                    @if ($rel->category_fr)
+                                    @if ($rel->newsCategory || $rel->category_fr)
                                         <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full"
                                               style="background-color: #c8007812; color: #c80078;">
-                                            {{ $rel->category() }}
+                                            {{ $rel->categoryLabel() }}
                                         </span>
                                     @endif
                                     <span class="text-xs" style="color: #94a3b8;">

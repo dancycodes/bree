@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -24,6 +25,7 @@ class NewsArticle extends Model
         'category_fr',
         'category_en',
         'category_slug',
+        'news_category_id',
         'thumbnail_path',
         'status',
         'published_at',
@@ -57,12 +59,22 @@ class NewsArticle extends Model
         return $locale === 'fr' ? ($this->excerpt_fr ?? '') : ($this->excerpt_en ?? '');
     }
 
-    /** Return the category label in the current locale. */
-    public function category(): string
+    /** Eloquent relationship: the NewsCategory this article belongs to. */
+    public function newsCategory(): BelongsTo
+    {
+        return $this->belongsTo(NewsCategory::class, 'news_category_id');
+    }
+
+    /** Return the category label in the current locale (falls back to denormalized columns). */
+    public function categoryLabel(): string
     {
         $locale = app()->getLocale();
 
-        return $locale === 'fr' ? $this->category_fr : $this->category_en;
+        if ($this->newsCategory) {
+            return $locale === 'fr' ? $this->newsCategory->name_fr : $this->newsCategory->name_en;
+        }
+
+        return $locale === 'fr' ? ($this->category_fr ?? '') : ($this->category_en ?? '');
     }
 
     /** Scope: only published articles ordered by publish date descending. */
@@ -73,9 +85,9 @@ class NewsArticle extends Model
             ->orderByDesc('published_at');
     }
 
-    /** Scope: filter by category slug. */
-    public function scopeByCategory(Builder $query, string $slug): Builder
+    /** Scope: filter by news_category_id (normalized FK). */
+    public function scopeByCategory(Builder $query, int $categoryId): Builder
     {
-        return $query->where('category_slug', $slug);
+        return $query->where('news_category_id', $categoryId);
     }
 }

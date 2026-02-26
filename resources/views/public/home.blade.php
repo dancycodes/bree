@@ -346,7 +346,7 @@
                                 <div class="flex items-center gap-3 mb-4">
                                     <span class="inline-block text-xs font-bold tracking-wider uppercase px-2.5 py-1 rounded-full"
                                           style="background-color: rgba(200,0,120,0.1); color: #c80078;">
-                                        {{ $article->category() }}
+                                        {{ $article->categoryLabel() }}
                                     </span>
                                     <span class="text-xs" style="color: #9aacbb;">
                                         {{ $article->published_at->translatedFormat('d M Y') }}

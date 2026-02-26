@@ -124,10 +124,10 @@
                                 <div class="p-6">
                                     {{-- Category + date --}}
                                     <div class="flex items-center gap-3 mb-3">
-                                        @if ($article->category_fr)
+                                        @if ($article->newsCategory || $article->category_fr)
                                             <span class="text-xs font-semibold px-3 py-1 rounded-full"
                                                   style="background-color: #c8007812; color: #c80078;">
-                                                {{ $article->category() }}
+                                                {{ $article->categoryLabel() }}
                                             </span>
                                         @endif
                                         <span class="text-xs" style="color: #94a3b8;">
