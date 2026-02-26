@@ -39,7 +39,7 @@
     {{-- ================================================================
          SKIP TO CONTENT (keyboard / screen reader accessibility)
          ================================================================ --}}
-    <a href="#main-content" class="skip-to-content">Aller au contenu principal</a>
+    <a href="#main-content" class="skip-to-content">{{ __('ui.skip_to_content') }}</a>
 
     {{-- ================================================================
          ARIA LIVE REGION for dynamic Gale fragment updates / toasts

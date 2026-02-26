@@ -42,4 +42,6 @@ return [
     'en' => 'EN',
     'scroll' => 'Scroll',
     'content_coming_soon' => 'Content coming soon...',
+    'breadcrumb' => 'Breadcrumb',
+    'skip_to_content' => 'Skip to main content',
 ];

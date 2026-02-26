@@ -42,4 +42,6 @@ return [
     'en' => 'EN',
     'scroll' => 'Défiler',
     'content_coming_soon' => 'Contenu en cours de construction...',
+    'breadcrumb' => 'Fil d\'Ariane',
+    'skip_to_content' => 'Aller au contenu principal',
 ];
