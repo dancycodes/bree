@@ -43,7 +43,7 @@ class DashboardController extends Controller
                 : null,
             'unreadMessages' => ContactMessage::where('status', 'new')->count(),
             'upcomingEvents' => FoundationEvent::upcoming()->count(),
-            'recentActivity' => Activity::latest()->limit(5)->get(),
+            'recentActivity' => Activity::latest()->limit(10)->get(),
         ];
     }
 }

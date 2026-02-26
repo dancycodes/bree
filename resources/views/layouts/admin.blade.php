@@ -280,21 +280,39 @@
 </div>
 
 {{-- Global Toast Notifications --}}
+{{-- Brand colors: success=green, error=magenta #c80078, info=navy #143c64 --}}
 <div
     x-data="{ show: false, message: '', type: 'success' }"
     @toast.window="message = $event.detail.message; type = $event.detail.type || 'success'; show = true; setTimeout(() => show = false, 4000)"
-    :style="`display:${show ? 'flex' : 'none'}; background-color:${type === 'success' ? '#16a34a' : '#ef4444'}`"
-    class="fixed bottom-5 right-5 z-50 items-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold text-white shadow-xl"
+    x-show="show"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 translate-y-2"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 translate-y-0"
+    x-transition:leave-end="opacity-0 translate-y-2"
+    :style="type === 'success' ? 'background-color:#16a34a' : (type === 'error' ? 'background-color:#c80078' : 'background-color:#143c64')"
+    class="fixed bottom-5 right-5 z-50 flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-semibold text-white shadow-xl max-w-sm"
     style="display: none;">
-    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-        <template x-if="type === 'success'">
+    {{-- Success icon --}}
+    <template x-if="type === 'success'">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-        </template>
-        <template x-if="type !== 'success'">
+        </svg>
+    </template>
+    {{-- Error icon --}}
+    <template x-if="type === 'error'">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-        </template>
-    </svg>
-    <span x-text="message"></span>
+        </svg>
+    </template>
+    {{-- Info icon --}}
+    <template x-if="type === 'info'">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+    </template>
+    <span x-text="message" class="leading-snug"></span>
 </div>
 
 @stack('scripts')
@@ -303,6 +321,14 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     window.dispatchEvent(new CustomEvent('toast', { detail: { message: @json(session('success')), type: 'success' } }));
+});
+</script>
+@endif
+
+@if(session('error'))
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    window.dispatchEvent(new CustomEvent('toast', { detail: { message: @json(session('error')), type: 'error' } }));
 });
 </script>
 @endif
