@@ -1,59 +1,238 @@
 @extends('layouts.public')
 
-@section('title', 'Devenir Bénévole — ' . config('app.name'))
-@section('meta_description', 'Rejoignez l\'équipe bénévole de la Fondation BREE et contribuez à l\'autonomisation des femmes et à la protection de l\'enfance.')
+@section('title', __('volunteers.page_title') . ' — ' . config('app.name'))
+@section('meta_description', __('volunteers.meta_description'))
+
+@push('head')
+<style>
+    /* ── Volunteer form field focus (magenta ring) ── */
+    .vol-field:focus {
+        outline: none;
+        border-color: #c80078 !important;
+        background-color: #ffffff !important;
+        box-shadow: 0 0 0 3px rgba(200, 0, 120, 0.12);
+    }
+
+    /* ── Benefit card hover ── */
+    .vol-benefit-card {
+        transition: box-shadow 0.25s ease;
+    }
+    .vol-benefit-card:hover {
+        box-shadow: 0 12px 36px rgba(0, 20, 50, 0.10);
+        transform: translateY(-4px);
+    }
+
+    /* ── Program area card transition ── */
+    .vol-area-btn {
+        transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .vol-area-btn:hover {
+        box-shadow: 0 4px 16px rgba(0, 20, 50, 0.08);
+    }
+
+    /* ── Availability pill transition ── */
+    .vol-avail-btn {
+        transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .vol-avail-btn:hover {
+        box-shadow: 0 2px 8px rgba(200, 0, 120, 0.15);
+    }
+
+    /* ── Reduced motion: skip hover lifts ── */
+    @media (prefers-reduced-motion: reduce) {
+        .vol-benefit-card:hover {
+            transform: none !important;
+        }
+    }
+</style>
+@endpush
 
 @section('content')
 
     {{-- ================================================================
-         PAGE HERO
+         APPEAL / HERO SECTION  (navy background, no gradient)
          ================================================================ --}}
-    <section class="relative overflow-hidden" style="height: clamp(280px, 40vw, 420px);">
+    <section id="vol-appeal"
+             class="relative overflow-hidden"
+             style="background-color: #002850; min-height: clamp(420px, 55vw, 620px);">
 
+        {{-- Background image with flat dark overlay ── NO gradient --}}
         <img src="{{ asset('images/sections/about.jpg') }}"
-             alt="Devenir Bénévole"
-             class="absolute inset-0 w-full h-full object-cover">
+             alt="{{ __('volunteers.hero_heading') }}"
+             class="absolute inset-0 w-full h-full object-cover"
+             loading="eager">
+        <div class="absolute inset-0" style="background-color: rgba(0,20,60,0.82);"></div>
 
-        <div class="absolute inset-0" style="background-color: rgba(200,0,120,0.75);"></div>
+        {{-- Left accent bar --}}
+        <div class="absolute left-0 top-0 bottom-0 w-1" style="background-color: #c80078;"></div>
 
-        <div class="relative z-10 h-full flex flex-col justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        {{-- Content --}}
+        <div class="relative z-10 h-full flex flex-col justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-28">
 
-            <nav class="mb-4" aria-label="Breadcrumb">
-                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.7);">
+            {{-- Breadcrumb --}}
+            <nav class="mb-5" aria-label="{{ __('ui.breadcrumb') }}">
+                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
-                           class="hover:text-white transition-colors"
-                           style="color: rgba(255,255,255,0.7);">
+                           x-navigate
+                           class="hover:text-white transition-colors focus-visible:outline-white">
                             {{ __('nav.home') }}
                         </a>
                     </li>
-                    <li style="color: rgba(255,255,255,0.4);">/</li>
-                    <li style="color: #ffffff;" aria-current="page">{{ __('nav.volunteers') }}</li>
+                    <li aria-hidden="true" style="color: rgba(255,255,255,0.3);">/</li>
+                    <li style="color: #ffffff;" aria-current="page">{{ __('volunteers.page_title') }}</li>
                 </ol>
             </nav>
 
+            {{-- Label --}}
             <span class="block text-xs font-bold tracking-widest uppercase mb-3"
-                  style="color: rgba(255,255,255,0.8);"
+                  style="color: #c8a03c;"
                   data-animate="fade-up">
-                Rejoignez-nous
+                {{ __('volunteers.hero_label') }}
             </span>
 
-            <h1 class="font-heading font-bold"
+            {{-- Main headline --}}
+            <h1 class="font-bold"
                 style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(1.75rem, 4vw, 3rem);
+                       font-size: clamp(2rem, 5vw, 3.5rem);
                        color: #ffffff;
-                       line-height: 1.1;"
-                data-animate="fade-up">
-                Devenir Bénévole
+                       line-height: 1.1;
+                       max-width: 720px;"
+                data-animate="fade-up" data-delay="0.1">
+                {{ __('volunteers.hero_heading') }}
             </h1>
+
+            {{-- Gold rule --}}
+            <div class="mt-5 mb-5 h-1 w-16 rounded-full" style="background-color: #c8a03c;"></div>
+
+            {{-- Sub copy --}}
+            <p class="max-w-lg text-sm leading-relaxed"
+               style="color: rgba(255,255,255,0.80);"
+               data-animate="fade-up" data-delay="0.2">
+                {{ __('volunteers.hero_sub') }}
+            </p>
+
+            {{-- CTA button — scrolls to form --}}
+            <div class="mt-8" data-animate="fade-up" data-delay="0.3">
+                <a href="#vol-form"
+                   onclick="document.getElementById('vol-form').scrollIntoView({behavior:'smooth'}); return false;"
+                   class="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-sm font-bold transition-opacity hover:opacity-90 focus-visible:outline-white"
+                   style="background-color: #c80078; color: #ffffff;">
+                    {{ __('volunteers.hero_cta') }}
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </a>
+            </div>
 
         </div>
     </section>
 
     {{-- ================================================================
-         FORM SECTION
+         "POURQUOI S'ENGAGER" — Benefits section
          ================================================================ --}}
     <section class="py-16 lg:py-24" style="background-color: #f8f5f0;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            {{-- Section heading --}}
+            <div class="text-center mb-12">
+                <span class="block text-xs font-bold tracking-widest uppercase mb-3"
+                      style="color: #c80078;">
+                    {{ __('volunteers.benefits_label') }}
+                </span>
+                <h2 class="font-bold"
+                    style="font-family: 'Playfair Display', serif;
+                           font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+                           color: #002850;
+                           line-height: 1.15;">
+                    {{ __('volunteers.benefits_heading') }}
+                </h2>
+                <div class="mt-4 mx-auto h-0.5 w-12 rounded-full" style="background-color: #c8a03c;"></div>
+            </div>
+
+            {{-- Benefits grid — 4 cards --}}
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" data-stagger>
+
+                {{-- Benefit 1: Field experience --}}
+                <div class="vol-benefit-card bg-white rounded-2xl p-7"
+                     style="border: 1px solid #e8e4de;"
+                     data-animate="fade-up">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                         style="background-color: rgba(0,40,80,0.08);">
+                        <svg class="w-6 h-6" style="color: #002850;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-base mb-2" style="color: #002850;">
+                        {{ __('volunteers.benefit_1_title') }}
+                    </h3>
+                    <p class="text-sm leading-relaxed" style="color: #64748b;">
+                        {{ __('volunteers.benefit_1_desc') }}
+                    </p>
+                </div>
+
+                {{-- Benefit 2: Real impact --}}
+                <div class="vol-benefit-card bg-white rounded-2xl p-7"
+                     style="border: 1px solid #e8e4de;"
+                     data-animate="fade-up">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                         style="background-color: rgba(200,0,120,0.08);">
+                        <svg class="w-6 h-6" style="color: #c80078;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-base mb-2" style="color: #002850;">
+                        {{ __('volunteers.benefit_2_title') }}
+                    </h3>
+                    <p class="text-sm leading-relaxed" style="color: #64748b;">
+                        {{ __('volunteers.benefit_2_desc') }}
+                    </p>
+                </div>
+
+                {{-- Benefit 3: Community --}}
+                <div class="vol-benefit-card bg-white rounded-2xl p-7"
+                     style="border: 1px solid #e8e4de;"
+                     data-animate="fade-up">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                         style="background-color: rgba(200,160,60,0.12);">
+                        <svg class="w-6 h-6" style="color: #c8a03c;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-base mb-2" style="color: #002850;">
+                        {{ __('volunteers.benefit_3_title') }}
+                    </h3>
+                    <p class="text-sm leading-relaxed" style="color: #64748b;">
+                        {{ __('volunteers.benefit_3_desc') }}
+                    </p>
+                </div>
+
+                {{-- Benefit 4: Recognition --}}
+                <div class="vol-benefit-card bg-white rounded-2xl p-7"
+                     style="border: 1px solid #e8e4de;"
+                     data-animate="fade-up">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                         style="background-color: rgba(0,40,80,0.08);">
+                        <svg class="w-6 h-6" style="color: #143c64;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-bold text-base mb-2" style="color: #002850;">
+                        {{ __('volunteers.benefit_4_title') }}
+                    </h3>
+                    <p class="text-sm leading-relaxed" style="color: #64748b;">
+                        {{ __('volunteers.benefit_4_desc') }}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {{-- ================================================================
+         APPLICATION FORM SECTION
+         ================================================================ --}}
+    <section id="vol-form" class="py-16 lg:py-24" style="background-color: #ffffff;">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div
@@ -78,184 +257,258 @@
                 }"
                 x-sync>
 
-                {{-- Success state --}}
+                {{-- ── Success state ── --}}
                 <div x-show="submitted"
-                     class="text-center py-16" style="display: none;">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"
-                         style="background-color: #dcfce7;">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"
-                             style="color: #16a34a;">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                     x-transition:enter="transition ease-out duration-400"
+                     x-transition:enter-start="opacity-0 translate-y-4"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     class="text-center py-16"
+                     style="display: none;">
+                    <div class="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                         style="background-color: rgba(200,0,120,0.08);">
+                        <svg class="w-10 h-10" style="color: #c80078;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
                     </div>
-                    <h2 class="text-2xl font-bold mb-3"
-                        style="color: #143c64; font-family: 'Playfair Display', serif;">
-                        Candidature reçue !
+                    <h2 class="font-bold text-2xl mb-3"
+                        style="font-family: 'Playfair Display', serif; color: #002850;">
+                        {{ __('volunteers.success_heading') }}
                     </h2>
-                    <p class="text-base mb-8" style="color: #64748b;">
-                        Merci pour votre intérêt. Nous examinerons votre candidature et vous contacterons prochainement.
+                    <p class="text-sm leading-relaxed mb-8 max-w-sm mx-auto" style="color: #64748b;">
+                        {{ __('volunteers.success_sub') }}
                     </p>
                     <button @click="submitted = false"
-                            class="text-sm font-semibold transition-opacity hover:opacity-80"
+                            class="text-sm font-semibold transition-opacity hover:opacity-75"
                             style="color: #c80078;">
-                        ← Soumettre une autre candidature
+                        {{ __('volunteers.success_reset') }}
                     </button>
                 </div>
 
-                {{-- Form --}}
+                {{-- ── Form ── --}}
                 <div x-show="!submitted">
-                    <div class="text-center mb-10">
-                        <h2 class="text-2xl font-bold mb-3"
-                            style="color: #143c64; font-family: 'Playfair Display', serif;"
-                            data-animate="fade-up">
-                            Formulaire de candidature bénévole
+
+                    {{-- Form section heading --}}
+                    <div class="text-center mb-10" data-animate="fade-up">
+                        <span class="block text-xs font-bold tracking-widest uppercase mb-3"
+                              style="color: #c80078;">
+                            {{ __('volunteers.form_label') }}
+                        </span>
+                        <h2 class="font-bold"
+                            style="font-family: 'Playfair Display', serif;
+                                   font-size: clamp(1.4rem, 3vw, 2rem);
+                                   color: #002850;
+                                   line-height: 1.15;">
+                            {{ __('volunteers.form_heading') }}
                         </h2>
-                        <p class="text-base max-w-xl mx-auto" style="color: #64748b;" data-animate="fade-up">
-                            Remplissez ce formulaire pour rejoindre notre équipe bénévole. Tous les champs marqués * sont obligatoires.
+                        <div class="mt-4 mx-auto h-0.5 w-10 rounded-full" style="background-color: #c80078;"></div>
+                        <p class="mt-4 text-sm" style="color: #64748b;">
+                            {{ __('volunteers.form_sub') }}
                         </p>
                     </div>
 
-                    <div class="bg-white rounded-3xl shadow-sm p-8 lg:p-10 space-y-6">
+                    <form @submit.prevent="$action('{{ route('public.volunteers.store') }}')"
+                          class="rounded-2xl p-8 lg:p-10 space-y-6"
+                          data-animate="fade-up" data-delay="0.1"
+                          style="background-color: #fafafa; border: 1px solid #e8e4de; box-shadow: 0 4px 24px rgba(20,60,100,0.07);">
+
+                        {{-- Honeypot --}}
+                        @honeypot
 
                         {{-- Name row --}}
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-semibold mb-2" style="color: #475569;">
-                                    Prénom <span style="color: #c80078;">*</span>
+                                <label for="vol-first-name"
+                                       class="block text-xs font-bold uppercase tracking-wider mb-2"
+                                       style="color: #143c64;">
+                                    {{ __('volunteers.field_first_name') }} <span style="color: #c80078;">*</span>
                                 </label>
-                                <input x-model="firstName" x-name="firstName" type="text"
-                                       placeholder="Votre prénom"
-                                       class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none transition-colors"
-                                       style="border-color: #e2e8f0; color: #1e293b;">
-                                <p x-message="firstName" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                                <input id="vol-first-name"
+                                       x-model="firstName"
+                                       x-name="firstName"
+                                       type="text"
+                                       autocomplete="given-name"
+                                       placeholder="{{ __('volunteers.placeholder_first_name') }}"
+                                       class="vol-field w-full rounded-xl text-sm px-4 transition-all"
+                                       style="border: 1.5px solid #e2e8f0; background-color: #ffffff; color: #1e293b; height: 52px;">
+                                <p x-message="firstName" class="mt-1.5 text-xs font-medium" style="color: #dc2626; min-height: 1rem;"></p>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold mb-2" style="color: #475569;">
-                                    Nom <span style="color: #c80078;">*</span>
+                                <label for="vol-last-name"
+                                       class="block text-xs font-bold uppercase tracking-wider mb-2"
+                                       style="color: #143c64;">
+                                    {{ __('volunteers.field_last_name') }} <span style="color: #c80078;">*</span>
                                 </label>
-                                <input x-model="lastName" x-name="lastName" type="text"
-                                       placeholder="Votre nom de famille"
-                                       class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none transition-colors"
-                                       style="border-color: #e2e8f0; color: #1e293b;">
-                                <p x-message="lastName" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                                <input id="vol-last-name"
+                                       x-model="lastName"
+                                       x-name="lastName"
+                                       type="text"
+                                       autocomplete="family-name"
+                                       placeholder="{{ __('volunteers.placeholder_last_name') }}"
+                                       class="vol-field w-full rounded-xl text-sm px-4 transition-all"
+                                       style="border: 1.5px solid #e2e8f0; background-color: #ffffff; color: #1e293b; height: 52px;">
+                                <p x-message="lastName" class="mt-1.5 text-xs font-medium" style="color: #dc2626; min-height: 1rem;"></p>
                             </div>
                         </div>
 
                         {{-- Email & Phone --}}
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-semibold mb-2" style="color: #475569;">
-                                    Email <span style="color: #c80078;">*</span>
+                                <label for="vol-email"
+                                       class="block text-xs font-bold uppercase tracking-wider mb-2"
+                                       style="color: #143c64;">
+                                    {{ __('volunteers.field_email') }} <span style="color: #c80078;">*</span>
                                 </label>
-                                <input x-model="email" x-name="email" type="email"
-                                       placeholder="votre@email.com"
-                                       class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none"
-                                       style="border-color: #e2e8f0; color: #1e293b;">
-                                <p x-message="email" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                                <input id="vol-email"
+                                       x-model="email"
+                                       x-name="email"
+                                       type="email"
+                                       autocomplete="email"
+                                       placeholder="{{ __('volunteers.placeholder_email') }}"
+                                       class="vol-field w-full rounded-xl text-sm px-4 transition-all"
+                                       style="border: 1.5px solid #e2e8f0; background-color: #ffffff; color: #1e293b; height: 52px;">
+                                <p x-message="email" class="mt-1.5 text-xs font-medium" style="color: #dc2626; min-height: 1rem;"></p>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold mb-2" style="color: #475569;">
-                                    Téléphone
+                                <label for="vol-phone"
+                                       class="block text-xs font-bold uppercase tracking-wider mb-2"
+                                       style="color: #143c64;">
+                                    {{ __('volunteers.field_phone') }}
                                 </label>
-                                <input x-model="phone" x-name="phone" type="tel"
-                                       placeholder="+237 6XX XXX XXX"
-                                       class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none"
-                                       style="border-color: #e2e8f0; color: #1e293b;">
+                                <input id="vol-phone"
+                                       x-model="phone"
+                                       x-name="phone"
+                                       type="tel"
+                                       autocomplete="tel"
+                                       placeholder="{{ __('volunteers.placeholder_phone') }}"
+                                       class="vol-field w-full rounded-xl text-sm px-4 transition-all"
+                                       style="border: 1.5px solid #e2e8f0; background-color: #ffffff; color: #1e293b; height: 52px;">
+                                <p x-message="phone" class="mt-1.5 text-xs font-medium" style="color: #dc2626; min-height: 1rem;"></p>
                             </div>
                         </div>
 
-                        {{-- City/Country --}}
+                        {{-- City / Country --}}
                         <div>
-                            <label class="block text-sm font-semibold mb-2" style="color: #475569;">
-                                Ville / Pays
+                            <label for="vol-city"
+                                   class="block text-xs font-bold uppercase tracking-wider mb-2"
+                                   style="color: #143c64;">
+                                {{ __('volunteers.field_city') }}
                             </label>
-                            <input x-model="cityCountry" x-name="cityCountry" type="text"
-                                   placeholder="Douala, Cameroun"
-                                   class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none"
-                                   style="border-color: #e2e8f0; color: #1e293b;">
+                            <input id="vol-city"
+                                   x-model="cityCountry"
+                                   x-name="cityCountry"
+                                   type="text"
+                                   placeholder="{{ __('volunteers.placeholder_city') }}"
+                                   class="vol-field w-full rounded-xl text-sm px-4 transition-all"
+                                   style="border: 1.5px solid #e2e8f0; background-color: #ffffff; color: #1e293b; height: 52px;">
                         </div>
 
-                        {{-- Areas of interest (checkbox cards) --}}
+                        {{-- Areas of interest (program checkbox cards) --}}
                         <div>
-                            <label class="block text-sm font-semibold mb-3" style="color: #475569;">
-                                Programmes d'intérêt <span style="color: #c80078;">*</span>
+                            <label class="block text-xs font-bold uppercase tracking-wider mb-3"
+                                   style="color: #143c64;">
+                                {{ __('volunteers.field_areas') }} <span style="color: #c80078;">*</span>
                             </label>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                @foreach (['protege' => ['label' => 'BREE PROTÈGE', 'desc' => 'Protection de l\'enfance', 'color' => '#143c64'], 'eleve' => ['label' => 'BREE ÉLÈVE', 'desc' => 'Éducation & bourses', 'color' => '#c80078'], 'respire' => ['label' => 'BREE RESPIRE', 'desc' => 'Environnement & santé', 'color' => '#16a34a']] as $key => $prog)
-                                    <button
-                                        type="button"
-                                        @click="toggleArea('{{ $key }}')"
-                                        :style="areas.includes('{{ $key }}')
-                                            ? 'border-color: {{ $prog['color'] }}; background-color: {{ $prog['color'] }}15;'
-                                            : 'border-color: #e2e8f0; background-color: #ffffff;'"
-                                        class="text-left p-4 rounded-xl border-2 transition-all">
-                                        <div class="flex items-start gap-3">
-                                            <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors"
-                                                 :style="areas.includes('{{ $key }}')
-                                                     ? 'background-color: {{ $prog['color'] }};'
-                                                     : 'background-color: #e2e8f0;'">
-                                                <svg x-show="areas.includes('{{ $key }}')"
-                                                     class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <p class="text-sm font-bold" style="color: #143c64;">{{ $prog['label'] }}</p>
-                                                <p class="text-xs mt-0.5" style="color: #94a3b8;">{{ $prog['desc'] }}</p>
-                                            </div>
+                                @foreach ([
+                                    'protege' => ['color' => '#143c64', 'bg' => 'rgba(20,60,100,0.07)', 'label_key' => 'volunteers.area_protege', 'desc_key' => 'volunteers.area_protege_desc'],
+                                    'eleve'   => ['color' => '#c80078', 'bg' => 'rgba(200,0,120,0.07)', 'label_key' => 'volunteers.area_eleve',   'desc_key' => 'volunteers.area_eleve_desc'],
+                                    'respire' => ['color' => '#16a34a', 'bg' => 'rgba(22,163,74,0.07)',  'label_key' => 'volunteers.area_respire', 'desc_key' => 'volunteers.area_respire_desc'],
+                                ] as $key => $prog)
+                                <button
+                                    type="button"
+                                    @click="toggleArea('{{ $key }}')"
+                                    :style="areas.includes('{{ $key }}')
+                                        ? 'border-color: {{ $prog['color'] }}; background-color: {{ $prog['bg'] }};'
+                                        : 'border-color: #e2e8f0; background-color: #ffffff;'"
+                                    class="vol-area-btn text-left p-4 rounded-xl border-2"
+                                    :aria-pressed="areas.includes('{{ $key }}').toString()">
+                                    <div class="flex items-start gap-3">
+                                        <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors"
+                                             :style="areas.includes('{{ $key }}')
+                                                 ? 'background-color: {{ $prog['color'] }};'
+                                                 : 'background-color: #e2e8f0;'">
+                                            <svg x-show="areas.includes('{{ $key }}')"
+                                                 class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                                            </svg>
                                         </div>
-                                    </button>
+                                        <div>
+                                            <p class="text-sm font-bold" style="color: #002850;">{{ __($prog['label_key']) }}</p>
+                                            <p class="text-xs mt-0.5" style="color: #94a3b8;">{{ __($prog['desc_key']) }}</p>
+                                        </div>
+                                    </div>
+                                </button>
                                 @endforeach
                             </div>
-                            <p x-message="areas" class="text-xs mt-1.5" style="color: #ef4444;"></p>
+                            <p x-message="areas" class="mt-1.5 text-xs font-medium" style="color: #dc2626; min-height: 1rem;"></p>
                         </div>
 
-                        {{-- Availability --}}
+                        {{-- Availability (pill select) --}}
                         <div>
-                            <label class="block text-sm font-semibold mb-3" style="color: #475569;">
-                                Disponibilité <span style="color: #c80078;">*</span>
+                            <label class="block text-xs font-bold uppercase tracking-wider mb-3"
+                                   style="color: #143c64;">
+                                {{ __('volunteers.field_availability') }} <span style="color: #c80078;">*</span>
                             </label>
                             <div class="flex flex-wrap gap-3">
-                                @foreach (['weekends' => 'Week-ends', 'weekdays' => 'Jours ouvrables', 'flexible' => 'Flexible'] as $val => $lbl)
-                                    <button
-                                        type="button"
-                                        @click="availability = '{{ $val }}'"
-                                        :style="availability === '{{ $val }}'
-                                            ? 'background-color: #c80078; color: #ffffff; border-color: #c80078;'
-                                            : 'background-color: #ffffff; color: #475569; border-color: #e2e8f0;'"
-                                        class="px-5 py-2.5 rounded-xl text-sm font-semibold border-2 transition-all">
-                                        {{ $lbl }}
-                                    </button>
+                                @foreach ([
+                                    'weekends'  => 'volunteers.avail_weekends',
+                                    'weekdays'  => 'volunteers.avail_weekdays',
+                                    'flexible'  => 'volunteers.avail_flexible',
+                                ] as $val => $labelKey)
+                                <button
+                                    type="button"
+                                    @click="availability = '{{ $val }}'"
+                                    :style="availability === '{{ $val }}'
+                                        ? 'background-color: #c80078; color: #ffffff; border-color: #c80078; box-shadow: 0 2px 8px rgba(200,0,120,0.25);'
+                                        : 'background-color: #ffffff; color: #475569; border-color: #e2e8f0;'"
+                                    class="vol-avail-btn px-5 py-2.5 rounded-xl text-sm font-semibold border-2"
+                                    :aria-pressed="(availability === '{{ $val }}').toString()">
+                                    {{ __($labelKey) }}
+                                </button>
                                 @endforeach
                             </div>
                             <input type="hidden" x-name="availability" :value="availability">
                         </div>
 
-                        {{-- Motivation --}}
+                        {{-- Motivation textarea --}}
                         <div>
-                            <label class="block text-sm font-semibold mb-2" style="color: #475569;">
-                                Message de motivation
+                            <label for="vol-motivation"
+                                   class="block text-xs font-bold uppercase tracking-wider mb-2"
+                                   style="color: #143c64;">
+                                {{ __('volunteers.field_motivation') }}
                             </label>
-                            <textarea x-model="motivation" x-name="motivation" rows="5"
-                                      placeholder="Partagez vos motivations pour rejoindre la Fondation BREE en tant que bénévole…"
-                                      class="w-full text-sm px-4 py-3 rounded-xl border focus:outline-none resize-y"
-                                      style="border-color: #e2e8f0; color: #1e293b; line-height: 1.7;"></textarea>
+                            <textarea id="vol-motivation"
+                                      x-model="motivation"
+                                      x-name="motivation"
+                                      rows="6"
+                                      placeholder="{{ __('volunteers.placeholder_motivation') }}"
+                                      class="vol-field w-full rounded-xl text-sm px-4 py-3 resize-y transition-all"
+                                      style="border: 1.5px solid #e2e8f0; background-color: #ffffff; color: #1e293b; min-height: 200px; line-height: 1.7;"></textarea>
                         </div>
 
-                        {{-- Honeypot --}}
-                        @honeypot
-
-                        {{-- Submit --}}
-                        <button
-                            @click="$action('{{ route('public.volunteers.store') }}')"
-                            :disabled="$fetching()"
-                            class="w-full py-4 rounded-2xl text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-                            style="background-color: #c80078;">
-                            <span x-show="!$fetching()">Soumettre ma candidature</span>
-                            <span x-show="$fetching()">Envoi en cours…</span>
+                        {{-- Submit button --}}
+                        <button type="submit"
+                                :disabled="$fetching()"
+                                class="w-full rounded-xl font-bold text-sm text-white transition-all"
+                                style="background-color: #c80078; height: 54px; letter-spacing: 0.04em;"
+                                :style="$fetching() ? 'opacity: 0.65; cursor: not-allowed;' : 'opacity: 1;'">
+                            <span x-show="!$fetching()" class="flex items-center justify-center gap-2">
+                                {{ __('volunteers.form_submit') }}
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                                </svg>
+                            </span>
+                            <span x-show="$fetching()" x-cloak class="flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                </svg>
+                                {{ __('volunteers.form_submitting') }}
+                            </span>
                         </button>
 
-                    </div>
+                    </form>
+
                 </div>
 
             </div>
@@ -263,3 +516,4 @@
     </section>
 
 @endsection
+
