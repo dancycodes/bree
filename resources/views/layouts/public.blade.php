@@ -76,70 +76,72 @@
             }
         }">
     <header
-        class="fixed top-0 left-0 right-0 z-50 bg-white transition-shadow duration-300"
-        :class="scrolled ? 'shadow-md' : ''"
-        style="border-bottom: 1px solid rgba(20,60,100,0.08);">
+        class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+        :class="scrolled ? 'shadow-lg' : ''"
+        style="background-color: #143c64; border-bottom: 1px solid rgba(255,255,255,0.08);">
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-18 lg:h-20" style="height: 4.5rem;">
+            <div class="flex items-center justify-between" style="height: 4.5rem;">
 
                 {{-- Logo --}}
-                <a href="{{ route('public.home') }}" class="flex items-center flex-shrink-0">
+                <a href="{{ route('public.home') }}"
+                   x-navigate
+                   class="flex items-center flex-shrink-0 focus-visible:outline-offset-4">
                     <img src="{{ asset('images/logo.png') }}"
                          alt="{{ config('app.name') }}"
-                         class="h-12 w-auto lg:h-14 object-contain">
+                         class="h-10 w-auto lg:h-12 object-contain"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                    <span style="display:none; color:#ffffff; font-family:'Playfair Display',serif; font-weight:700; font-size:1.1rem;">Fondation BREE</span>
                 </a>
 
                 {{-- Desktop Navigation --}}
-                <nav class="hidden lg:flex items-center gap-1">
+                <nav class="hidden lg:flex items-center gap-0 xl:gap-1" aria-label="{{ __('nav.primary') }}">
                     @php
                         $navLinks = [
-                            ['route' => 'public.home',     'label' => __('nav.home')],
-                            ['route' => 'public.about',    'label' => __('nav.about')],
-                            ['route' => 'public.programs', 'label' => __('nav.programs')],
-                            ['route' => 'public.news',     'label' => __('nav.news')],
-                            ['route' => 'public.events',   'label' => __('nav.events')],
-                            ['route' => 'public.gallery',  'label' => __('nav.gallery')],
-                            ['route' => 'public.partners', 'label' => __('nav.partners')],
-                            ['route' => 'public.contact',  'label' => __('nav.contact')],
+                            ['route' => 'public.home',     'label' => __('nav.home'),     'match' => 'public.home'],
+                            ['route' => 'public.about',    'label' => __('nav.about'),    'match' => 'public.about'],
+                            ['route' => 'public.programs', 'label' => __('nav.programs'), 'match' => 'public.programs*'],
+                            ['route' => 'public.news',     'label' => __('nav.news'),     'match' => 'public.news*'],
+                            ['route' => 'public.events',   'label' => __('nav.events'),   'match' => 'public.events*'],
+                            ['route' => 'public.gallery',  'label' => __('nav.gallery'),  'match' => 'public.gallery*'],
+                            ['route' => 'public.partners', 'label' => __('nav.partners'), 'match' => 'public.partners'],
+                            ['route' => 'public.contact',  'label' => __('nav.contact'),  'match' => 'public.contact'],
                         ];
                     @endphp
 
                     @foreach ($navLinks as $link)
                         @if (Route::has($link['route']))
+                            @php $isActive = request()->routeIs($link['match']); @endphp
                             <a href="{{ route($link['route']) }}"
-                               class="px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 relative group"
-                               style="color: {{ request()->routeIs(str_replace('public.', 'public.*' ?: $link['route'], $link['route'])) ? '#c80078' : '#143c64' }};"
-                               @mouseover="$el.style.color='#c80078'"
-                               @mouseout="$el.style.color='{{ request()->routeIs($link['route']) ? '#c80078' : '#143c64' }}'">
+                               x-navigate
+                               class="bree-nav-link{{ $isActive ? ' bree-nav-link--active' : '' }}">
                                 {{ $link['label'] }}
-                                <span class="absolute bottom-0 left-3 right-3 h-0.5 rounded-full transition-transform duration-200 origin-left scale-x-0 group-hover:scale-x-100"
-                                      style="background-color: #c80078;"></span>
+                                <span class="bree-nav-underline"></span>
                             </a>
                         @endif
                     @endforeach
                 </nav>
 
                 {{-- Right Side: Language Switcher + CTA --}}
-                <div class="hidden lg:flex items-center gap-4">
+                <div class="hidden lg:flex items-center gap-2 xl:gap-4">
 
                     {{-- Language Switcher --}}
-                    <div class="flex items-center gap-0.5 text-xs font-semibold tracking-widest" style="color: #143c64;">
+                    <div class="flex items-center gap-1 text-xs font-bold tracking-widest">
                         <a href="{{ route('lang.switch', 'fr') }}"
                            aria-label="Passer au français"
-                           class="px-2 py-1 rounded transition-colors duration-150"
-                           style="{{ app()->getLocale() === 'fr' ? 'color: #c80078;' : 'color: #143c64; opacity: 0.5;' }}"
-                           @mouseover="$el.style.opacity='1'"
-                           @mouseout="$el.style.opacity='{{ app()->getLocale() === 'fr' ? '1' : '0.5' }}'">
+                           class="px-2 py-1 rounded transition-all duration-150"
+                           style="{{ app()->getLocale() === 'fr' ? 'color: #c8a03c;' : 'color: rgba(255,255,255,0.45);' }}"
+                           @mouseover="$el.style.color='rgba(255,255,255,0.9)'"
+                           @mouseout="$el.style.color='{{ app()->getLocale() === 'fr' ? '#c8a03c' : 'rgba(255,255,255,0.45)' }}'">
                             FR
                         </a>
-                        <span style="color: #143c64; opacity: 0.3;" aria-hidden="true">|</span>
+                        <span style="color: rgba(255,255,255,0.2);" aria-hidden="true">/</span>
                         <a href="{{ route('lang.switch', 'en') }}"
                            aria-label="Switch to English"
-                           class="px-2 py-1 rounded transition-colors duration-150"
-                           style="{{ app()->getLocale() === 'en' ? 'color: #c80078;' : 'color: #143c64; opacity: 0.5;' }}"
-                           @mouseover="$el.style.opacity='1'"
-                           @mouseout="$el.style.opacity='{{ app()->getLocale() === 'en' ? '1' : '0.5' }}'">
+                           class="px-2 py-1 rounded transition-all duration-150"
+                           style="{{ app()->getLocale() === 'en' ? 'color: #c8a03c;' : 'color: rgba(255,255,255,0.45);' }}"
+                           @mouseover="$el.style.color='rgba(255,255,255,0.9)'"
+                           @mouseout="$el.style.color='{{ app()->getLocale() === 'en' ? '#c8a03c' : 'rgba(255,255,255,0.45)' }}'">
                             EN
                         </a>
                     </div>
@@ -147,7 +149,8 @@
                     {{-- Donate CTA --}}
                     @if (Route::has('public.donate'))
                         <a href="{{ route('public.donate') }}"
-                           class="btn-primary text-sm px-5 py-2.5 rounded-lg font-semibold">
+                           x-navigate
+                           class="btn-primary text-xs px-3 py-2 xl:px-5 xl:py-2.5 rounded-lg font-bold tracking-wide uppercase whitespace-nowrap">
                             {{ __('nav.donate') }}
                         </a>
                     @endif
@@ -161,13 +164,13 @@
                     aria-expanded="false"
                     :aria-expanded="mobileOpen.toString()">
                     <span class="block w-6 h-0.5 rounded-full transition-all duration-300"
-                          style="background-color: #143c64;"
+                          style="background-color: rgba(255,255,255,0.9);"
                           :class="mobileOpen ? 'rotate-45 translate-y-2' : ''"></span>
                     <span class="block w-6 h-0.5 rounded-full transition-all duration-300"
-                          style="background-color: #143c64;"
+                          style="background-color: rgba(255,255,255,0.9);"
                           :class="mobileOpen ? 'opacity-0' : ''"></span>
                     <span class="block w-6 h-0.5 rounded-full transition-all duration-300"
-                          style="background-color: #143c64;"
+                          style="background-color: rgba(255,255,255,0.9);"
                           :class="mobileOpen ? '-rotate-45 -translate-y-2' : ''"></span>
                 </button>
             </div>
