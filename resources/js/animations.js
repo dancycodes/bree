@@ -7,6 +7,10 @@
  *   - Add data-stagger to parent to stagger-animate children with data-animate
  *   - Call initAnimations() after page load / Gale navigation
  *   - Call killAnimations() before Gale navigation
+ *
+ * Global exposure:
+ *   window.gsap and window.ScrollTrigger are set so that page-specific
+ *   inline scripts (about, contact, gallery) can access them safely.
  */
 
 import { gsap } from 'gsap';
@@ -14,8 +18,16 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Respect prefers-reduced-motion
+// Expose GSAP globals so @push('scripts') inline blocks can access them.
+// They check `typeof gsap === 'undefined'` as a guard before use.
+window.gsap = gsap;
+window.ScrollTrigger = ScrollTrigger;
+
+// Respect prefers-reduced-motion — evaluated once at module load time.
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Reduce stagger on mobile for performance (viewport < 768px).
+const isMobile = window.innerWidth < 768;
 
 /**
  * Initialize all scroll-triggered animations.
@@ -23,7 +35,7 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
  */
 export function initAnimations() {
     if (prefersReducedMotion) {
-        // Remove opacity:0 from all animate targets so content is visible
+        // Set all animate targets to their final visible state immediately.
         document.querySelectorAll('[data-animate]').forEach(el => {
             el.style.opacity = '1';
             el.style.transform = 'none';
@@ -31,8 +43,20 @@ export function initAnimations() {
         return;
     }
 
-    // Scroll-triggered entrance animations
+    // Collect elements that are children of [data-stagger] parents so we
+    // can skip them in the standalone [data-animate] loop — stagger takes
+    // precedence to avoid double-animation.
+    const staggerChildren = new Set();
+    document.querySelectorAll('[data-stagger] [data-animate]').forEach(el => {
+        staggerChildren.add(el);
+    });
+
+    // Scroll-triggered entrance animations for standalone [data-animate] elements.
     document.querySelectorAll('[data-animate]').forEach(el => {
+        if (staggerChildren.has(el)) {
+            return; // Will be handled by the stagger loop below.
+        }
+
         const type = el.getAttribute('data-animate') || 'fade-up';
         const delay = parseFloat(el.getAttribute('data-delay') || '0');
 
@@ -42,7 +66,7 @@ export function initAnimations() {
             x: 0,
             y: 0,
             scale: 1,
-            duration: 0.7,
+            duration: 0.6,
             ease: 'power2.out',
             delay,
         };
@@ -51,18 +75,22 @@ export function initAnimations() {
 
         ScrollTrigger.create({
             trigger: el,
-            start: 'top 88%',
+            start: 'top 85%',
             onEnter: () => gsap.to(el, toVars),
             once: true,
         });
     });
 
-    // Stagger groups — animate children with data-animate inside data-stagger
+    // Stagger groups — animate [data-animate] children in sequence.
     document.querySelectorAll('[data-stagger]').forEach(parent => {
         const children = parent.querySelectorAll('[data-animate]');
-        if (!children.length) return;
+        if (!children.length) {
+            return;
+        }
 
-        const staggerDelay = parseFloat(parent.getAttribute('data-stagger') || '0.1');
+        // Use a smaller stagger delay on mobile for performance.
+        const baseStagger = parseFloat(parent.getAttribute('data-stagger') || '0.1');
+        const staggerDelay = isMobile ? Math.min(baseStagger, 0.05) : baseStagger;
 
         children.forEach((child, i) => {
             const type = child.getAttribute('data-animate') || 'fade-up';
@@ -72,7 +100,7 @@ export function initAnimations() {
 
             ScrollTrigger.create({
                 trigger: parent,
-                start: 'top 85%',
+                start: 'top 80%',
                 onEnter: () => {
                     gsap.to(child, {
                         opacity: 1,
@@ -91,11 +119,12 @@ export function initAnimations() {
 }
 
 /**
- * Kill all ScrollTrigger instances.
- * Call before Gale navigation to avoid memory leaks.
+ * Kill all ScrollTrigger instances and any running tweens on animated elements.
+ * Call before Gale navigation to avoid memory leaks and stale instances.
  */
 export function killAnimations() {
-    ScrollTrigger.getAll().forEach(st => st.kill());
+    ScrollTrigger.killAll();
+    gsap.killTweensOf('[data-animate], [data-stagger] > *');
 }
 
 /**
