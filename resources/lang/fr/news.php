@@ -15,4 +15,5 @@ return [
     'related_articles' => 'Articles connexes',
     'share' => 'Partager',
     'foundation_author' => 'Fondation BREE',
+    'category_label' => 'Catégorie',
 ];
