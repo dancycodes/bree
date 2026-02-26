@@ -190,7 +190,7 @@
                     @click="mobileOpen ? closeMenu() : openMenu()"
                     class="lg:hidden flex items-center justify-center rounded-md transition-colors"
                     style="min-width: 44px; min-height: 44px; color: rgba(255,255,255,0.9);"
-                    :aria-label="mobileOpen ? '{{ __('ui.close') }}' : '{{ __('nav.open_menu') }}'"
+                    :aria-label="mobileOpen ? '{{ __('ui.close_menu') }}' : '{{ __('nav.open_menu') }}'"
                     :aria-expanded="mobileOpen.toString()"
                     aria-controls="mobile-menu-panel">
                     <span class="flex flex-col gap-1.5 w-6">
