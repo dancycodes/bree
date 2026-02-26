@@ -113,7 +113,7 @@
         <a href="{{ url('/programmes') }}" class="nav-link">Programmes</a>
         <a href="{{ url('/actualites') }}" class="nav-link">Actualités</a>
         <a href="{{ url('/evenements') }}" class="nav-link">Événements</a>
-        <a href="{{ url('/don') }}" class="nav-link">Faire un don</a>
+        <a href="{{ url('/faire-un-don') }}" class="nav-link">Faire un don</a>
         <a href="{{ url('/contact') }}" class="nav-link">Contact</a>
     </nav>
 
