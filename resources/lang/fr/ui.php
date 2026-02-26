@@ -14,6 +14,7 @@ return [
     'search' => 'Rechercher',
     'filter' => 'Filtrer',
     'close' => 'Fermer',
+    'close_menu' => 'Fermer le menu',
     'previous' => 'Précédent',
     'next' => 'Suivant',
     'confirm' => 'Confirmer',
