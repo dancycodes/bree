@@ -58,40 +58,41 @@
          ================================================================ --}}
     <section class="py-20" style="background-color: #f8f5f0;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
-             x-data="{ activeCategory: {{ json_encode($category) }} }"
+             x-data
              x-navigate.key.articles>
-
-            {{-- Category filter pills --}}
-            <div class="flex flex-wrap gap-2 mb-12" data-animate="fade-up">
-                <a href="{{ route('public.news') }}"
-                   class="px-5 py-2 rounded-full text-xs font-semibold transition-all"
-                   :style="activeCategory === 'all'
-                       ? 'background-color: #c80078; color: #ffffff;'
-                       : 'background-color: #ffffff; color: #475569; border: 1px solid #e2e8f0;'"
-                   @click.prevent="activeCategory = 'all'; $navigate('{{ route('public.news') }}', { key: 'articles', replace: true })">
-                    {{ __('news.filter_all') }}
-                    @if ($category === 'all')
-                        <span class="ml-1 opacity-60">({{ $articles->total() }})</span>
-                    @endif
-                </a>
-
-                @foreach ($categories as $cat)
-                    <a href="{{ route('public.news', ['category' => $cat->category_slug]) }}"
-                       class="px-5 py-2 rounded-full text-xs font-semibold transition-all"
-                       :style="activeCategory === {{ json_encode($cat->category_slug) }}
-                           ? 'background-color: #c80078; color: #ffffff;'
-                           : 'background-color: #ffffff; color: #475569; border: 1px solid #e2e8f0;'"
-                       @click.prevent="activeCategory = {{ json_encode($cat->category_slug) }}; $navigate('{{ route('public.news', ['category' => $cat->category_slug]) }}', { key: 'articles', replace: true })">
-                        {{ app()->getLocale() === 'fr' ? $cat->category_fr : $cat->category_en }}
-                        @if ($category === $cat->category_slug)
-                            <span class="ml-1 opacity-60">({{ $articles->total() }})</span>
-                        @endif
-                    </a>
-                @endforeach
-            </div>
 
             @fragment('articles-grid')
             <div id="articles-grid">
+
+                {{-- Category filter pills --}}
+                <div class="flex flex-wrap gap-2 mb-12" data-animate="fade-up">
+                    <a href="{{ route('public.news') }}"
+                       class="px-5 py-2 rounded-full text-xs font-semibold transition-all"
+                       style="{{ $category === 'all'
+                           ? 'background-color: #c80078; color: #ffffff;'
+                           : 'background-color: #ffffff; color: #475569; border: 1px solid #e2e8f0;' }}"
+                       @click.prevent="$navigate('{{ route('public.news') }}', { key: 'articles', replace: true })">
+                        {{ __('news.filter_all') }}
+                        @if ($category === 'all')
+                            <span class="ml-1 opacity-60">({{ $articles->total() }})</span>
+                        @endif
+                    </a>
+
+                    @foreach ($categories as $cat)
+                        <a href="{{ route('public.news', ['category' => $cat->slug]) }}"
+                           class="px-5 py-2 rounded-full text-xs font-semibold transition-all"
+                           style="{{ $category === $cat->slug
+                               ? 'background-color: #c80078; color: #ffffff;'
+                               : 'background-color: #ffffff; color: #475569; border: 1px solid #e2e8f0;' }}"
+                           @click.prevent="$navigate('{{ route('public.news', ['category' => $cat->slug]) }}', { key: 'articles', replace: true })">
+                            {{ $cat->name() }}
+                            @if ($category === $cat->slug)
+                                <span class="ml-1 opacity-60">({{ $articles->total() }})</span>
+                            @endif
+                        </a>
+                    @endforeach
+                </div>
+
                 @if ($articles->isEmpty())
                     <div class="py-20 text-center" data-animate="fade-up">
                         <div class="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center"
@@ -217,6 +218,7 @@
                         </div>
                     @endif
                 @endif
+
             </div>
             @endfragment
 

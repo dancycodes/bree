@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Public;
 
 use App\Http\Controllers\Controller;
 use App\Models\NewsArticle;
+use App\Models\NewsCategory;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
@@ -35,13 +36,8 @@ class NewsController extends Controller
 
         $articles = $query->paginate(9)->withQueryString();
 
-        $categories = NewsArticle::query()
-            ->where('status', 'published')
-            ->whereNotNull('published_at')
-            ->whereNotNull('category_slug')
-            ->select('category_fr', 'category_en', 'category_slug')
-            ->distinct()
-            ->orderBy('category_fr')
+        $categories = NewsCategory::query()
+            ->orderBy('name_fr')
             ->get();
 
         if ($request->isGaleNavigate('articles')) {
