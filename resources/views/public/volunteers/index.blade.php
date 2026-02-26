@@ -15,13 +15,11 @@
 
     /* ── Benefit card hover ── */
     .vol-benefit-card {
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-        opacity: 0;
-        transform: translateY(20px);
+        transition: box-shadow 0.25s ease;
     }
     .vol-benefit-card:hover {
-        transform: translateY(-4px) !important;
         box-shadow: 0 12px 36px rgba(0, 20, 50, 0.10);
+        transform: translateY(-4px);
     }
 
     /* ── Program area card transition ── */
@@ -40,32 +38,8 @@
         box-shadow: 0 2px 8px rgba(200, 0, 120, 0.15);
     }
 
-    /* ── Appeal section headline GSAP: start hidden ── */
-    .vol-hero-label,
-    .vol-hero-heading,
-    .vol-hero-sub,
-    .vol-hero-cta {
-        opacity: 0;
-        transform: translateY(22px);
-    }
-
-    /* ── Form panel entrance ── */
-    .vol-form-panel {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    /* ── Reduced motion: skip all custom animation states ── */
+    /* ── Reduced motion: skip hover lifts ── */
     @media (prefers-reduced-motion: reduce) {
-        .vol-hero-label,
-        .vol-hero-heading,
-        .vol-hero-sub,
-        .vol-hero-cta,
-        .vol-benefit-card,
-        .vol-form-panel {
-            opacity: 1 !important;
-            transform: none !important;
-        }
         .vol-benefit-card:hover {
             transform: none !important;
         }
@@ -111,18 +85,20 @@
             </nav>
 
             {{-- Label --}}
-            <span class="vol-hero-label block text-xs font-bold tracking-widest uppercase mb-3"
-                  style="color: #c8a03c;">
+            <span class="block text-xs font-bold tracking-widest uppercase mb-3"
+                  style="color: #c8a03c;"
+                  data-animate="fade-up">
                 {{ __('volunteers.hero_label') }}
             </span>
 
             {{-- Main headline --}}
-            <h1 class="vol-hero-heading font-bold"
+            <h1 class="font-bold"
                 style="font-family: 'Playfair Display', serif;
                        font-size: clamp(2rem, 5vw, 3.5rem);
                        color: #ffffff;
                        line-height: 1.1;
-                       max-width: 720px;">
+                       max-width: 720px;"
+                data-animate="fade-up" data-delay="0.1">
                 {{ __('volunteers.hero_heading') }}
             </h1>
 
@@ -130,13 +106,14 @@
             <div class="mt-5 mb-5 h-1 w-16 rounded-full" style="background-color: #c8a03c;"></div>
 
             {{-- Sub copy --}}
-            <p class="vol-hero-sub max-w-lg text-sm leading-relaxed"
-               style="color: rgba(255,255,255,0.80);">
+            <p class="max-w-lg text-sm leading-relaxed"
+               style="color: rgba(255,255,255,0.80);"
+               data-animate="fade-up" data-delay="0.2">
                 {{ __('volunteers.hero_sub') }}
             </p>
 
             {{-- CTA button — scrolls to form --}}
-            <div class="vol-hero-cta mt-8">
+            <div class="mt-8" data-animate="fade-up" data-delay="0.3">
                 <a href="#vol-form"
                    onclick="document.getElementById('vol-form').scrollIntoView({behavior:'smooth'}); return false;"
                    class="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-sm font-bold transition-opacity hover:opacity-90 focus-visible:outline-white"
@@ -174,11 +151,12 @@
             </div>
 
             {{-- Benefits grid — 4 cards --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" data-stagger>
 
                 {{-- Benefit 1: Field experience --}}
                 <div class="vol-benefit-card bg-white rounded-2xl p-7"
-                     style="border: 1px solid #e8e4de;">
+                     style="border: 1px solid #e8e4de;"
+                     data-animate="fade-up">
                     <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
                          style="background-color: rgba(0,40,80,0.08);">
                         <svg class="w-6 h-6" style="color: #002850;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -195,7 +173,8 @@
 
                 {{-- Benefit 2: Real impact --}}
                 <div class="vol-benefit-card bg-white rounded-2xl p-7"
-                     style="border: 1px solid #e8e4de;">
+                     style="border: 1px solid #e8e4de;"
+                     data-animate="fade-up">
                     <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
                          style="background-color: rgba(200,0,120,0.08);">
                         <svg class="w-6 h-6" style="color: #c80078;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -212,7 +191,8 @@
 
                 {{-- Benefit 3: Community --}}
                 <div class="vol-benefit-card bg-white rounded-2xl p-7"
-                     style="border: 1px solid #e8e4de;">
+                     style="border: 1px solid #e8e4de;"
+                     data-animate="fade-up">
                     <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
                          style="background-color: rgba(200,160,60,0.12);">
                         <svg class="w-6 h-6" style="color: #c8a03c;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -229,7 +209,8 @@
 
                 {{-- Benefit 4: Recognition --}}
                 <div class="vol-benefit-card bg-white rounded-2xl p-7"
-                     style="border: 1px solid #e8e4de;">
+                     style="border: 1px solid #e8e4de;"
+                     data-animate="fade-up">
                     <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
                          style="background-color: rgba(0,40,80,0.08);">
                         <svg class="w-6 h-6" style="color: #143c64;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -307,7 +288,7 @@
                 <div x-show="!submitted">
 
                     {{-- Form section heading --}}
-                    <div class="text-center mb-10 vol-form-panel">
+                    <div class="text-center mb-10" data-animate="fade-up">
                         <span class="block text-xs font-bold tracking-widest uppercase mb-3"
                               style="color: #c80078;">
                             {{ __('volunteers.form_label') }}
@@ -326,7 +307,8 @@
                     </div>
 
                     <form @submit.prevent="$action('{{ route('public.volunteers.store') }}')"
-                          class="vol-form-panel rounded-2xl p-8 lg:p-10 space-y-6"
+                          class="rounded-2xl p-8 lg:p-10 space-y-6"
+                          data-animate="fade-up" data-delay="0.1"
                           style="background-color: #fafafa; border: 1px solid #e8e4de; box-shadow: 0 4px 24px rgba(20,60,100,0.07);">
 
                         {{-- Honeypot --}}
@@ -535,75 +517,3 @@
 
 @endsection
 
-@push('scripts')
-<script>
-(function () {
-    'use strict';
-
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    function initVolunteerAnimations() {
-        if (reduced) { return; }
-
-        if (typeof gsap === 'undefined') { return; }
-
-        /* ── Hero headline stagger ── */
-        var heroElements = [
-            document.querySelector('.vol-hero-label'),
-            document.querySelector('.vol-hero-heading'),
-            document.querySelector('.vol-hero-sub'),
-            document.querySelector('.vol-hero-cta'),
-        ].filter(Boolean);
-
-        if (heroElements.length) {
-            gsap.to(heroElements, {
-                opacity: 1,
-                y: 0,
-                duration: 0.7,
-                ease: 'power2.out',
-                stagger: 0.12,
-            });
-        }
-
-        /* ── Benefit cards stagger in on scroll ── */
-        if (typeof ScrollTrigger !== 'undefined') {
-            var benefitCards = document.querySelectorAll('.vol-benefit-card');
-            if (benefitCards.length) {
-                gsap.to(benefitCards, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.65,
-                    ease: 'power2.out',
-                    stagger: 0.09,
-                    scrollTrigger: {
-                        trigger: benefitCards[0],
-                        start: 'top 88%',
-                        once: true,
-                    },
-                });
-            }
-
-            /* ── Form panel entrance on scroll ── */
-            var formPanels = document.querySelectorAll('.vol-form-panel');
-            if (formPanels.length) {
-                gsap.to(formPanels, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.7,
-                    ease: 'power2.out',
-                    stagger: 0.1,
-                    scrollTrigger: {
-                        trigger: formPanels[0],
-                        start: 'top 88%',
-                        once: true,
-                    },
-                });
-            }
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', initVolunteerAnimations);
-    document.addEventListener('gale:navigated', initVolunteerAnimations);
-})();
-</script>
-@endpush
