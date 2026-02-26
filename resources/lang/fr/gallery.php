@@ -11,4 +11,11 @@ return [
     'empty_heading' => 'La galerie sera bientôt disponible',
     'empty_sub' => 'Nos albums photos seront publiés prochainement.',
     'back_to_gallery' => 'Retour à la galerie',
+    'album_empty' => 'Cet album est vide',
+    'album_empty_sub' => 'Aucune photo n\'a encore été ajoutée à cet album.',
+    'close_lightbox' => 'Fermer',
+    'prev_photo' => 'Photo précédente',
+    'next_photo' => 'Photo suivante',
+    'photo_counter' => ':current / :total',
+    'expand_photo' => 'Voir en plein écran',
 ];

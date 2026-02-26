@@ -22,6 +22,7 @@
                 <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.6);">
                     <li>
                         <a href="{{ route('public.home') }}"
+                           x-navigate
                            class="hover:text-white transition-colors"
                            style="color: rgba(255,255,255,0.6);">
                             {{ __('nav.home') }}
@@ -89,70 +90,85 @@
                     <div class="mt-3 h-1 w-12 rounded-full" style="background-color: #c8a03c;"></div>
                 </div>
 
-                {{-- Albums grid --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {{-- Albums grid: 1-col mobile, 2-col tablet, 3-col desktop --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" x-data>
+
                     @foreach ($albums as $album)
-                        <article class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300"
+                        <article class="gallery-album-card group relative overflow-hidden rounded-2xl shadow-sm"
                                  data-animate="fade-up">
 
-                            {{-- Cover photo --}}
-                            <div class="relative overflow-hidden" style="height: 220px;">
+                            {{-- Album image link — Gale navigate --}}
+                            <a href="{{ route('public.gallery.show', $album) }}"
+                               x-navigate
+                               class="block relative overflow-hidden focus-visible:ring-2 focus-visible:ring-offset-2"
+                               style="aspect-ratio: 16/9; display: block;"
+                               aria-label="{{ $album->title() }}">
+
+                                {{-- Cover photo or navy placeholder --}}
                                 @if ($album->coverUrl())
                                     <img src="{{ $album->coverUrl() }}"
                                          alt="{{ $album->title() }}"
-                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                                @else
-                                    <div class="w-full h-full flex items-center justify-center"
-                                         style="background-color: #f1f5f9;">
+                                         class="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <div class="w-full h-full items-center justify-center"
+                                         style="display:none; background-color: #002850; position:absolute; inset:0;">
                                         <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                             stroke-width="1" style="color: #cbd5e1;">
+                                             stroke-width="1" style="color: rgba(255,255,255,0.2);">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 18.75V7.5A2.25 2.25 0 015.25 5.25h13.5A2.25 2.25 0 0121 7.5v11.25A2.25 2.25 0 0118.75 21H5.25A2.25 2.25 0 013 18.75z"/>
+                                        </svg>
+                                    </div>
+                                @else
+                                    {{-- Navy placeholder when no cover photo --}}
+                                    <div class="w-full h-full flex items-center justify-center"
+                                         style="background-color: #002850; position:absolute; inset:0;">
+                                        <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                             stroke-width="1" style="color: rgba(255,255,255,0.2);">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                   d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 18.75V7.5A2.25 2.25 0 015.25 5.25h13.5A2.25 2.25 0 0121 7.5v11.25A2.25 2.25 0 0118.75 21H5.25A2.25 2.25 0 013 18.75z"/>
                                         </svg>
                                     </div>
                                 @endif
 
-                                {{-- Hover overlay --}}
-                                <div class="absolute inset-0 flex items-end p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                     style="background: linear-gradient(to top, rgba(0,20,60,0.82) 0%, transparent 60%);">
-                                    <span class="text-xs font-semibold text-white uppercase tracking-wider">
-                                        {{ __('gallery.view_album') }}
-                                        <span class="ml-1">→</span>
-                                    </span>
-                                </div>
-
-                                {{-- Photo count badge --}}
+                                {{-- Photo count badge — top right --}}
                                 @if ($album->photos_count > 0)
-                                    <div class="absolute top-3 right-3">
+                                    <div class="absolute top-3 right-3 z-10">
                                         <span class="text-xs font-semibold px-2.5 py-1 rounded-full text-white"
                                               style="background-color: rgba(0,0,0,0.55);">
                                             {{ trans_choice('gallery.photos_count', $album->photos_count) }}
                                         </span>
                                     </div>
                                 @endif
-                            </div>
 
-                            {{-- Card body --}}
-                            <div class="p-5">
-                                <h3 class="font-heading font-bold text-base leading-snug mb-2"
-                                    style="font-family: 'Playfair Display', serif; color: #002850;">
-                                    {{ $album->title() }}
-                                </h3>
-                                <div class="flex items-center justify-between">
-                                    <p class="text-xs" style="color: #94a3b8;">
+                                {{-- Title overlay bar — flat dark, no gradient (BR-001) --}}
+                                <div class="absolute bottom-0 left-0 right-0 z-10 px-4 py-3"
+                                     style="background-color: rgba(0,0,0,0.55);">
+                                    <h3 class="font-medium text-sm leading-snug text-white truncate"
+                                        style="font-family: 'Inter', sans-serif;">
+                                        {{ $album->title() }}
+                                    </h3>
+                                    <p class="text-xs mt-0.5" style="color: rgba(255,255,255,0.6);">
                                         {{ $album->created_at->translatedFormat('F Y') }}
                                     </p>
-                                    {{-- Link placeholder for F-050 --}}
-                                    <a href="{{ route('public.gallery.show', $album) }}"
-                                       class="text-xs font-semibold transition-colors hover:opacity-70"
-                                       style="color: #c80078;">
-                                        {{ __('gallery.view_album') }} →
-                                    </a>
                                 </div>
-                            </div>
+
+                                {{-- Hover "view" indicator overlay — flat color (BR-001) --}}
+                                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20"
+                                     style="background-color: rgba(200,0,120,0.18);">
+                                    <span class="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-white px-4 py-2 rounded-full"
+                                          style="background-color: rgba(0,0,0,0.5);">
+                                        {{ __('gallery.view_album') }}
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                                        </svg>
+                                    </span>
+                                </div>
+
+                            </a>
 
                         </article>
                     @endforeach
+
                 </div>
 
                 {{-- Pagination --}}
@@ -160,6 +176,7 @@
                     <div class="mt-12 flex items-center justify-center gap-2">
                         @if (! $albums->onFirstPage())
                             <a href="{{ $albums->previousPageUrl() }}"
+                               x-navigate
                                class="px-4 py-2 rounded-xl text-sm font-medium transition-colors"
                                style="border: 1px solid #e2e8f0; color: #475569;">&laquo;</a>
                         @endif
@@ -169,12 +186,14 @@
                                       style="background-color: #c80078;">{{ $page }}</span>
                             @else
                                 <a href="{{ $url }}"
+                                   x-navigate
                                    class="px-4 py-2 rounded-xl text-sm font-medium transition-colors"
                                    style="border: 1px solid #e2e8f0; color: #475569;">{{ $page }}</a>
                             @endif
                         @endforeach
                         @if ($albums->hasMorePages())
                             <a href="{{ $albums->nextPageUrl() }}"
+                               x-navigate
                                class="px-4 py-2 rounded-xl text-sm font-medium transition-colors"
                                style="border: 1px solid #e2e8f0; color: #475569;">&raquo;</a>
                         @endif
@@ -185,5 +204,16 @@
 
         </div>
     </section>
+
+@push('head')
+<style>
+    .gallery-album-card {
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .gallery-album-card:hover {
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+    }
+</style>
+@endpush
 
 @endsection
