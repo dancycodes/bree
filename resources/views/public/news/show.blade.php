@@ -123,7 +123,7 @@
                      Article body (2/3)
                      Typography: 18px Inter, 1.75 line-height, Playfair headings
                      ------------------------------------------------ --}}
-                <div class="lg:col-span-2" data-animate="fade-up">
+                <div class="lg:col-span-2">
 
                     {{-- Excerpt lead — blockquote style --}}
                     @if ($article->excerpt())
@@ -294,7 +294,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {{-- Section heading with gold accent --}}
-                <div class="flex items-center gap-6 mb-12" data-animate="fade-up">
+                <div class="flex items-center gap-6 mb-12">
                     <div>
                         <span class="block text-xs font-bold tracking-widest uppercase mb-2"
                               style="color: #c8a03c;">
@@ -312,7 +312,7 @@
                 </div>
 
                 {{-- 3-col desktop grid (BR-007) --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" data-stagger="0.06">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                     @foreach ($related as $rel)
                         @php
                             $relCatColor = $rel->newsCategory?->color ?: '#c80078';
@@ -324,7 +324,7 @@
                                         transition: transform 0.25s ease, box-shadow 0.25s ease;"
                                  onmouseenter="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(0,0,0,0.12)';"
                                  onmouseleave="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 12px rgba(0,0,0,0.06)';"
-                                 data-animate="fade-up">
+                                 >
 
                             {{-- Thumbnail — 16:9 --}}
                             <a href="{{ route('public.news.show', $rel) }}"
