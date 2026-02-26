@@ -306,6 +306,6 @@ Feature implementation is delegated to `.claude/agents/executor.md`.
 The orchestrator spawns one executor per feature via Task tool (foreground, sequential).
 
 <!-- DANCYDEV:STATE -->
-Phase: implementing | Progress: 30/44 | Current: F-031
+Phase: implementing | Progress: 33/44 | Current: F-012
 <!-- DANCYDEV:STATE -->
 <!-- EXECUTOR:END -->
