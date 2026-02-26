@@ -8,27 +8,32 @@
     {{-- ================================================================
          PAGE HERO
          ================================================================ --}}
-    <section class="relative overflow-hidden" style="height: clamp(360px, 50vw, 560px);">
+    <section class="relative overflow-hidden" style="height: clamp(380px, 52vw, 580px);">
 
         <img src="{{ asset('images/sections/about.jpg') }}"
              alt="{{ __('about.page_title') }}"
-             class="absolute inset-0 w-full h-full object-cover">
+             class="absolute inset-0 w-full h-full object-cover"
+             loading="eager">
 
-        <div class="absolute inset-0" style="background-color: rgba(0,20,60,0.75);"></div>
+        {{-- Solid dark overlay — NO gradient per BR-001 --}}
+        <div class="absolute inset-0" style="background-color: rgba(0,20,60,0.72);"></div>
+
+        {{-- Left magenta accent bar --}}
+        <div class="absolute left-0 top-0 bottom-0 w-1" style="background-color: #c80078;"></div>
 
         <div class="relative z-10 h-full flex flex-col justify-end max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
 
-            <nav class="mb-5" aria-label="Breadcrumb">
-                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.6);">
+            <nav class="mb-5" aria-label="{{ __('ui.breadcrumb') }}">
+                <ol class="flex items-center gap-2 text-xs font-medium" style="color: rgba(255,255,255,0.55);">
                     <li>
                         <a href="{{ route('public.home') }}"
-                           class="hover:text-white transition-colors"
-                           style="color: rgba(255,255,255,0.6);">
+                           x-navigate
+                           class="hover:text-white transition-colors focus-visible:outline-white">
                             {{ __('nav.home') }}
                         </a>
                     </li>
-                    <li style="color: rgba(255,255,255,0.4);">/</li>
-                    <li style="color: #ffffff;">{{ __('about.page_title') }}</li>
+                    <li aria-hidden="true" style="color: rgba(255,255,255,0.3);">/</li>
+                    <li style="color: #ffffff;" aria-current="page">{{ __('about.page_title') }}</li>
                 </ol>
             </nav>
 
@@ -40,70 +45,82 @@
 
             <h1 class="font-heading font-bold"
                 style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(2rem, 5vw, 4rem);
+                       font-size: clamp(2.2rem, 5.5vw, 4.5rem);
                        color: #ffffff;
-                       line-height: 1.1;"
+                       line-height: 1.1;
+                       letter-spacing: -0.01em;
+                       max-width: 700px;"
                 data-animate="fade-up">
                 {{ __('about.hero_heading') }}
             </h1>
 
-            <p class="mt-4 text-base max-w-xl"
-               style="color: rgba(255,255,255,0.75);"
+            <p class="mt-4 text-base max-w-lg"
+               style="color: rgba(255,255,255,0.75); line-height: 1.7;"
                data-animate="fade-up">
                 {{ __('about.hero_tagline') }}
             </p>
 
-            <div class="mt-6 h-1 w-16 rounded-full" style="background-color: #c8a03c;"></div>
+            <div class="mt-6 h-0.5 w-16 rounded-full" style="background-color: #c8a03c;"></div>
         </div>
 
     </section>
 
     {{-- ================================================================
          ORIGIN STORY
+         White background — two-column layout on desktop
          ================================================================ --}}
     <section class="py-24 lg:py-32" style="background-color: #ffffff;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
-                {{-- Image --}}
+                {{-- Image with decorative accents --}}
                 <div class="relative" data-animate="fade-right">
-                    <div class="rounded-2xl overflow-hidden" style="aspect-ratio: 4/3;">
+                    <div class="overflow-hidden rounded-2xl" style="aspect-ratio: 4/3;">
                         <img src="{{ asset('images/sections/about.jpg') }}"
                              alt="{{ __('about.story_heading') }}"
-                             class="w-full h-full object-cover">
+                             class="w-full h-full object-cover"
+                             loading="lazy">
                     </div>
-                    {{-- Accent block --}}
-                    <div class="absolute -bottom-4 -right-4 w-32 h-32 rounded-2xl -z-10"
-                         style="background-color: #c8a03c26;"></div>
-                    <div class="absolute -top-4 -left-4 w-16 h-16 rounded-xl -z-10"
-                         style="background-color: #c8007826;"></div>
+                    {{-- Decorative corner blocks --}}
+                    <div class="absolute -bottom-5 -right-5 w-36 h-36 rounded-2xl -z-10"
+                         style="background-color: rgba(200,160,60,0.12);"></div>
+                    <div class="absolute -top-5 -left-5 w-20 h-20 rounded-xl -z-10"
+                         style="background-color: rgba(200,0,120,0.10);"></div>
+                    {{-- Gold accent line along left edge --}}
+                    <div class="absolute left-0 top-1/4 bottom-1/4 w-0.5 -ml-4 rounded-full"
+                         style="background-color: #c8a03c;"></div>
                 </div>
 
-                {{-- Text --}}
+                {{-- Story text --}}
                 <div data-animate="fade-left">
                     <span class="block text-xs font-bold tracking-widest uppercase mb-4"
                           style="color: #c80078;">
                         {{ __('about.story_label') }}
                     </span>
-                    <h2 class="font-heading font-bold mb-8"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+                    <h2 style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.85rem, 3.5vw, 2.85rem);
                                color: #002850;
-                               line-height: 1.2;">
+                               line-height: 1.2;
+                               font-weight: 700;
+                               margin-bottom: 1.75rem;">
                         {{ __('about.story_heading') }}
                     </h2>
+
                     <div class="space-y-5">
-                        <p class="text-base leading-relaxed" style="color: #5a6a7a;">
+                        <p style="font-size: 1.0625rem; line-height: 1.8; color: #4a5568; font-family: 'Inter', sans-serif;">
                             {{ __('about.story_p1') }}
                         </p>
-                        <p class="text-base leading-relaxed" style="color: #5a6a7a;">
+                        <p style="font-size: 1.0625rem; line-height: 1.8; color: #4a5568; font-family: 'Inter', sans-serif;">
                             {{ __('about.story_p2') }}
                         </p>
-                        <p class="text-base font-medium leading-relaxed" style="color: #143c64;">
+                        <p style="font-size: 1.0625rem; line-height: 1.8; color: #143c64; font-family: 'Inter', sans-serif; font-weight: 600;">
                             {{ __('about.story_p3') }}
                         </p>
                     </div>
+
+                    {{-- Magenta accent rule --}}
+                    <div class="mt-8 h-0.5 w-12 rounded-full" style="background-color: #c80078;"></div>
                 </div>
 
             </div>
@@ -113,6 +130,7 @@
 
     {{-- ================================================================
          FOUNDER PROFILE
+         Deep navy background — prestigious treatment
          ================================================================ --}}
     @if ($founder)
         <section class="py-24 lg:py-32 overflow-hidden" style="background-color: #002850;">
@@ -120,73 +138,86 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
-                    {{-- Portrait --}}
-                    <div class="flex justify-center lg:justify-end" data-animate="fade-right">
-                        @if ($founder->photo_path)
-                            <div class="relative">
-                                <div class="w-72 h-72 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4"
-                                     style="border-color: #c8a03c;">
+                    {{-- Portrait — left side --}}
+                    <div class="flex justify-center lg:justify-end order-1 lg:order-1" data-animate="fade-right">
+                        <div class="relative">
+                            @if ($founder->photo_path)
+                                {{-- Prestige portrait treatment: square clip with gold frame --}}
+                                <div class="about-founder-portrait relative overflow-hidden rounded-2xl"
+                                     style="width: clamp(260px, 38vw, 420px); height: clamp(300px, 44vw, 480px);">
                                     <img src="{{ asset($founder->photo_path) }}"
                                          alt="{{ $founder->name }}"
-                                         class="w-full h-full object-cover">
+                                         class="w-full h-full object-cover object-top"
+                                         loading="lazy">
+                                    {{-- Subtle gold bottom gradient for text legibility if needed --}}
+                                    <div class="absolute bottom-0 left-0 right-0 h-32"
+                                         style="background-color: rgba(0,40,80,0.45);"></div>
                                 </div>
-                                {{-- Gold ring accent --}}
-                                <div class="absolute -bottom-3 -right-3 w-24 h-24 rounded-full border-2"
-                                     style="border-color: #c8a03c40;"></div>
-                            </div>
-                        @else
-                            {{-- Elegant placeholder --}}
-                            <div class="relative">
-                                <div class="w-72 h-72 lg:w-80 lg:h-80 rounded-full flex items-center justify-center border-4"
-                                     style="border-color: #c8a03c; background-color: rgba(200,160,60,0.08);">
+                                {{-- Gold decorative frame corner --}}
+                                <div class="absolute -top-3 -left-3 w-14 h-14 rounded-tl-2xl border-t-2 border-l-2"
+                                     style="border-color: #c8a03c;"></div>
+                                <div class="absolute -bottom-3 -right-3 w-14 h-14 rounded-br-2xl border-b-2 border-r-2"
+                                     style="border-color: #c8a03c;"></div>
+                            @else
+                                {{-- Elegant monogram placeholder --}}
+                                <div class="relative overflow-hidden rounded-2xl flex items-center justify-center"
+                                     style="width: clamp(260px, 38vw, 380px); height: clamp(300px, 44vw, 440px);
+                                            background-color: rgba(200,160,60,0.08); border: 2px solid rgba(200,160,60,0.25);">
                                     <div class="text-center">
-                                        <div class="font-heading font-bold text-5xl mb-2"
-                                             style="font-family: 'Playfair Display', serif; color: #c8a03c;">
+                                        <div style="font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 700; color: #c8a03c; line-height: 1;">
                                             {{ mb_strtoupper(mb_substr($founder->name, 0, 2)) }}
                                         </div>
-                                        <div class="w-8 h-0.5 mx-auto rounded-full" style="background-color: #c8a03c;"></div>
+                                        <div class="w-12 h-0.5 mx-auto mt-3 rounded-full" style="background-color: #c8a03c;"></div>
                                     </div>
                                 </div>
-                                <div class="absolute -bottom-3 -right-3 w-20 h-20 rounded-full border-2"
-                                     style="border-color: #c8a03c30;"></div>
-                            </div>
-                        @endif
+                            @endif
+                        </div>
                     </div>
 
-                    {{-- Bio --}}
-                    <div data-animate="fade-left">
-                        <span class="block text-xs font-bold tracking-widest uppercase mb-4"
-                              style="color: #c8a03c;">
+                    {{-- Bio — right side --}}
+                    <div class="order-2 lg:order-2" data-animate="fade-left">
+
+                        <span class="block text-xs font-bold tracking-widest uppercase mb-5"
+                              style="color: #c8a03c; letter-spacing: 0.2em;">
                             {{ __('about.founder_label') }}
                         </span>
-                        <h2 class="font-heading font-bold mb-2"
-                            style="font-family: 'Playfair Display', serif;
-                                   font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-                                   color: #ffffff;">
+
+                        <h2 style="font-family: 'Playfair Display', serif;
+                                   font-size: clamp(1.85rem, 3.5vw, 2.85rem);
+                                   color: #ffffff;
+                                   line-height: 1.15;
+                                   font-weight: 700;
+                                   margin-bottom: 0.5rem;">
                             {{ $founder->name }}
                         </h2>
-                        <p class="text-sm font-semibold mb-8" style="color: #c80078;">
+
+                        <p style="font-size: 0.9375rem; font-weight: 600; color: #c80078; margin-bottom: 0.25rem; font-family: 'Inter', sans-serif;">
                             {{ $founder->title() }}
                         </p>
 
+                        {{-- Gold divider --}}
+                        <div class="my-6 h-px w-16" style="background-color: rgba(200,160,60,0.4);"></div>
+
                         <div class="space-y-4 mb-8">
-                            @foreach (explode("\n\n", $founder->bio()) as $paragraph)
-                                <p class="text-sm leading-relaxed" style="color: rgba(255,255,255,0.75);">
+                            @foreach (array_filter(explode("\n\n", $founder->bio() ?? '')) as $paragraph)
+                                <p style="font-size: 0.9375rem; line-height: 1.85; color: rgba(255,255,255,0.75); font-family: 'Inter', sans-serif;">
                                     {{ $paragraph }}
                                 </p>
                             @endforeach
                         </div>
 
                         @if ($founder->message())
-                            <blockquote class="border-l-2 pl-6 italic"
-                                        style="border-color: #c8a03c;
+                            <blockquote style="border-left: 2px solid #c8a03c;
+                                               padding-left: 1.5rem;
                                                font-family: 'Playfair Display', serif;
-                                               font-size: 1rem;
-                                               color: rgba(255,255,255,0.9);
-                                               line-height: 1.6;">
-                                {{ $founder->message() }}
+                                               font-style: italic;
+                                               font-size: 1.075rem;
+                                               color: rgba(255,255,255,0.92);
+                                               line-height: 1.7;">
+                                &ldquo;{{ $founder->message() }}&rdquo;
                             </blockquote>
                         @endif
+
                     </div>
 
                 </div>
@@ -196,51 +227,97 @@
     @endif
 
     {{-- ================================================================
-         TIMELINE
+         MILESTONES TIMELINE
+         Off-white background — alternating left/right desktop, single-column mobile
          ================================================================ --}}
     @if ($milestones->count() > 0)
         <section class="py-24 lg:py-32 overflow-hidden" style="background-color: #f8f5f0;">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 <div class="text-center mb-16" data-animate="fade-up">
                     <span class="block text-xs font-bold tracking-widest uppercase mb-3"
-                          style="color: #c8a03c;">
+                          style="color: #c8a03c; letter-spacing: 0.2em;">
                         {{ __('about.timeline_label') }}
                     </span>
-                    <h2 class="font-heading font-bold"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-                               color: #002850;">
+                    <h2 style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.85rem, 3.5vw, 2.75rem);
+                               color: #002850;
+                               font-weight: 700;
+                               line-height: 1.2;">
                         {{ __('about.timeline_heading') }}
                     </h2>
                 </div>
 
-                {{-- Timeline --}}
-                <div class="relative">
-                    {{-- Vertical line --}}
-                    <div class="absolute left-6 top-0 bottom-0 w-px md:left-1/2 md:-translate-x-px"
-                         style="background-color: #143c6430;"></div>
+                {{-- Timeline container --}}
+                <div class="relative" data-stagger="0.1">
 
-                    <div class="space-y-12">
+                    {{-- Vertical connecting line — desktop centered, mobile left-aligned --}}
+                    <div class="absolute hidden md:block top-0 bottom-0 w-0.5 left-1/2 -translate-x-px"
+                         style="background-color: rgba(20,60,100,0.15);"></div>
+                    <div class="absolute md:hidden top-0 bottom-0 w-0.5 left-5"
+                         style="background-color: rgba(20,60,100,0.15);"></div>
+
+                    <div class="space-y-10 md:space-y-0">
                         @foreach ($milestones as $index => $milestone)
                             @php $isEven = $index % 2 === 0; @endphp
-                            <div class="relative flex items-start gap-6 md:gap-0"
-                                 data-animate="fade-up">
 
-                                {{-- Desktop: alternate sides --}}
-                                {{-- Mobile: always left --}}
-                                <div class="md:w-1/2 @if($isEven) md:pr-10 md:text-right @else md:order-last md:pl-10 @endif hidden md:block">
+                            {{-- Mobile: simple left-side layout --}}
+                            <div class="md:hidden relative pl-14" data-animate="fade-up">
+                                {{-- Year dot --}}
+                                <div class="absolute left-3 top-1.5 w-4 h-4 rounded-full border-2"
+                                     style="background-color: #c8a03c; border-color: #f8f5f0;
+                                            box-shadow: 0 0 0 4px rgba(200,160,60,0.25);"></div>
+
+                                <div class="timeline-card bg-white rounded-2xl p-6 shadow-sm"
+                                     style="border: 1px solid rgba(20,60,100,0.07);">
+                                    <div style="font-family: 'Playfair Display', serif;
+                                                font-size: 2rem;
+                                                font-weight: 700;
+                                                color: #c8a03c;
+                                                line-height: 1;
+                                                margin-bottom: 0.5rem;">
+                                        {{ $milestone->year }}
+                                    </div>
+                                    <h3 style="font-weight: 600;
+                                               font-size: 1.0625rem;
+                                               color: #002850;
+                                               margin-bottom: 0.5rem;
+                                               font-family: 'Inter', sans-serif;">
+                                        {{ $milestone->title() }}
+                                    </h3>
+                                    @if ($milestone->description())
+                                        <p style="font-size: 0.9rem; line-height: 1.75; color: #5a6a7a; font-family: 'Inter', sans-serif;">
+                                            {{ $milestone->description() }}
+                                        </p>
+                                    @endif
+                                </div>
+                            </div>
+
+                            {{-- Desktop: alternating left/right --}}
+                            <div class="hidden md:grid md:grid-cols-2 md:gap-0 md:relative mb-10" data-animate="fade-up">
+
+                                {{-- Left column content (even items) --}}
+                                <div class="pr-12 text-right @if(!$isEven) opacity-0 pointer-events-none @endif">
                                     @if ($isEven)
-                                        <div class="inline-block">
-                                            <div class="text-3xl font-bold font-heading mb-1"
-                                                 style="font-family: 'Playfair Display', serif; color: #c8a03c;">
+                                        <div class="timeline-card inline-block bg-white rounded-2xl p-7 shadow-sm text-left"
+                                             style="border: 1px solid rgba(20,60,100,0.07); max-width: 340px; margin-left: auto;">
+                                            <div style="font-family: 'Playfair Display', serif;
+                                                        font-size: 2.5rem;
+                                                        font-weight: 700;
+                                                        color: #c8a03c;
+                                                        line-height: 1;
+                                                        margin-bottom: 0.5rem;">
                                                 {{ $milestone->year }}
                                             </div>
-                                            <h3 class="font-semibold text-lg mb-2" style="color: #002850;">
+                                            <h3 style="font-weight: 600;
+                                                       font-size: 1.0625rem;
+                                                       color: #002850;
+                                                       margin-bottom: 0.625rem;
+                                                       font-family: 'Inter', sans-serif;">
                                                 {{ $milestone->title() }}
                                             </h3>
                                             @if ($milestone->description())
-                                                <p class="text-sm leading-relaxed" style="color: #5a6a7a;">
+                                                <p style="font-size: 0.9rem; line-height: 1.75; color: #5a6a7a; font-family: 'Inter', sans-serif;">
                                                     {{ $milestone->description() }}
                                                 </p>
                                             @endif
@@ -248,41 +325,35 @@
                                     @endif
                                 </div>
 
-                                {{-- Gold dot --}}
-                                <div class="flex-shrink-0 relative z-10 md:absolute md:left-1/2 md:-translate-x-1/2 md:top-1">
-                                    <div class="w-3 h-3 rounded-full border-2"
-                                         style="background-color: #c8a03c; border-color: #f8f5f0; box-shadow: 0 0 0 3px #c8a03c40;"></div>
+                                {{-- Center dot --}}
+                                <div class="absolute left-1/2 top-8 -translate-x-1/2 z-10">
+                                    <div class="w-5 h-5 rounded-full border-2"
+                                         style="background-color: #c8a03c; border-color: #f8f5f0;
+                                                box-shadow: 0 0 0 5px rgba(200,160,60,0.25);"></div>
                                 </div>
 
-                                {{-- Right side (even) or left side (odd) on desktop, always shown on mobile --}}
-                                <div class="flex-1 md:w-1/2 @if(!$isEven) md:pr-10 md:text-right @else md:pl-10 @endif">
-                                    {{-- Mobile: always show here --}}
-                                    <div class="md:hidden">
-                                        <div class="text-2xl font-bold font-heading mb-1"
-                                             style="font-family: 'Playfair Display', serif; color: #c8a03c;">
-                                            {{ $milestone->year }}
-                                        </div>
-                                        <h3 class="font-semibold text-base mb-1.5" style="color: #002850;">
-                                            {{ $milestone->title() }}
-                                        </h3>
-                                        @if ($milestone->description())
-                                            <p class="text-sm leading-relaxed" style="color: #5a6a7a;">
-                                                {{ $milestone->description() }}
-                                            </p>
-                                        @endif
-                                    </div>
-                                    {{-- Desktop: only show on odd --}}
+                                {{-- Right column content (odd items) --}}
+                                <div class="pl-12 @if($isEven) opacity-0 pointer-events-none @endif">
                                     @if (!$isEven)
-                                        <div class="hidden md:inline-block">
-                                            <div class="text-3xl font-bold font-heading mb-1"
-                                                 style="font-family: 'Playfair Display', serif; color: #c8a03c;">
+                                        <div class="timeline-card inline-block bg-white rounded-2xl p-7 shadow-sm"
+                                             style="border: 1px solid rgba(20,60,100,0.07); max-width: 340px;">
+                                            <div style="font-family: 'Playfair Display', serif;
+                                                        font-size: 2.5rem;
+                                                        font-weight: 700;
+                                                        color: #c8a03c;
+                                                        line-height: 1;
+                                                        margin-bottom: 0.5rem;">
                                                 {{ $milestone->year }}
                                             </div>
-                                            <h3 class="font-semibold text-lg mb-2" style="color: #002850;">
+                                            <h3 style="font-weight: 600;
+                                                       font-size: 1.0625rem;
+                                                       color: #002850;
+                                                       margin-bottom: 0.625rem;
+                                                       font-family: 'Inter', sans-serif;">
                                                 {{ $milestone->title() }}
                                             </h3>
                                             @if ($milestone->description())
-                                                <p class="text-sm leading-relaxed" style="color: #5a6a7a;">
+                                                <p style="font-size: 0.9rem; line-height: 1.75; color: #5a6a7a; font-family: 'Inter', sans-serif;">
                                                     {{ $milestone->description() }}
                                                 </p>
                                             @endif
@@ -291,6 +362,7 @@
                                 </div>
 
                             </div>
+
                         @endforeach
                     </div>
 
@@ -301,7 +373,9 @@
     @endif
 
     {{-- ================================================================
-         PATRON PROFILE
+         PATRON (MARRAINE) PROFILE
+         White background — gold accent treatment (differentiated from founder)
+         Renders only if patron data exists
          ================================================================ --}}
     @if ($patron)
         <section class="py-24 lg:py-32 overflow-hidden" style="background-color: #ffffff;">
@@ -309,29 +383,37 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
-                    {{-- Bio (left) --}}
+                    {{-- Bio — left side --}}
                     <div data-animate="fade-right">
-                        <span class="block text-xs font-bold tracking-widest uppercase mb-4"
-                              style="color: #c80078;">
+
+                        <span class="block text-xs font-bold tracking-widest uppercase mb-5"
+                              style="color: #c8a03c; letter-spacing: 0.2em;">
                             {{ __('about.patron_label') }}
                         </span>
-                        <h2 class="font-heading font-bold mb-2"
-                            style="font-family: 'Playfair Display', serif;
-                                   font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-                                   color: #002850;">
+
+                        <h2 style="font-family: 'Playfair Display', serif;
+                                   font-size: clamp(1.85rem, 3.5vw, 2.85rem);
+                                   color: #002850;
+                                   line-height: 1.15;
+                                   font-weight: 700;
+                                   margin-bottom: 0.5rem;">
                             {{ $patron->name }}
                         </h2>
-                        <p class="text-sm font-semibold mb-2" style="color: #c80078;">
+
+                        <p style="font-size: 0.9375rem; font-weight: 600; color: #c80078; margin-bottom: 0.25rem; font-family: 'Inter', sans-serif;">
                             {{ $patron->title() }}
                         </p>
-                        <p class="text-xs font-medium mb-8" style="color: #c8a03c;">
+                        <p style="font-size: 0.8125rem; font-weight: 500; color: #c8a03c; margin-bottom: 0; font-family: 'Inter', sans-serif; letter-spacing: 0.05em; text-transform: uppercase;">
                             {{ $patron->role() }}
                         </p>
 
+                        {{-- Gold divider --}}
+                        <div class="my-6 h-px w-16" style="background-color: rgba(200,160,60,0.35);"></div>
+
                         @if ($patron->description())
                             <div class="space-y-4 mb-8">
-                                @foreach (explode("\n\n", $patron->description()) as $paragraph)
-                                    <p class="text-sm leading-relaxed" style="color: #5a6a7a;">
+                                @foreach (array_filter(explode("\n\n", $patron->description())) as $paragraph)
+                                    <p style="font-size: 0.9375rem; line-height: 1.85; color: #4a5568; font-family: 'Inter', sans-serif;">
                                         {{ $paragraph }}
                                     </p>
                                 @endforeach
@@ -339,46 +421,50 @@
                         @endif
 
                         @if ($patron->quote())
-                            <blockquote class="border-l-2 pl-6 italic"
-                                        style="border-color: #c8a03c;
+                            <blockquote style="border-left: 2px solid #c8a03c;
+                                               padding-left: 1.5rem;
                                                font-family: 'Playfair Display', serif;
-                                               font-size: 1rem;
+                                               font-style: italic;
+                                               font-size: 1.075rem;
                                                color: #002850;
-                                               line-height: 1.6;">
-                                {{ $patron->quote() }}
+                                               line-height: 1.7;">
+                                &ldquo;{{ $patron->quote() }}&rdquo;
                             </blockquote>
                         @endif
+
                     </div>
 
-                    {{-- Portrait (right) --}}
+                    {{-- Portrait — right side --}}
                     <div class="flex justify-center lg:justify-start" data-animate="fade-left">
-                        @if ($patron->photo_path)
-                            <div class="relative">
-                                <div class="w-72 h-72 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4"
-                                     style="border-color: #c8a03c;">
+                        <div class="relative">
+                            @if ($patron->photo_path)
+                                <div class="about-patron-portrait relative overflow-hidden rounded-2xl"
+                                     style="width: clamp(260px, 38vw, 420px); height: clamp(300px, 44vw, 480px);">
                                     <img src="{{ asset($patron->photo_path) }}"
                                          alt="{{ $patron->name }}"
-                                         class="w-full h-full object-cover">
+                                         class="w-full h-full object-cover object-top"
+                                         loading="lazy">
+                                    <div class="absolute bottom-0 left-0 right-0 h-32"
+                                         style="background-color: rgba(200,160,60,0.18);"></div>
                                 </div>
-                                <div class="absolute -bottom-3 -left-3 w-24 h-24 rounded-full border-2"
-                                     style="border-color: #c8a03c40;"></div>
-                            </div>
-                        @else
-                            <div class="relative">
-                                <div class="w-72 h-72 lg:w-80 lg:h-80 rounded-full flex items-center justify-center border-4"
-                                     style="border-color: #c8a03c; background-color: rgba(200,160,60,0.06);">
+                                {{-- Gold decorative frame corners (mirrored from founder) --}}
+                                <div class="absolute -top-3 -right-3 w-14 h-14 rounded-tr-2xl border-t-2 border-r-2"
+                                     style="border-color: #c8a03c;"></div>
+                                <div class="absolute -bottom-3 -left-3 w-14 h-14 rounded-bl-2xl border-b-2 border-l-2"
+                                     style="border-color: #c8a03c;"></div>
+                            @else
+                                <div class="relative overflow-hidden rounded-2xl flex items-center justify-center"
+                                     style="width: clamp(260px, 38vw, 380px); height: clamp(300px, 44vw, 440px);
+                                            background-color: rgba(200,160,60,0.06); border: 2px solid rgba(200,160,60,0.2);">
                                     <div class="text-center">
-                                        <div class="font-heading font-bold text-5xl mb-2"
-                                             style="font-family: 'Playfair Display', serif; color: #c8a03c;">
+                                        <div style="font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 700; color: #c8a03c; line-height: 1;">
                                             {{ mb_strtoupper(mb_substr($patron->name, 0, 2)) }}
                                         </div>
-                                        <div class="w-8 h-0.5 mx-auto rounded-full" style="background-color: #c8a03c;"></div>
+                                        <div class="w-12 h-0.5 mx-auto mt-3 rounded-full" style="background-color: #c8a03c;"></div>
                                     </div>
                                 </div>
-                                <div class="absolute -bottom-3 -left-3 w-20 h-20 rounded-full border-2"
-                                     style="border-color: #c8a03c30;"></div>
-                            </div>
-                        @endif
+                            @endif
+                        </div>
                     </div>
 
                 </div>
@@ -388,43 +474,51 @@
     @endif
 
     {{-- ================================================================
-         5 MISSION COMMITMENTS
+         5 MISSION COMMITMENTS (Values)
+         Deep navy background
          ================================================================ --}}
     <section class="py-24 lg:py-32" style="background-color: #002850;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="text-center mb-16" data-animate="fade-up">
                 <span class="block text-xs font-bold tracking-widest uppercase mb-3"
-                      style="color: #c8a03c;">
+                      style="color: #c8a03c; letter-spacing: 0.2em;">
                     {{ __('about.values_label') }}
                 </span>
-                <h2 class="font-heading font-bold"
-                    style="font-family: 'Playfair Display', serif;
-                           font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-                           color: #ffffff;">
+                <h2 style="font-family: 'Playfair Display', serif;
+                           font-size: clamp(1.85rem, 3.5vw, 2.75rem);
+                           color: #ffffff;
+                           font-weight: 700;
+                           line-height: 1.2;">
                     {{ __('about.values_heading') }}
                 </h2>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6" data-stagger="0.08">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5" data-stagger="0.08">
                 @foreach ([1,2,3,4,5] as $i)
-                    <div class="rounded-2xl p-6 flex flex-col items-center text-center"
-                         style="background-color: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);"
-                         data-animate="fade-up">
+                    <div class="rounded-2xl p-6 flex flex-col items-start transition-all duration-300"
+                         style="background-color: rgba(255,255,255,0.05);
+                                border: 1px solid rgba(255,255,255,0.08);"
+                         data-animate="fade-up"
+                         @mouseover="$el.style.backgroundColor='rgba(255,255,255,0.09)'; $el.style.borderColor='rgba(200,160,60,0.3)';"
+                         @mouseout="$el.style.backgroundColor='rgba(255,255,255,0.05)'; $el.style.borderColor='rgba(255,255,255,0.08)';">
 
                         {{-- Number badge --}}
-                        <div class="w-10 h-10 rounded-full flex items-center justify-center mb-4 font-bold text-sm"
-                             style="background-color: #c8a03c20; color: #c8a03c; border: 1px solid #c8a03c40;">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center mb-5 font-bold text-sm shrink-0"
+                             style="background-color: rgba(200,160,60,0.15); color: #c8a03c;
+                                    border: 1px solid rgba(200,160,60,0.35); font-family: 'Inter', sans-serif;">
                             {{ $i }}
                         </div>
 
-                        <h3 class="font-heading font-bold mb-3"
-                            style="font-family: 'Playfair Display', serif;
-                                   font-size: 1.1rem;
-                                   color: #ffffff;">
+                        <h3 style="font-family: 'Playfair Display', serif;
+                                   font-size: 1.125rem;
+                                   color: #ffffff;
+                                   font-weight: 600;
+                                   margin-bottom: 0.75rem;
+                                   line-height: 1.3;">
                             {{ __('about.value_' . $i . '_title') }}
                         </h3>
-                        <p class="text-xs leading-relaxed" style="color: rgba(255,255,255,0.65);">
+                        <p style="font-size: 0.875rem; line-height: 1.75; color: rgba(255,255,255,0.62); font-family: 'Inter', sans-serif;">
                             {{ __('about.value_' . $i . '_desc') }}
                         </p>
                     </div>
@@ -435,7 +529,8 @@
     </section>
 
     {{-- ================================================================
-         TEAM MEMBERS
+         TEAM MEMBERS GRID
+         Off-white background — only renders if team list is not empty
          ================================================================ --}}
     @if ($teamMembers->isNotEmpty())
         <section class="py-24 lg:py-32" style="background-color: #f8f5f0;">
@@ -443,49 +538,76 @@
 
                 <div class="text-center mb-16" data-animate="fade-up">
                     <span class="block text-xs font-bold tracking-widest uppercase mb-3"
-                          style="color: #c80078;">
+                          style="color: #c80078; letter-spacing: 0.2em;">
                         {{ __('about.team_label') }}
                     </span>
-                    <h2 class="font-heading font-bold"
-                        style="font-family: 'Playfair Display', serif;
-                               font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-                               color: #002850;">
+                    <h2 style="font-family: 'Playfair Display', serif;
+                               font-size: clamp(1.85rem, 3.5vw, 2.75rem);
+                               color: #002850;
+                               font-weight: 700;
+                               line-height: 1.2;">
                         {{ __('about.team_heading') }}
                     </h2>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" data-stagger="0.07">
+                {{-- Team grid: 4 cols desktop, 2 cols tablet, 2 cols mobile min --}}
+                <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8" data-stagger="0.07">
                     @foreach ($teamMembers as $member)
-                        <div class="text-center group" data-animate="fade-up">
+                        <div class="team-card group relative" data-animate="fade-up">
 
-                            {{-- Photo or monogram --}}
-                            <div class="mx-auto mb-5 relative"
-                                 style="width: 140px; height: 140px;">
-                                @if ($member->photo_path)
-                                    <div class="w-full h-full rounded-full overflow-hidden border-2 transition-transform duration-300 group-hover:scale-105"
-                                         style="border-color: #e2e8f0;">
+                            {{-- Card --}}
+                            <div class="bg-white rounded-2xl overflow-hidden transition-all duration-300"
+                                 style="border: 1px solid rgba(20,60,100,0.07);"
+                                 @mouseover="$el.style.boxShadow='0 12px 40px rgba(0,40,100,0.12)'; $el.style.transform='translateY(-4px)'"
+                                 @mouseout="$el.style.boxShadow='none'; $el.style.transform='translateY(0)'">
+
+                                {{-- Photo — consistent 1:1 aspect ratio --}}
+                                <div class="relative overflow-hidden" style="aspect-ratio: 1 / 1;">
+                                    @if ($member->photo_path)
                                         <img src="{{ asset($member->photo_path) }}"
                                              alt="{{ $member->name }}"
-                                             class="w-full h-full object-cover">
-                                    </div>
-                                @else
-                                    <div class="w-full h-full rounded-full flex items-center justify-center border-2 transition-transform duration-300 group-hover:scale-105"
-                                         style="border-color: #c8007830; background-color: rgba(200,0,120,0.06);">
-                                        <span class="font-heading font-bold text-2xl"
-                                              style="font-family: 'Playfair Display', serif; color: #c80078;">
-                                            {{ $member->initials() }}
-                                        </span>
-                                    </div>
-                                @endif
-                            </div>
+                                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                             loading="lazy">
+                                    @else
+                                        {{-- Navy monogram avatar per spec edge case --}}
+                                        <div class="w-full h-full flex items-center justify-center"
+                                             style="background-color: #002850;">
+                                            <span style="font-family: 'Playfair Display', serif;
+                                                         font-size: 2.5rem;
+                                                         font-weight: 700;
+                                                         color: rgba(200,160,60,0.9);">
+                                                {{ $member->initials() }}
+                                            </span>
+                                        </div>
+                                    @endif
 
-                            {{-- Name & title --}}
-                            <h3 class="font-semibold text-base mb-1" style="color: #002850;">
-                                {{ $member->name }}
-                            </h3>
-                            <p class="text-xs font-medium" style="color: #c80078;">
-                                {{ $member->title() }}
-                            </p>
+                                    {{-- Bio overlay on hover --}}
+                                    @if ($member->bio())
+                                        <div class="absolute inset-0 flex items-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                             style="background-color: rgba(0,20,50,0.82);">
+                                            <p style="font-size: 0.8125rem; line-height: 1.65; color: rgba(255,255,255,0.88); font-family: 'Inter', sans-serif;">
+                                                {{ mb_strimwidth($member->bio(), 0, 120, '…') }}
+                                            </p>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                {{-- Name & title --}}
+                                <div class="p-5">
+                                    <h3 style="font-weight: 600;
+                                               font-size: 1rem;
+                                               color: #002850;
+                                               margin-bottom: 0.25rem;
+                                               font-family: 'Inter', sans-serif;
+                                               line-height: 1.3;">
+                                        {{ $member->name }}
+                                    </h3>
+                                    <p style="font-size: 0.8125rem; font-weight: 500; color: #c80078; font-family: 'Inter', sans-serif; line-height: 1.4;">
+                                        {{ $member->title() }}
+                                    </p>
+                                </div>
+
+                            </div>
 
                         </div>
                     @endforeach
@@ -496,46 +618,152 @@
     @endif
 
     {{-- ================================================================
-         CTA
+         CALL TO ACTION
+         White background — centered layout
          ================================================================ --}}
-    <section class="py-20" style="background-color: #ffffff;">
+    <section class="py-24" style="background-color: #ffffff;">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-animate="fade-up">
 
-            <div class="h-1 w-16 mx-auto mb-8 rounded-full" style="background-color: #c80078;"></div>
+            {{-- Magenta accent rule --}}
+            <div class="h-0.5 w-16 mx-auto mb-10" style="background-color: #c80078;"></div>
 
             <span class="block text-xs font-bold tracking-widest uppercase mb-4"
-                  style="color: #c80078;">
+                  style="color: #c80078; letter-spacing: 0.2em;">
                 {{ __('about.cta_label') }}
             </span>
 
-            <h2 class="font-heading font-bold mb-5"
-                style="font-family: 'Playfair Display', serif;
-                       font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-                       color: #002850;">
+            <h2 style="font-family: 'Playfair Display', serif;
+                       font-size: clamp(1.85rem, 3.5vw, 2.75rem);
+                       color: #002850;
+                       font-weight: 700;
+                       line-height: 1.2;
+                       margin-bottom: 1.25rem;">
                 {{ __('about.cta_heading') }}
             </h2>
 
-            <p class="text-base leading-relaxed mb-8" style="color: #5a6a7a;">
+            <p style="font-size: 1.0625rem; line-height: 1.8; color: #4a5568; margin-bottom: 2.5rem; font-family: 'Inter', sans-serif;">
                 {{ __('about.cta_text') }}
             </p>
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="{{ route('public.home') }}#don"
-                   class="inline-flex items-center gap-3 px-8 py-4 text-sm font-semibold rounded-full text-white transition-opacity hover:opacity-90"
-                   style="background-color: #c80078;">
+
+                <a href="{{ route('public.donate') }}"
+                   x-navigate
+                   class="inline-flex items-center justify-center gap-3 px-8 py-4 text-sm font-semibold rounded-full text-white transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-4"
+                   style="background-color: #c80078; min-width: 200px;">
                     {{ __('about.cta_donate') }}
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/>
                     </svg>
                 </a>
-                <a href="{{ route('public.home') }}#benevole"
-                   class="inline-flex items-center gap-3 px-8 py-4 text-sm font-semibold rounded-full transition-colors"
-                   style="color: #002850; border: 2px solid #002850;">
-                    {{ __('about.cta_volunteer') }}
-                </a>
+
+                @if (Route::has('public.volunteers'))
+                    <a href="{{ route('public.volunteers') }}"
+                       x-navigate
+                       class="inline-flex items-center justify-center gap-2 px-8 py-4 text-sm font-semibold rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 hover:text-white"
+                       style="color: #002850; border: 2px solid #002850;"
+                       @mouseover="$el.style.backgroundColor='#002850'; $el.style.color='#ffffff';"
+                       @mouseout="$el.style.backgroundColor='transparent'; $el.style.color='#002850';">
+                        {{ __('about.cta_volunteer') }}
+                    </a>
+                @endif
+
             </div>
 
         </div>
     </section>
 
 @endsection
+
+@push('scripts')
+<script>
+/**
+ * About page — additional GSAP animations beyond the global initAnimations().
+ * Timeline items: sequential fade-up with stagger.
+ * Section headings: subtle y-shift on scroll.
+ */
+(function () {
+    'use strict';
+
+    const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function initAboutAnimations() {
+        if (REDUCED) { return; }
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') { return; }
+
+        // Founder portrait clip-path reveal
+        const founderPortrait = document.querySelector('.about-founder-portrait');
+        if (founderPortrait) {
+            gsap.from(founderPortrait, {
+                clipPath: 'inset(100% 0% 0% 0%)',
+                duration: 1.1,
+                ease: 'power4.inOut',
+                scrollTrigger: {
+                    trigger: founderPortrait,
+                    start: 'top 82%',
+                    once: true,
+                },
+            });
+        }
+
+        // Patron portrait clip-path reveal (mirrored direction)
+        const patronPortrait = document.querySelector('.about-patron-portrait');
+        if (patronPortrait) {
+            gsap.from(patronPortrait, {
+                clipPath: 'inset(0% 0% 100% 0%)',
+                duration: 1.1,
+                ease: 'power4.inOut',
+                scrollTrigger: {
+                    trigger: patronPortrait,
+                    start: 'top 82%',
+                    once: true,
+                },
+            });
+        }
+
+        // Timeline milestone cards: sequential fade-up with stagger
+        const timelineCards = document.querySelectorAll('.timeline-card');
+        if (timelineCards.length) {
+            gsap.from(timelineCards, {
+                y: 30,
+                opacity: 0,
+                duration: 0.6,
+                ease: 'power2.out',
+                stagger: 0.12,
+                scrollTrigger: {
+                    trigger: timelineCards[0].closest('section') || timelineCards[0],
+                    start: 'top 80%',
+                    once: true,
+                },
+            });
+        }
+
+        // Team cards: stagger reveal
+        const teamCards = document.querySelectorAll('.team-card');
+        if (teamCards.length) {
+            gsap.from(teamCards, {
+                y: 24,
+                opacity: 0,
+                duration: 0.55,
+                ease: 'power2.out',
+                stagger: 0.07,
+                scrollTrigger: {
+                    trigger: teamCards[0].closest('section') || teamCards[0],
+                    start: 'top 82%',
+                    once: true,
+                },
+            });
+        }
+    }
+
+    // Run on first load
+    document.addEventListener('DOMContentLoaded', initAboutAnimations);
+
+    // Re-run on Gale navigation back to this page
+    document.addEventListener('gale:navigated', function () {
+        // Small delay so DOM is fully settled
+        setTimeout(initAboutAnimations, 80);
+    });
+}());
+</script>
+@endpush
