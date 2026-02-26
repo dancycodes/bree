@@ -15,6 +15,28 @@ return [
 
     'types_heading' => 'Comment souhaitez-vous contribuer ?',
 
+    'tab_direct' => 'Don Direct',
+    'tab_recurring' => 'Don Récurrent',
+    'tab_pledge' => 'Promesse de Don',
+
+    'direct_tab_heading' => 'Faites un don maintenant',
+    'direct_tab_sub' => 'Sélectionnez votre montant et payez en toute sécurité via Flutterwave.',
+    'recurring_tab_heading' => 'Don mensuel récurrent',
+    'recurring_tab_sub' => 'Rejoignez notre cercle de donateurs réguliers. Votre soutien mensuel nous permet de planifier sur le long terme.',
+    'recurring_coming_soon' => 'Bientôt disponible',
+    'recurring_coming_soon_sub' => 'Le don récurrent sera bientôt disponible. En attendant, vous pouvez effectuer un don direct.',
+    'pledge_tab_heading' => 'Promesse de don',
+    'pledge_tab_sub' => 'Engagez-vous pour un futur don. Notre équipe vous contactera pour confirmer les détails.',
+
+    'secure_payment' => 'Paiement sécurisé Flutterwave',
+    'secure_payment_badge' => 'Chiffrement SSL 256-bit',
+    'impact_for_amount' => 'Avec :amount FCFA',
+
+    'trust_secure' => 'Paiement sécurisé',
+    'trust_flutterwave' => 'Paiement sécurisé Flutterwave',
+    'trust_encrypted' => 'Données chiffrées',
+    'trust_deductible' => 'Don déductible',
+
     'type_direct_title' => 'Don direct',
     'type_direct_sub' => 'Faites un don immédiat et sécurisé par carte bancaire ou mobile money via Flutterwave. Simple, rapide, et 100% sécurisé.',
     'type_direct_btn' => 'Faire un don maintenant',
