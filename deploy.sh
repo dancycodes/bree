@@ -44,4 +44,7 @@ sudo chown -R www-data:www-data "$APP_DIR/storage" "$APP_DIR/bootstrap/cache"
 echo ">>> Restarting PHP-FPM..."
 sudo systemctl restart php8.4-fpm
 
+echo ">>> Reloading Nginx..."
+sudo systemctl reload nginx
+
 echo ">>> Done! Deployment complete."
