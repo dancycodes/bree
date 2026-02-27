@@ -32,6 +32,8 @@ class AdminSiteSettingsController extends Controller
             'social_twitter' => 'nullable|url|max:500',
             'donation_show_total' => 'nullable|in:0,1',
             'donation_amounts' => 'nullable|string|max:500',
+            'team_section_visible' => 'nullable|in:0,1',
+            'payments_enabled' => 'nullable|in:0,1',
         ]);
 
         SiteSetting::setMany(array_map(fn ($v) => $v ?? '', $validated));

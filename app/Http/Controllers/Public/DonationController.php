@@ -11,6 +11,7 @@ use App\Models\DonationPledge;
 use App\Models\ImpactExample;
 use App\Models\InKindDonation;
 use App\Models\RecurringDonation;
+use App\Models\SiteSetting;
 use App\Services\FlutterwaveDirectCharge;
 use Flutterwave\Payments\Facades\Flutterwave;
 use Illuminate\Http\Request;
@@ -29,8 +30,9 @@ class DonationController extends Controller
         }
 
         $impactExamples = ImpactExample::published()->get();
+        $paymentsEnabled = SiteSetting::get('payments_enabled') === '1';
 
-        return gale()->view('public.donation.index', compact('programme', 'impactExamples'), web: true);
+        return gale()->view('public.donation.index', compact('programme', 'impactExamples', 'paymentsEnabled'), web: true);
     }
 
     public function selectAmount(Request $request): mixed

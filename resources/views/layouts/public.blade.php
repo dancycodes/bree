@@ -133,7 +133,7 @@
     <header
         class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
         :class="scrolled ? 'shadow-lg' : ''"
-        style="background-color: #143c64; border-bottom: 1px solid rgba(255,255,255,0.08);">
+        style="background-color: #ffffff; border-bottom: 1px solid rgba(20,60,100,0.08);">
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between" style="height: 4.5rem;">
@@ -145,7 +145,7 @@
                          alt="{{ config('app.name') }}"
                          class="h-10 w-auto lg:h-12 object-contain"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
-                    <span style="display:none; color:#ffffff; font-family:'Playfair Display',serif; font-weight:700; font-size:1.1rem;">Fondation BREE</span>
+                    <span style="display:none; color:#143c64; font-family:'Playfair Display',serif; font-weight:700; font-size:1.1rem;">Fondation BREE</span>
                 </a>
 
                 {{-- Desktop Navigation --}}
@@ -183,18 +183,18 @@
                         <a href="{{ route('lang.switch', 'fr') }}"
                            aria-label="Passer au français"
                            class="px-2 py-1 rounded transition-all duration-150"
-                           style="{{ app()->getLocale() === 'fr' ? 'color: #c8a03c;' : 'color: rgba(255,255,255,0.45);' }}"
-                           @mouseover="$el.style.color='rgba(255,255,255,0.9)'"
-                           @mouseout="$el.style.color='{{ app()->getLocale() === 'fr' ? '#c8a03c' : 'rgba(255,255,255,0.45)' }}'">
+                           style="{{ app()->getLocale() === 'fr' ? 'color: #c8a03c;' : 'color: rgba(20,60,100,0.45);' }}"
+                           @mouseover="$el.style.color='#143c64'"
+                           @mouseout="$el.style.color='{{ app()->getLocale() === 'fr' ? '#c8a03c' : 'rgba(20,60,100,0.45)' }}'">
                             FR
                         </a>
-                        <span style="color: rgba(255,255,255,0.2);" aria-hidden="true">/</span>
+                        <span style="color: rgba(20,60,100,0.2);" aria-hidden="true">/</span>
                         <a href="{{ route('lang.switch', 'en') }}"
                            aria-label="Switch to English"
                            class="px-2 py-1 rounded transition-all duration-150"
-                           style="{{ app()->getLocale() === 'en' ? 'color: #c8a03c;' : 'color: rgba(255,255,255,0.45);' }}"
-                           @mouseover="$el.style.color='rgba(255,255,255,0.9)'"
-                           @mouseout="$el.style.color='{{ app()->getLocale() === 'en' ? '#c8a03c' : 'rgba(255,255,255,0.45)' }}'">
+                           style="{{ app()->getLocale() === 'en' ? 'color: #c8a03c;' : 'color: rgba(20,60,100,0.45);' }}"
+                           @mouseover="$el.style.color='#143c64'"
+                           @mouseout="$el.style.color='{{ app()->getLocale() === 'en' ? '#c8a03c' : 'rgba(20,60,100,0.45)' }}'">
                             EN
                         </a>
                     </div>
@@ -212,7 +212,7 @@
                 <button
                     @click="mobileOpen ? closeMenu() : openMenu()"
                     class="lg:hidden flex items-center justify-center rounded-md transition-colors"
-                    style="min-width: 44px; min-height: 44px; color: rgba(255,255,255,0.9);"
+                    style="min-width: 44px; min-height: 44px; color: #143c64;"
                     :aria-label="mobileOpen ? '{{ __('ui.close_menu') }}' : '{{ __('nav.open_menu') }}'"
                     :aria-expanded="mobileOpen.toString()"
                     aria-controls="mobile-menu-panel">

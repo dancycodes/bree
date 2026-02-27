@@ -38,7 +38,7 @@
 @section('content')
 
 <div x-data="{
-    activeTab: 'direct',
+    activeTab: '{{ $paymentsEnabled ? 'direct' : 'pledge' }}',
     programme: '{{ $programme }}',
     donationType: '',
     frequency: 'monthly',
@@ -226,6 +226,7 @@
             {{-- Tab bar --}}
             <div class="flex overflow-x-auto rounded-2xl mb-6"
                  style="background-color: #ffffff; border: 2px solid #e8ddf0;">
+                @if ($paymentsEnabled)
                 <button type="button"
                         @click="switchTab('direct')"
                         :style="activeTab === 'direct'
@@ -250,12 +251,13 @@
                     <span>{{ __('donation.tab_recurring') }}</span>
                 </button>
                 <div style="width:2px; flex-shrink:0; background-color:#e8ddf0;"></div>
+                @endif
                 <button type="button"
                         @click="switchTab('pledge')"
                         :style="activeTab === 'pledge'
                             ? 'background-color:#c8a03c; color:#143c64;'
                             : 'background-color:transparent; color:#143c64;'"
-                        class="flex-1 min-w-0 flex items-center justify-center gap-2 px-5 py-3.5 text-sm font-bold transition-all duration-200 cursor-pointer whitespace-nowrap focus:outline-none rounded-r-2xl">
+                        class="flex-1 min-w-0 flex items-center justify-center gap-2 px-5 py-3.5 text-sm font-bold transition-all duration-200 cursor-pointer whitespace-nowrap focus:outline-none {{ $paymentsEnabled ? 'rounded-r-2xl' : 'rounded-2xl' }}">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
                     </svg>
@@ -266,6 +268,7 @@
             {{-- ======================================================
                  TAB PANEL: DON DIRECT
                  ====================================================== --}}
+            @if ($paymentsEnabled)
             <div x-show="activeTab === 'direct'" class="don-tab-panel"
                  style="background-color:#ffffff; border:2px solid #e8ddf0; border-radius:1.5rem; overflow:hidden;">
 
@@ -855,6 +858,7 @@
                 </div>
 
             </div>
+            @endif
 
             {{-- ======================================================
                  TAB PANEL: PROMESSE DE DON (inline)

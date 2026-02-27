@@ -20,6 +20,8 @@ class SiteSetting extends Model
         'social_twitter' => '',
         'donation_show_total' => '0',
         'donation_amounts' => '5000,10000,25000,50000',
+        'team_section_visible' => '0',
+        'payments_enabled' => '0',
     ];
 
     /** Get a single setting value (cached). */

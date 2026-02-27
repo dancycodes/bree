@@ -146,7 +146,7 @@
                     </p>
 
                     {{-- Donate CTA --}}
-                    @if (Route::has('public.donate'))
+                    @if (($paymentsEnabled ?? false) && Route::has('public.donate'))
                         <a href="{{ route('public.donate') }}?programme={{ $program->slug }}"
                            class="btn-primary rounded-full px-7 py-3.5 text-sm">
                             {{ __('programs.donate_for_program', ['name' => $program->name()]) }}

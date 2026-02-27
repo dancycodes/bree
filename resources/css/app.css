@@ -282,7 +282,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ============================================================
    Header Navigation — Desktop Nav Links
-   Navy header background, white text, magenta underline active
+   White header background, navy text, magenta underline active
    ============================================================ */
 
 .bree-nav-link {
@@ -296,7 +296,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-sans);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.82);
+    color: rgba(20, 60, 100, 0.72);
     text-decoration: none;
     transition: color 150ms ease;
     white-space: nowrap;
@@ -311,7 +311,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bree-nav-link:hover {
-    color: #ffffff;
+    color: #143c64;
 }
 
 .bree-nav-link--active {

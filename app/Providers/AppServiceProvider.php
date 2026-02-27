@@ -13,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('layouts.public', function ($view) {
-            $view->with('siteSettings', SiteSetting::allSettings());
+            $settings = SiteSetting::allSettings();
+            $view->with('siteSettings', $settings);
+            $view->with('paymentsEnabled', ($settings['payments_enabled'] ?? '0') === '1');
         });
     }
 }

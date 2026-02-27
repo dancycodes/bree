@@ -1185,8 +1185,9 @@
                 {{-- CTAs --}}
                 <div class="flex flex-col sm:flex-row gap-4 items-center justify-center" data-animate="fade-up">
 
-                    {{-- Primary: white filled button --}}
                     @if (Route::has('public.donate'))
+                        {{-- Primary: Donate Now (only when online payments enabled) --}}
+                        @if ($paymentsEnabled ?? false)
                         <a
                             href="{{ route('public.donate') }}"
                             class="inline-flex items-center justify-center text-base font-semibold px-10 py-4 rounded-xl w-full sm:w-auto text-center transition-all duration-150"
@@ -1195,14 +1196,15 @@
                             onmouseout="this.style.backgroundColor='#ffffff'">
                             {{ __('home.donate_now') }}
                         </a>
+                        @endif
 
-                        {{-- Secondary: white outline --}}
+                        {{-- Pledge donation (always visible) --}}
                         <a
                             href="{{ route('public.donate') }}#promesse"
                             class="inline-flex items-center justify-center text-base font-semibold px-10 py-4 rounded-xl w-full sm:w-auto text-center transition-all duration-150"
-                            style="background-color: transparent; color: #ffffff; border: 2px solid rgba(255,255,255,0.75); min-width: 220px;"
-                            onmouseover="this.style.borderColor='#ffffff'; this.style.backgroundColor='rgba(255,255,255,0.1)'"
-                            onmouseout="this.style.borderColor='rgba(255,255,255,0.75)'; this.style.backgroundColor='transparent'">
+                            style="{{ ($paymentsEnabled ?? false) ? 'background-color: transparent; color: #ffffff; border: 2px solid rgba(255,255,255,0.75);' : 'background-color: #ffffff; color: #c80078;' }} min-width: 220px;"
+                            onmouseover="this.style.borderColor='#ffffff'; this.style.backgroundColor='{{ ($paymentsEnabled ?? false) ? 'rgba(255,255,255,0.1)' : '#f8f5f0' }}'"
+                            onmouseout="this.style.borderColor='rgba(255,255,255,0.75)'; this.style.backgroundColor='{{ ($paymentsEnabled ?? false) ? 'transparent' : '#ffffff' }}'">
                             {{ __('home.pledge_donation') }}
                         </a>
                     @endif
