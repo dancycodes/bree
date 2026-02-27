@@ -40,7 +40,7 @@
     </label>
     @if ($partner?->logo_path)
         <div class="flex items-center gap-4 mb-3 p-3 rounded-xl" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
-            <img src="{{ asset($partner->logo_path) }}" alt=""
+            <img src="{{ vasset($partner->logo_path) }}" alt=""
                  class="w-16 h-12 object-contain rounded-lg" style="background: #fff;">
             <div class="flex-1 min-w-0">
                 <p class="text-xs font-medium" style="color: #475569;">Logo actuel</p>

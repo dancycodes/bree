@@ -71,7 +71,7 @@
                                         <div class="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden flex items-center justify-center"
                                              style="{{ $member->photo_path ? '' : 'background-color: rgba(200,0,120,0.08); border: 1px solid rgba(200,0,120,0.2);' }}">
                                             @if ($member->photo_path)
-                                                <img src="{{ asset($member->photo_path) }}"
+                                                <img src="{{ vasset($member->photo_path) }}"
                                                      alt="{{ $member->name }}"
                                                      class="w-full h-full object-cover">
                                             @else

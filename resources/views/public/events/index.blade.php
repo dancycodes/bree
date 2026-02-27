@@ -45,7 +45,7 @@
          ================================================================ --}}
     <section class="relative overflow-hidden" style="height: clamp(300px, 38vw, 440px);">
 
-        <img src="{{ asset('images/sections/events-placeholder.jpg') }}"
+        <img src="{{ vasset('images/sections/events-placeholder.jpg') }}"
              alt="{{ __('events.page_title') }}"
              class="absolute inset-0 w-full h-full object-cover"
              loading="eager">
@@ -163,7 +163,7 @@
                                 {{-- Thumbnail --}}
                                 <div class="hidden md:block sm:w-48 flex-shrink-0 overflow-hidden" style="min-height: 140px;">
                                     @if ($event->thumbnail_path)
-                                        <img src="{{ asset($event->thumbnail_path) }}"
+                                        <img src="{{ vasset($event->thumbnail_path) }}"
                                              alt="{{ $event->title() }}"
                                              class="w-full h-full object-cover"
                                              style="min-height: 140px;">
@@ -304,7 +304,7 @@
                             {{-- Thumbnail with past badge overlay --}}
                             <div class="overflow-hidden relative" style="height: 168px;">
                                 @if ($event->thumbnail_path)
-                                    <img src="{{ asset($event->thumbnail_path) }}"
+                                    <img src="{{ vasset($event->thumbnail_path) }}"
                                          alt="{{ $event->title() }}"
                                          class="w-full h-full object-cover">
                                 @else

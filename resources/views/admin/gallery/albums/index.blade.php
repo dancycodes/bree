@@ -102,7 +102,7 @@
                                             <div class="w-12 h-10 rounded-lg overflow-hidden flex-shrink-0"
                                                  style="background-color: #f1f5f9;">
                                                 @if ($album->cover_photo_path)
-                                                    <img src="{{ asset($album->cover_photo_path) }}" alt=""
+                                                    <img src="{{ vasset($album->cover_photo_path) }}" alt=""
                                                          class="w-full h-full object-cover">
                                                 @else
                                                     <div class="w-full h-full flex items-center justify-center">

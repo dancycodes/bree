@@ -245,7 +245,7 @@
                         </template>
                         <template x-if="!$files('thumbnail') || $files('thumbnail').length === 0">
                             @if ($event->thumbnail_path)
-                                <img src="{{ asset($event->thumbnail_path) }}" alt="{{ $event->title_fr }}"
+                                <img src="{{ vasset($event->thumbnail_path) }}" alt="{{ $event->title_fr }}"
                                      class="w-full h-full object-cover">
                             @else
                                 <div class="w-full h-full flex items-center justify-center"

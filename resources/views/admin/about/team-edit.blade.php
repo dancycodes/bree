@@ -120,7 +120,7 @@
 
                     @if ($member->photo_path)
                         <div class="w-24 h-24 rounded-full overflow-hidden mx-auto mb-3">
-                            <img src="{{ asset($member->photo_path) }}" alt="Photo actuelle" class="w-full h-full object-cover">
+                            <img src="{{ vasset($member->photo_path) }}" alt="Photo actuelle" class="w-full h-full object-cover">
                         </div>
                     @else
                         <div class="w-24 h-24 rounded-full mx-auto mb-3 flex items-center justify-center"

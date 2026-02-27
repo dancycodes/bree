@@ -265,7 +265,7 @@
         <div class="logo-wrap">
             <a href="{{ url('/') }}">
                 <img
-                    src="{{ asset('images/logo.png') }}"
+                    src="{{ vasset('images/logo.png') }}"
                     alt="Fondation BREE"
                     class="logo"
                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"

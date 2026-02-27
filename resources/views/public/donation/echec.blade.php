@@ -76,7 +76,7 @@
         {{-- Logo --}}
         <div class="bree-animate-logo mb-8 sm:mb-10">
             <a href="{{ route('public.home') }}" aria-label="{{ config('app.name') }}">
-                <img src="{{ asset('images/logo.png') }}"
+                <img src="{{ vasset('images/logo.png') }}"
                      alt="{{ config('app.name') }}"
                      class="h-12 sm:h-14 w-auto mx-auto object-contain"
                      onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">

@@ -26,7 +26,7 @@
 
                     {{-- Program image --}}
                     <div class="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0">
-                        <img src="{{ asset($program->image_path) }}"
+                        <img src="{{ vasset($program->image_path) }}"
                              alt="{{ $program->name_fr }}"
                              class="w-full h-full object-cover">
                     </div>

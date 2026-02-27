@@ -37,7 +37,7 @@
 
     @php
         $photosData = $photos->map(fn ($p) => [
-            'url'     => asset($p->path),
+            'url'     => vasset($p->path),
             'caption' => app()->getLocale() === 'fr' ? ($p->caption_fr ?? '') : ($p->caption_en ?? ''),
         ])->values()->toArray();
     @endphp
@@ -234,7 +234,7 @@
                                 style="aspect-ratio: 1/1; focus-ring-color: #c80078;"
                                 aria-label="{{ __('gallery.expand_photo') }}{{ $caption ? ': ' . $caption : '' }}">
 
-                                <img src="{{ asset($photo->path) }}"
+                                <img src="{{ vasset($photo->path) }}"
                                      alt="{{ $caption }}"
                                      class="w-full h-full object-cover"
                                      loading="lazy">

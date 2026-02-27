@@ -10,7 +10,7 @@
         $__seoDesc  = trim($__env->yieldContent('meta_description'))
             ?: __('meta.default_description');
         $__seoImage = trim($__env->yieldContent('og_image'))
-            ?: asset('images/logo.png');
+            ?: vasset('images/logo.png');
     @endphp
     <x-seo :title="$__seoTitle" :description="$__seoDesc" :image="$__seoImage" :url="url()->current()" />
 
@@ -24,7 +24,7 @@
     <meta name="theme-color" content="#c80078">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ vasset('images/logo.png') }}">
 
     {{-- Gale (Alpine.js + SSE + Morph) --}}
     @gale
@@ -141,7 +141,7 @@
                 {{-- Logo --}}
                 <a href="{{ route('public.home') }}"
                    class="flex items-center flex-shrink-0 focus-visible:outline-offset-4">
-                    <img src="{{ asset('images/logo.png') }}"
+                    <img src="{{ vasset('images/logo.png') }}"
                          alt="{{ config('app.name') }}"
                          class="h-10 w-auto lg:h-12 object-contain"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
@@ -273,7 +273,7 @@
             <a href="{{ route('public.home') }}"
                @click="closeMenu()"
                class="flex items-center">
-                <img src="{{ asset('images/logo.png') }}"
+                <img src="{{ vasset('images/logo.png') }}"
                      alt="{{ config('app.name') }}"
                      class="h-9 w-auto object-contain"
                      onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
@@ -410,7 +410,7 @@
                 {{-- Brand Column --}}
                 <div class="lg:col-span-1">
                     <a href="{{ route('public.home') }}" class="inline-block mb-5">
-                        <img src="{{ asset('images/logo.png') }}"
+                        <img src="{{ vasset('images/logo.png') }}"
                              alt="{{ config('app.name') }}"
                              class="h-16 w-auto brightness-0 invert"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">

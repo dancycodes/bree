@@ -131,7 +131,7 @@
 
                     @if ($founder->photo_path)
                         <div class="rounded-xl overflow-hidden mb-3" style="height: 160px;">
-                            <img src="{{ asset($founder->photo_path) }}"
+                            <img src="{{ vasset($founder->photo_path) }}"
                                  alt="Photo actuelle"
                                  class="w-full h-full object-cover">
                         </div>

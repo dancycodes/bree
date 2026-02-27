@@ -23,7 +23,7 @@
          ================================================================ --}}
     <section class="relative overflow-hidden" style="height: clamp(340px, 48vw, 520px);">
 
-        <img src="{{ asset('images/sections/about.jpg') }}"
+        <img src="{{ vasset('images/sections/about.jpg') }}"
              alt="{{ __('partners.page_title') }}"
              class="absolute inset-0 w-full h-full object-cover"
              loading="eager">
@@ -142,7 +142,7 @@
                                                       border: 1px solid #e2e8f0;
                                                       outline-color: #c80078;">
                                                 @if ($partner->logo_path)
-                                                    <img src="{{ asset($partner->logo_path) }}"
+                                                    <img src="{{ vasset($partner->logo_path) }}"
                                                          alt="{{ $partner->name }}"
                                                          class="partner-logo-img w-full object-contain"
                                                          style="height: 80px; max-width: 100%;">
@@ -160,7 +160,7 @@
                                                         height: 100px;
                                                         border: 1px solid #e2e8f0;">
                                                 @if ($partner->logo_path)
-                                                    <img src="{{ asset($partner->logo_path) }}"
+                                                    <img src="{{ vasset($partner->logo_path) }}"
                                                          alt="{{ $partner->name }}"
                                                          class="partner-logo-img w-full object-contain"
                                                          style="height: 80px; max-width: 100%;">

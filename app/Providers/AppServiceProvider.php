@@ -17,5 +17,6 @@ class AppServiceProvider extends ServiceProvider
             $view->with('siteSettings', $settings);
             $view->with('paymentsEnabled', ($settings['payments_enabled'] ?? '0') === '1');
         });
+
     }
 }

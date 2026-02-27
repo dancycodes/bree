@@ -2,7 +2,7 @@
 
 @section('title', $article->title() . ' — ' . config('app.name'))
 @section('meta_description', $article->excerpt() ?: Str::limit(strip_tags($article->content_fr ?? ''), 160))
-@section('og_image', $article->thumbnail_path ? asset($article->thumbnail_path) : asset('images/logo.png'))
+@section('og_image', $article->thumbnail_path ? vasset($article->thumbnail_path) : vasset('images/logo.png'))
 
 @section('content')
 
@@ -12,7 +12,7 @@
     <section class="relative overflow-hidden" style="height: clamp(340px, 44vw, 540px);">
 
         @if ($article->thumbnail_path)
-            <img src="{{ asset($article->thumbnail_path) }}"
+            <img src="{{ vasset($article->thumbnail_path) }}"
                  alt="{{ $article->title() }}"
                  class="absolute inset-0 w-full h-full object-cover"
                  loading="eager">
@@ -324,7 +324,7 @@
                                class="block relative overflow-hidden"
                                style="aspect-ratio: 16/9;">
                                 @if ($rel->thumbnail_path)
-                                    <img src="{{ asset($rel->thumbnail_path) }}"
+                                    <img src="{{ vasset($rel->thumbnail_path) }}"
                                          alt="{{ $rel->title() }}"
                                          class="absolute inset-0 w-full h-full object-cover transition-transform duration-300"
                                          style="transform: scale(1);"

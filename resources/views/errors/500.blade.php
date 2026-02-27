@@ -286,7 +286,7 @@
 
     <div class="page-container">
 
-        {{-- Logo — use absolute path, no asset() helper on 500 --}}
+        {{-- Logo — use absolute path, no vasset() helper on 500 --}}
         <div class="logo-wrap">
             <a href="/">
                 <img

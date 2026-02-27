@@ -19,7 +19,7 @@
             <div
                 data-hero-image
                 class="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style="background-image: url('{{ asset($hero->bg_image_path) }}'); background-color: #002850;">
+                style="background-image: url('{{ vasset($hero->bg_image_path) }}'); background-color: #002850;">
             </div>
 
             {{-- Solid Dark Overlay — NO gradient (brand rule BR-001) --}}
@@ -323,7 +323,7 @@
                             {{-- Program Image --}}
                             <div class="overflow-hidden relative" style="height: 220px;">
                                 <img
-                                    src="{{ asset($program->image_path) }}"
+                                    src="{{ vasset($program->image_path) }}"
                                     alt="{{ $program->name() }}"
                                     class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                     loading="lazy"
@@ -432,7 +432,7 @@
                             @endif
                                 @if ($article->thumbnail_path)
                                     <img
-                                        src="{{ asset($article->thumbnail_path) }}"
+                                        src="{{ vasset($article->thumbnail_path) }}"
                                         alt="{{ $article->title() }}"
                                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                                         loading="lazy"
@@ -640,7 +640,7 @@
     @if ($galleryPhotos->isNotEmpty())
     @php
         $galleryItems = $galleryPhotos->map(fn ($p) => [
-            'src'     => asset($p->path),
+            'src'     => vasset($p->path),
             'caption' => app()->getLocale() === 'fr' ? $p->caption_fr : $p->caption_en,
         ])->values()->all();
     @endphp
@@ -687,11 +687,11 @@
 
                             {{-- Photo --}}
                             <img
-                                src="{{ asset($photo->path) }}"
+                                src="{{ vasset($photo->path) }}"
                                 alt="{{ $caption }}"
                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                 loading="lazy"
-                                onerror="this.src='{{ asset('images/sections/gallery-placeholder.jpg') }}'">
+                                onerror="this.src='{{ vasset('images/sections/gallery-placeholder.jpg') }}'">
 
                             {{-- Hover overlay — solid color, NO gradient (BR-001) --}}
                             <div
@@ -843,7 +843,7 @@
                                  style="border: 3px solid #c8a03c;">
                                 @if ($founder->photo_path)
                                     <img
-                                        src="{{ asset($founder->photo_path) }}"
+                                        src="{{ vasset($founder->photo_path) }}"
                                         alt="{{ $founder->name }}"
                                         class="w-full h-full rounded-full object-cover object-top"
                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
@@ -920,7 +920,7 @@
                                  style="border: 3px solid #c8a03c;">
                                 @if ($patron->photo_path)
                                     <img
-                                        src="{{ asset($patron->photo_path) }}"
+                                        src="{{ vasset($patron->photo_path) }}"
                                         alt="{{ $patron->name }}"
                                         class="w-full h-full rounded-full object-cover object-top"
                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
@@ -1008,7 +1008,7 @@
 
                 <div class="flex flex-wrap items-center justify-center gap-8 lg:gap-14" data-animate="fade-up">
                     @foreach ($partners as $partner)
-                        @php $logoSrc = $partner->logo_path ? asset($partner->logo_path) : null; @endphp
+                        @php $logoSrc = $partner->logo_path ? vasset($partner->logo_path) : null; @endphp
 
                         @if ($partner->website_url)
                             <a href="{{ $partner->website_url }}"

@@ -33,7 +33,7 @@
              style="background-color: #002850; min-height: clamp(420px, 55vw, 620px);">
 
         {{-- Background image with flat dark overlay ── NO gradient --}}
-        <img src="{{ asset('images/sections/about.jpg') }}"
+        <img src="{{ vasset('images/sections/about.jpg') }}"
              alt="{{ __('volunteers.hero_heading') }}"
              class="absolute inset-0 w-full h-full object-cover"
              loading="eager">

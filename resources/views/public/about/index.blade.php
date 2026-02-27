@@ -10,7 +10,7 @@
          ================================================================ --}}
     <section class="relative overflow-hidden" style="height: clamp(380px, 52vw, 580px);">
 
-        <img src="{{ asset('images/sections/about.jpg') }}"
+        <img src="{{ vasset('images/sections/about.jpg') }}"
              alt="{{ __('about.page_title') }}"
              class="absolute inset-0 w-full h-full object-cover"
              loading="eager">
@@ -71,7 +71,7 @@
                 {{-- Image with decorative accents --}}
                 <div class="relative" data-animate="fade-right">
                     <div class="overflow-hidden rounded-2xl" style="aspect-ratio: 4/3;">
-                        <img src="{{ asset('images/sections/about.jpg') }}"
+                        <img src="{{ vasset('images/sections/about.jpg') }}"
                              alt="{{ __('about.story_heading') }}"
                              class="w-full h-full object-cover"
                              loading="lazy">
@@ -134,7 +134,7 @@
                                 {{-- Prestige portrait treatment: square clip with gold frame --}}
                                 <div class="about-founder-portrait relative overflow-hidden rounded-2xl"
                                      style="width: clamp(260px, 38vw, 420px); height: clamp(300px, 44vw, 480px);">
-                                    <img src="{{ asset($founder->photo_path) }}"
+                                    <img src="{{ vasset($founder->photo_path) }}"
                                          alt="{{ $founder->name }}"
                                          class="w-full h-full object-cover object-top"
                                          loading="lazy">
@@ -416,7 +416,7 @@
                             @if ($patron->photo_path)
                                 <div class="about-patron-portrait relative overflow-hidden rounded-2xl"
                                      style="width: clamp(260px, 38vw, 420px); height: clamp(300px, 44vw, 480px);">
-                                    <img src="{{ asset($patron->photo_path) }}"
+                                    <img src="{{ vasset($patron->photo_path) }}"
                                          alt="{{ $patron->name }}"
                                          class="w-full h-full object-cover object-top"
                                          loading="lazy">
@@ -533,7 +533,7 @@
                                 {{-- Photo — consistent 1:1 aspect ratio --}}
                                 <div class="relative overflow-hidden" style="aspect-ratio: 1 / 1;">
                                     @if ($member->photo_path)
-                                        <img src="{{ asset($member->photo_path) }}"
+                                        <img src="{{ vasset($member->photo_path) }}"
                                              alt="{{ $member->name }}"
                                              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                              loading="lazy">

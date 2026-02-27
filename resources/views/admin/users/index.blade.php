@@ -69,7 +69,7 @@
                                             <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden"
                                                  style="background-color: rgba(20,60,100,0.1);">
                                                 @if ($user->avatar)
-                                                    <img src="{{ asset('storage/' . $user->avatar) }}" alt="" class="w-full h-full object-cover">
+                                                    <img src="{{ vasset('storage/' . $user->avatar) }}" alt="" class="w-full h-full object-cover">
                                                 @else
                                                     <span class="text-sm font-bold" style="color: #143c64;">
                                                         {{ strtoupper(substr($user->name, 0, 1)) }}

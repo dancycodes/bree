@@ -10,7 +10,7 @@
          ================================================================ --}}
     <section class="relative overflow-hidden" style="height: clamp(280px, 35vw, 420px);">
 
-        <img src="{{ asset('images/sections/about.jpg') }}"
+        <img src="{{ vasset('images/sections/about.jpg') }}"
              alt="{{ __('contact.hero_heading') }}"
              class="absolute inset-0 w-full h-full object-cover">
 

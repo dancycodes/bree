@@ -142,7 +142,7 @@
                                             <div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0"
                                                  style="background-color: #f1f5f9;">
                                                 @if ($event->thumbnail_path)
-                                                    <img src="{{ asset($event->thumbnail_path) }}" alt=""
+                                                    <img src="{{ vasset($event->thumbnail_path) }}" alt=""
                                                          class="w-full h-full object-cover">
                                                 @else
                                                     <div class="w-full h-full flex items-center justify-center">

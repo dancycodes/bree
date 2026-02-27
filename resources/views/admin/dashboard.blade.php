@@ -17,7 +17,7 @@
                 </p>
             </div>
             <div class="absolute right-6 top-1/2 -translate-y-1/2 opacity-10">
-                <img src="{{ asset('images/logo.png') }}" alt="" class="h-24 w-24 object-contain">
+                <img src="{{ vasset('images/logo.png') }}" alt="" class="h-24 w-24 object-contain">
             </div>
         </div>
 

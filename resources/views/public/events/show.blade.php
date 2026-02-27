@@ -2,7 +2,7 @@
 
 @section('title', $event->title() . ' — ' . config('app.name'))
 @section('meta_description', app()->getLocale() === 'fr' ? ($event->description_fr ?? '') : ($event->description_en ?? ''))
-@section('og_image', $event->thumbnail_path ? asset($event->thumbnail_path) : asset('images/logo.png'))
+@section('og_image', $event->thumbnail_path ? vasset($event->thumbnail_path) : vasset('images/logo.png'))
 
 @section('content')
 
@@ -12,7 +12,7 @@
     <section class="relative overflow-hidden" style="height: clamp(300px, 38vw, 440px);">
 
         @if ($event->thumbnail_path)
-            <img src="{{ asset($event->thumbnail_path) }}"
+            <img src="{{ vasset($event->thumbnail_path) }}"
                  alt="{{ $event->title() }}"
                  class="absolute inset-0 w-full h-full object-cover"
                  loading="eager">

@@ -173,7 +173,7 @@
                         <label class="block text-xs font-semibold mb-2" style="color: #374151;">Image de fond</label>
                         @if ($hero->bg_image_path)
                             <div class="rounded-xl overflow-hidden mb-3" style="height: 120px;">
-                                <img src="{{ asset($hero->bg_image_path) }}"
+                                <img src="{{ vasset($hero->bg_image_path) }}"
                                      alt="Aperçu hero"
                                      class="w-full h-full object-cover">
                             </div>
@@ -305,7 +305,7 @@
                         <label class="block text-xs font-semibold mb-2" style="color: #374151;">Image de fond</label>
                         @if ($cta->bg_image_path)
                             <div class="rounded-xl overflow-hidden mb-3" style="height: 100px;">
-                                <img src="{{ asset($cta->bg_image_path) }}"
+                                <img src="{{ vasset($cta->bg_image_path) }}"
                                      alt="Aperçu section don"
                                      class="w-full h-full object-cover">
                             </div>

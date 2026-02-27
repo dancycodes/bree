@@ -10,7 +10,7 @@
 
     {{-- Header --}}
     <div style="background-color: #143c64; padding: 28px 40px; text-align: left;">
-        <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" style="height: 44px; width: auto; margin-bottom: 16px; display: block;">
+        <img src="{{ vasset('images/logo.png') }}" alt="{{ config('app.name') }}" style="height: 44px; width: auto; margin-bottom: 16px; display: block;">
         <h1 style="color: #ffffff; font-size: 20px; margin: 0; font-weight: 700; line-height: 1.4;">
             {{ __('donation.merci_heading_personalized', ['name' => $donation->donor_name]) }}
         </h1>

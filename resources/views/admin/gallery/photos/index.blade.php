@@ -218,7 +218,7 @@
                     <h3 class="text-xs font-semibold uppercase tracking-wider mb-3" style="color: #94a3b8;">Album</h3>
                     @if ($album->cover_photo_path)
                         <div class="rounded-xl overflow-hidden mb-3" style="height: 100px;">
-                            <img src="{{ asset($album->cover_photo_path) }}" alt="" class="w-full h-full object-cover">
+                            <img src="{{ vasset($album->cover_photo_path) }}" alt="" class="w-full h-full object-cover">
                         </div>
                     @endif
                     <p class="text-sm font-semibold" style="color: #1e293b;">{{ $album->title_fr }}</p>

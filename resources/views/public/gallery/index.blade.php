@@ -10,7 +10,7 @@
          ================================================================ --}}
     <section class="relative overflow-hidden" style="height: clamp(280px, 35vw, 420px);">
 
-        <img src="{{ asset('images/sections/gallery-placeholder.jpg') }}"
+        <img src="{{ vasset('images/sections/gallery-placeholder.jpg') }}"
              alt="{{ __('gallery.page_title') }}"
              class="absolute inset-0 w-full h-full object-cover">
 

@@ -46,7 +46,7 @@
 
         {{-- Logo / Brand --}}
         <div class="flex items-center gap-3 px-5 py-5 border-b" style="border-color: rgba(255,255,255,0.08);">
-            <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" class="h-9 w-auto flex-shrink-0">
+            <img src="{{ vasset('images/logo.png') }}" alt="{{ config('app.name') }}" class="h-9 w-auto flex-shrink-0">
             <div>
                 <p class="text-white font-semibold text-sm leading-tight">{{ config('app.name') }}</p>
                 <p class="text-xs" style="color: rgba(255,255,255,0.4);">Administration</p>

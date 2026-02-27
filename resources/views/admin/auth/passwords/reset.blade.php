@@ -17,7 +17,7 @@
     }">
 
         <div class="flex justify-center mb-8">
-            <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" class="h-20 w-auto">
+            <img src="{{ vasset('images/logo.png') }}" alt="{{ config('app.name') }}" class="h-20 w-auto">
         </div>
 
         <div class="bg-white rounded-2xl shadow-2xl px-8 py-10">

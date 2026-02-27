@@ -95,7 +95,7 @@
                                             <div class="w-12 h-10 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center"
                                                  style="background-color: #f1f5f9;">
                                                 @if ($partner->logo_path)
-                                                    <img src="{{ asset($partner->logo_path) }}" alt=""
+                                                    <img src="{{ vasset($partner->logo_path) }}" alt=""
                                                          class="w-full h-full object-contain">
                                                 @else
                                                     <span class="text-xs font-bold" style="color: #94a3b8;">

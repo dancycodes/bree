@@ -6,7 +6,7 @@
 ])
 
 @php
-    $image = $image ?: asset('images/logo.png');
+    $image = $image ?: vasset('images/logo.png');
     $url   = $url   ?: url()->current();
 @endphp
 

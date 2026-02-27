@@ -16,6 +16,10 @@ echo ">>> Installing npm dependencies & building assets..."
 npm ci
 npm run build
 
+echo ">>> Setting asset version for cache busting..."
+sed -i '/^ASSET_VERSION=/d' .env
+echo "ASSET_VERSION=$(date +%s)" >> .env
+
 echo ">>> Clearing all Laravel caches..."
 php artisan config:clear
 php artisan route:clear

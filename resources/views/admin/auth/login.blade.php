@@ -18,7 +18,7 @@
         {{-- Logo --}}
         <div class="flex justify-center mb-8">
             <a href="{{ route('public.home') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="{{ config('app.name') }}" class="h-20 w-auto">
+                <img src="{{ vasset('images/logo.png') }}" alt="{{ config('app.name') }}" class="h-20 w-auto">
             </a>
         </div>
 

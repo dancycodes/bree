@@ -208,7 +208,7 @@
 
                     @if ($program->image_path)
                         <div class="rounded-xl overflow-hidden mb-3" style="height: 140px;">
-                            <img src="{{ asset($program->image_path) }}"
+                            <img src="{{ vasset($program->image_path) }}"
                                  alt="Image actuelle"
                                  class="w-full h-full object-cover">
                         </div>

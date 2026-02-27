@@ -21,7 +21,7 @@
          ================================================================ --}}
     <section class="relative overflow-hidden" style="height: clamp(300px, 38vw, 440px);">
 
-        <img src="{{ asset('images/sections/about.jpg') }}"
+        <img src="{{ vasset('images/sections/about.jpg') }}"
              alt="{{ __('news.page_title') }}"
              class="absolute inset-0 w-full h-full object-cover"
              loading="eager">
@@ -197,7 +197,7 @@
                                    style="aspect-ratio: 16/9;">
 
                                     @if ($hasThumbnail)
-                                        <img src="{{ asset($article->thumbnail_path) }}"
+                                        <img src="{{ vasset($article->thumbnail_path) }}"
                                              alt="{{ $article->title() }}"
                                              class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                              loading="lazy">

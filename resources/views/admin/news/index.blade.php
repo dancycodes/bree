@@ -98,7 +98,7 @@
                                         <div class="flex items-center gap-3">
                                             <div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0" style="background-color: #f1f5f9;">
                                                 @if ($article->thumbnail_path)
-                                                    <img src="{{ asset($article->thumbnail_path) }}" alt="" class="w-full h-full object-cover">
+                                                    <img src="{{ vasset($article->thumbnail_path) }}" alt="" class="w-full h-full object-cover">
                                                 @else
                                                     <div class="w-full h-full flex items-center justify-center">
                                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5" style="color: #cbd5e1;">

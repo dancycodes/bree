@@ -190,7 +190,7 @@
                         </template>
                         <template x-if="!$files('thumbnail') || $files('thumbnail').length === 0">
                             @if ($article->thumbnail_path)
-                                <img src="{{ asset($article->thumbnail_path) }}"
+                                <img src="{{ vasset($article->thumbnail_path) }}"
                                      alt="{{ $article->title_fr }}"
                                      class="w-full h-full object-cover">
                             @else

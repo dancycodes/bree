@@ -13,7 +13,7 @@
 
         {{-- Background image --}}
         <img
-            src="{{ asset($program->image_path) }}"
+            src="{{ vasset($program->image_path) }}"
             alt="{{ $program->name() }}"
             class="absolute inset-0 w-full h-full object-cover">
 
@@ -247,7 +247,7 @@
                             <div class="flex items-center gap-3 pt-4"
                                  style="border-top: 1px solid {{ $program->color }}20;">
                                 @if ($story->photo_path)
-                                    <img src="{{ asset($story->photo_path) }}"
+                                    <img src="{{ vasset($story->photo_path) }}"
                                          alt="{{ $story->author_name }}"
                                          class="w-10 h-10 rounded-full object-cover flex-shrink-0">
                                 @else
@@ -389,7 +389,7 @@
                            data-animate="fade-up">
 
                             {{-- Background image --}}
-                            <img src="{{ asset($other->image_path) }}"
+                            <img src="{{ vasset($other->image_path) }}"
                                  alt="{{ $other->name() }}"
                                  class="absolute inset-0 w-full h-full object-cover
                                         transition-transform duration-700 group-hover:scale-105">

@@ -110,7 +110,7 @@
                             </template>
                             <template x-if="!avatarPreview">
                                 @if ($user->avatar)
-                                    <img src="{{ asset('storage/' . $user->avatar) }}" alt="" class="w-full h-full object-cover">
+                                    <img src="{{ vasset('storage/' . $user->avatar) }}" alt="" class="w-full h-full object-cover">
                                 @else
                                     <span class="text-2xl font-bold" style="color: #143c64;">
                                         {{ strtoupper(substr($user->name, 0, 1)) }}

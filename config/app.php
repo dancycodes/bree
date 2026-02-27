@@ -123,4 +123,17 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Asset Version (Cache Busting)
+    |--------------------------------------------------------------------------
+    |
+    | Appended as ?v= query string to asset() URLs. Update this value
+    | on each deploy to force browsers to fetch fresh static files.
+    | The deploy.sh script sets this automatically.
+    |
+    */
+
+    'asset_version' => env('ASSET_VERSION', '1'),
+
 ];

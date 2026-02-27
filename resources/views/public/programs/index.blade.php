@@ -193,7 +193,7 @@
 
                             {{-- PROGRAM IMAGE PANEL (desktop right side) --}}
                             <div class="hidden xl:block relative flex-shrink-0 w-64 overflow-hidden">
-                                <img src="{{ asset($program->image_path) }}"
+                                <img src="{{ vasset($program->image_path) }}"
                                      alt="{{ $program->name() }}"
                                      class="absolute inset-0 w-full h-full object-cover
                                             transition-transform duration-700 group-hover:scale-105"

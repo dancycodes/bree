@@ -102,7 +102,7 @@
          ================================================================ --}}
     <section class="relative overflow-hidden" style="height: clamp(340px, 48vw, 520px);">
 
-        <img src="{{ asset('images/sections/donate.jpg') }}"
+        <img src="{{ vasset('images/sections/donate.jpg') }}"
              alt="{{ __('donation.page_title') }}"
              class="absolute inset-0 w-full h-full object-cover">
 

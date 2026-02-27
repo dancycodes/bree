@@ -157,7 +157,7 @@
                         </template>
                         <template x-if="!$files('cover') || $files('cover').length === 0">
                             @if ($album->cover_photo_path)
-                                <img src="{{ asset($album->cover_photo_path) }}" alt="" class="w-full h-full object-cover">
+                                <img src="{{ vasset($album->cover_photo_path) }}" alt="" class="w-full h-full object-cover">
                             @else
                                 <span class="text-xs" style="color: #94a3b8;">Aucune image sélectionnée</span>
                             @endif
