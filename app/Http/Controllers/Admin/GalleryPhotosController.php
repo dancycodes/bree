@@ -37,7 +37,7 @@ class GalleryPhotosController extends Controller
         $this->authorize('gallery.create');
 
         $request->validate([
-            'photo' => 'required|image|mimes:jpeg,jpg,png,webp|max:5120',
+            'photo' => 'required|image|mimes:jpeg,jpg,png,webp|max:15360',
         ]);
 
         $file = $request->file('photo');
