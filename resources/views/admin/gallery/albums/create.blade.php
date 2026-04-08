@@ -148,7 +148,7 @@
                     <input type="file" name="cover" x-files accept="image/*"
                            class="w-full text-xs"
                            style="color: #64748b;">
-                    <p class="text-xs mt-2" style="color: #cbd5e1;">JPEG, PNG, WebP — max 5 MB</p>
+                    <p class="text-xs mt-2" style="color: #cbd5e1;">JPEG, PNG, WebP — max 15 MB</p>
                 </div>
 
                 {{-- Nav --}}
