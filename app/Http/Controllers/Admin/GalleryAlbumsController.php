@@ -66,7 +66,7 @@ class GalleryAlbumsController extends Controller
             'description_fr' => 'nullable|string',
             'description_en' => 'nullable|string',
             'is_published' => 'boolean',
-            'cover' => 'nullable|image|max:5120',
+            'cover' => 'nullable|image|max:15360',
         ]);
 
         $album = GalleryAlbum::create([
