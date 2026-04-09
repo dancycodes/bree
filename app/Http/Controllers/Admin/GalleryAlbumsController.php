@@ -6,9 +6,71 @@ use App\Http\Controllers\Controller;
 use App\Models\GalleryAlbum;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class GalleryAlbumsController extends Controller
 {
+    private const COVER_MAX_KILOBYTES = 15360;
+
+    private function normalizeBooleanValue(mixed $value): mixed
+    {
+        if (is_array($value)) {
+            $lastValue = end($value);
+
+            return $this->normalizeBooleanValue($lastValue);
+        }
+
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        if (is_int($value)) {
+            return $value === 1;
+        }
+
+        if (is_string($value)) {
+            $trimmed = trim($value);
+            $parsed = filter_var($trimmed, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            if ($parsed !== null) {
+                return $parsed;
+            }
+        }
+
+        return $value;
+    }
+
+    private function normalizePublishedFlag(array $data): array
+    {
+        if (! array_key_exists('is_published', $data)) {
+            return $data;
+        }
+
+        $data['is_published'] = $this->normalizeBooleanValue($data['is_published']);
+
+        return $data;
+    }
+
+    private function normalizeSlugField(array $data): array
+    {
+        if (! array_key_exists('slug', $data)) {
+            return $data;
+        }
+
+        $slug = Str::slug((string) $data['slug']);
+        $data['slug'] = $slug !== '' ? $slug : (string) $data['slug'];
+
+        return $data;
+    }
+
+    private function shouldReturnInlineErrors(Request $request): bool
+    {
+        return $request->isGale()
+            || $request->expectsJson()
+            || $request->ajax()
+            || strcasecmp((string) $request->header('X-Requested-With', ''), 'XMLHttpRequest') === 0;
+    }
+
     public function index(Request $request): mixed
     {
         $this->authorize('gallery.view');
@@ -59,23 +121,104 @@ class GalleryAlbumsController extends Controller
     {
         $this->authorize('gallery.create');
 
-        $request->validate([
+        $stateRules = [
             'title_fr' => 'required|string|max:300',
             'title_en' => 'required|string|max:300',
             'slug' => 'required|string|max:300|regex:/^[a-z0-9-]+$/|unique:gallery_albums,slug',
             'description_fr' => 'nullable|string',
             'description_en' => 'nullable|string',
             'is_published' => 'boolean',
-            'cover' => 'nullable|image|max:15360',
+        ];
+
+        if ($request->isGale()) {
+            $jsonState = $this->normalizeSlugField(
+                $this->normalizePublishedFlag((array) $request->state())
+            );
+            if (is_array($jsonState) && $jsonState !== []) {
+                $validator = Validator::make($jsonState, $stateRules);
+                if ($validator->fails()) {
+                    return gale()->messages($validator->errors()->toArray());
+                }
+
+                $validated = $validator->validated();
+            } else {
+                $multipartState = $request->input('state', []);
+                if (is_string($multipartState) && $multipartState !== '') {
+                    $decodedState = json_decode($multipartState, true);
+                    $multipartState = is_array($decodedState) ? $decodedState : [];
+                }
+
+                if (is_array($multipartState)) {
+                    $multipartState = $this->normalizeSlugField(
+                        $this->normalizePublishedFlag(array_merge(
+                            $request->except(['cover', 'state']),
+                            $multipartState
+                        ))
+                    );
+                }
+
+                if (is_array($multipartState) && $multipartState !== []) {
+                    $validator = Validator::make($multipartState, $stateRules);
+                    if ($validator->fails()) {
+                        return gale()->messages($validator->errors()->toArray());
+                    }
+
+                    $validated = $validator->validated();
+                } else {
+                    $request->merge($this->normalizeSlugField($this->normalizePublishedFlag($request->all())));
+                    $validator = Validator::make($request->all(), $stateRules);
+                    if ($validator->fails()) {
+                        if ($this->shouldReturnInlineErrors($request)) {
+                            return response()->json(['messages' => $validator->errors()->toArray()]);
+                        }
+
+                        return redirect()->back()->withErrors($validator)->withInput();
+                    }
+
+                    $validated = $validator->validated();
+                }
+            }
+        } else {
+            $request->merge($this->normalizeSlugField($this->normalizePublishedFlag($request->all())));
+            $validator = Validator::make($request->all(), $stateRules);
+            if ($validator->fails()) {
+                if ($this->shouldReturnInlineErrors($request)) {
+                    return response()->json(['messages' => $validator->errors()->toArray()]);
+                }
+
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $validated = $validator->validated();
+        }
+
+        $coverValidator = Validator::make($request->all(), [
+            'cover' => 'nullable|image|max:'.self::COVER_MAX_KILOBYTES,
         ]);
 
+        if ($coverValidator->fails()) {
+            if ($this->shouldReturnInlineErrors($request)) {
+                if ($request->isGale()) {
+                    return gale()->messages($coverValidator->errors()->toArray());
+                }
+
+                return response()->json(['messages' => $coverValidator->errors()->toArray()]);
+            }
+
+            if ($request->isGale()) {
+                return gale()->messages($coverValidator->errors()->toArray());
+            }
+
+            return redirect()->back()->withErrors($coverValidator)->withInput();
+        }
+
         $album = GalleryAlbum::create([
-            'slug' => $request->input('slug'),
-            'title_fr' => strip_tags($request->input('title_fr')),
-            'title_en' => strip_tags($request->input('title_en')),
-            'description_fr' => $request->input('description_fr'),
-            'description_en' => $request->input('description_en'),
-            'is_published' => (bool) $request->input('is_published', false),
+            'slug' => $validated['slug'],
+            'title_fr' => strip_tags($validated['title_fr']),
+            'title_en' => strip_tags($validated['title_en']),
+            'description_fr' => $validated['description_fr'] ?? null,
+            'description_en' => $validated['description_en'] ?? null,
+            'is_published' => (bool) ($validated['is_published'] ?? false),
         ]);
 
         if ($request->hasFile('cover')) {
@@ -97,15 +240,97 @@ class GalleryAlbumsController extends Controller
     {
         $this->authorize('gallery.edit');
 
-        $request->validate([
+        $stateRules = [
             'title_fr' => 'required|string|max:300',
             'title_en' => 'required|string|max:300',
             'slug' => 'required|string|max:300|regex:/^[a-z0-9-]+$/|unique:gallery_albums,slug,'.$album->id,
             'description_fr' => 'nullable|string',
             'description_en' => 'nullable|string',
             'is_published' => 'boolean',
-            'cover' => 'nullable|image|max:15360',
+        ];
+
+        if ($request->isGale()) {
+            $jsonState = $this->normalizeSlugField(
+                $this->normalizePublishedFlag((array) $request->state())
+            );
+
+            if (is_array($jsonState) && $jsonState !== []) {
+                $validator = Validator::make($jsonState, $stateRules);
+                if ($validator->fails()) {
+                    return gale()->messages($validator->errors()->toArray());
+                }
+
+                $validated = $validator->validated();
+            } else {
+                $multipartState = $request->input('state', []);
+                if (is_string($multipartState) && $multipartState !== '') {
+                    $decodedState = json_decode($multipartState, true);
+                    $multipartState = is_array($decodedState) ? $decodedState : [];
+                }
+
+                if (is_array($multipartState)) {
+                    $multipartState = $this->normalizeSlugField(
+                        $this->normalizePublishedFlag(array_merge(
+                            $request->except(['cover', 'state']),
+                            $multipartState
+                        ))
+                    );
+                }
+
+                if (is_array($multipartState) && $multipartState !== []) {
+                    $validator = Validator::make($multipartState, $stateRules);
+                    if ($validator->fails()) {
+                        return gale()->messages($validator->errors()->toArray());
+                    }
+
+                    $validated = $validator->validated();
+                } else {
+                    $request->merge($this->normalizeSlugField($this->normalizePublishedFlag($request->all())));
+                    $validator = Validator::make($request->all(), $stateRules);
+                    if ($validator->fails()) {
+                        if ($this->shouldReturnInlineErrors($request)) {
+                            return response()->json(['messages' => $validator->errors()->toArray()]);
+                        }
+
+                        return redirect()->back()->withErrors($validator)->withInput();
+                    }
+
+                    $validated = $validator->validated();
+                }
+            }
+        } else {
+            $request->merge($this->normalizeSlugField($this->normalizePublishedFlag($request->all())));
+            $validator = Validator::make($request->all(), $stateRules);
+            if ($validator->fails()) {
+                if ($this->shouldReturnInlineErrors($request)) {
+                    return response()->json(['messages' => $validator->errors()->toArray()]);
+                }
+
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $validated = $validator->validated();
+        }
+
+        $coverValidator = Validator::make($request->all(), [
+            'cover' => 'nullable|image|max:'.self::COVER_MAX_KILOBYTES,
         ]);
+
+        if ($coverValidator->fails()) {
+            if ($this->shouldReturnInlineErrors($request)) {
+                if ($request->isGale()) {
+                    return gale()->messages($coverValidator->errors()->toArray());
+                }
+
+                return response()->json(['messages' => $coverValidator->errors()->toArray()]);
+            }
+
+            if ($request->isGale()) {
+                return gale()->messages($coverValidator->errors()->toArray());
+            }
+
+            return redirect()->back()->withErrors($coverValidator)->withInput();
+        }
 
         $coverPath = $album->cover_photo_path;
         if ($request->hasFile('cover')) {
@@ -114,12 +339,12 @@ class GalleryAlbumsController extends Controller
         }
 
         $album->update([
-            'slug' => $request->input('slug'),
-            'title_fr' => strip_tags($request->input('title_fr')),
-            'title_en' => strip_tags($request->input('title_en')),
-            'description_fr' => $request->input('description_fr'),
-            'description_en' => $request->input('description_en'),
-            'is_published' => (bool) $request->input('is_published', false),
+            'slug' => $validated['slug'],
+            'title_fr' => strip_tags($validated['title_fr']),
+            'title_en' => strip_tags($validated['title_en']),
+            'description_fr' => $validated['description_fr'] ?? null,
+            'description_en' => $validated['description_en'] ?? null,
+            'is_published' => (bool) ($validated['is_published'] ?? false),
             'cover_photo_path' => $coverPath,
         ]);
 

@@ -13,8 +13,6 @@ use Intervention\Image\ImageManager;
 
 class GalleryPhotosController extends Controller
 {
-    private const PHOTO_MAX_KILOBYTES = 20480;
-
     public function index(GalleryAlbum $album): mixed
     {
         $this->authorize('gallery.view');
@@ -24,6 +22,7 @@ class GalleryPhotosController extends Controller
         $photoData = $photos->map(fn (GalleryPhoto $p) => [
             'id' => $p->id,
             'url' => asset($p->path),
+
             'caption_fr' => $p->caption_fr,
             'caption_en' => $p->caption_en,
             'sort_order' => $p->sort_order,
@@ -39,7 +38,7 @@ class GalleryPhotosController extends Controller
         $this->authorize('gallery.create');
 
         $request->validate([
-            'photo' => 'required|image|mimes:jpeg,jpg,png,webp|max:'.self::PHOTO_MAX_KILOBYTES,
+            'photo' => 'required|image|mimes:jpeg,jpg,png,webp|max:15360',
         ]);
 
         $file = $request->file('photo');

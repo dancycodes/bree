@@ -42,6 +42,7 @@ use App\Http\Controllers\Public\SitemapController;
 use App\Http\Controllers\Public\VolunteerController;
 use App\Http\Controllers\Public\WebhookController;
 use Illuminate\Support\Facades\Route;
+use Spatie\Honeypot\ProtectAgainstSpam;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,6 +114,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/galerie/albums/creer', [GalleryAlbumsController::class, 'create'])->name('gallery.albums.create');
     Route::post('/galerie/albums', [GalleryAlbumsController::class, 'store'])->name('gallery.albums.store');
     Route::get('/galerie/albums/{album:slug}/modifier', [GalleryAlbumsController::class, 'edit'])->name('gallery.albums.edit');
+    Route::post('/galerie/albums/{album:slug}/modifier', [GalleryAlbumsController::class, 'update']);
+    Route::post('/galerie/albums/{album:slug}', [GalleryAlbumsController::class, 'update']);
+    Route::patch('/galerie/albums/{album:slug}/modifier', [GalleryAlbumsController::class, 'update']);
     Route::patch('/galerie/albums/{album:slug}', [GalleryAlbumsController::class, 'update'])->name('gallery.albums.update');
     Route::delete('/galerie/albums/{album:slug}', [GalleryAlbumsController::class, 'destroy'])->name('gallery.albums.destroy');
 
@@ -242,17 +246,17 @@ Route::get('/evenements', [EventsController::class, 'index'])->name('public.even
 Route::get('/evenements/{event:slug}', [EventsController::class, 'show'])->name('public.events.show');
 Route::post('/evenements/{event:slug}/inscription', [EventsController::class, 'register'])
     ->name('public.events.register')
-    ->middleware(['throttle:5,1', \Spatie\Honeypot\ProtectAgainstSpam::class]);
+    ->middleware(['throttle:5,1', ProtectAgainstSpam::class]);
 Route::get('/galerie', [GalleryController::class, 'index'])->name('public.gallery');
 Route::get('/galerie/{album:slug}', [GalleryController::class, 'show'])->name('public.gallery.show');
 Route::get('/partenaires', [PartnersController::class, 'index'])->name('public.partners');
 Route::post('/partenaires/candidater', [PartnersController::class, 'storePartnership'])
     ->name('public.partners.store')
-    ->middleware(['throttle:5,1', \Spatie\Honeypot\ProtectAgainstSpam::class]);
+    ->middleware(['throttle:5,1', ProtectAgainstSpam::class]);
 Route::get('/benevoles', [VolunteerController::class, 'index'])->name('public.volunteers');
 Route::post('/benevoles/candidater', [VolunteerController::class, 'store'])
     ->name('public.volunteers.store')
-    ->middleware(['throttle:5,1', \Spatie\Honeypot\ProtectAgainstSpam::class]);
+    ->middleware(['throttle:5,1', ProtectAgainstSpam::class]);
 Route::get('/programmes', [ProgramsController::class, 'index'])->name('public.programs');
 Route::get('/faire-un-don', [DonationController::class, 'index'])->name('public.donate');
 Route::post('/faire-un-don/choisir-montant', [DonationController::class, 'selectAmount'])->name('public.donate.selectAmount');
@@ -265,21 +269,21 @@ Route::get('/don/echec', [DonationController::class, 'failurePage'])->name('publ
 Route::get('/don/callback-3ds', [DonationController::class, 'verifyPayment'])->name('public.donate.verify3ds');
 Route::post('/faire-un-don/promesse', [DonationController::class, 'storePledge'])
     ->name('public.donate.pledge')
-    ->middleware(['throttle:5,1', \Spatie\Honeypot\ProtectAgainstSpam::class]);
+    ->middleware(['throttle:5,1', ProtectAgainstSpam::class]);
 Route::post('/faire-un-don/don-en-nature', [DonationController::class, 'storeInKind'])
     ->name('public.donate.inkind')
-    ->middleware(['throttle:5,1', \Spatie\Honeypot\ProtectAgainstSpam::class]);
+    ->middleware(['throttle:5,1', ProtectAgainstSpam::class]);
 Route::post('/webhook/flutterwave', [WebhookController::class, 'flutterwave'])->name('webhook.flutterwave');
 Route::get('/programmes/{program:slug}', [ProgramsController::class, 'show'])->name('public.programs.show');
 
 Route::get('/contact', [ContactController::class, 'index'])->name('public.contact');
 Route::post('/contact/envoyer', [ContactController::class, 'store'])
     ->name('public.contact.store')
-    ->middleware(['throttle:5,1', \Spatie\Honeypot\ProtectAgainstSpam::class]);
+    ->middleware(['throttle:5,1', ProtectAgainstSpam::class]);
 
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'store'])
     ->name('newsletter.subscribe')
-    ->middleware(['throttle:5,1', \Spatie\Honeypot\ProtectAgainstSpam::class]);
+    ->middleware(['throttle:5,1', ProtectAgainstSpam::class]);
 
 /*
 |--------------------------------------------------------------------------

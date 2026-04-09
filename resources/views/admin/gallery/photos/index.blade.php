@@ -43,7 +43,7 @@
                             <p class="text-sm font-medium" style="color: #475569;">
                                 Glissez vos photos ici ou <span style="color: #c80078;">cliquez pour sélectionner</span>
                             </p>
-                            <p class="text-xs mt-1" style="color: #94a3b8;">JPEG, PNG, WebP — max 5 MB par photo</p>
+                            <p class="text-xs mt-1" style="color: #94a3b8;">JPEG, PNG, WebP — max 20 MB par photo</p>
                         </div>
                     </div>
 
@@ -384,8 +384,8 @@ document.addEventListener('alpine:init', () => {
                     this.pendingFiles.push({ file: null, name: file.name, preview: null, progress: 0, status: 'error', error: 'Format non accepté (JPEG, PNG, WebP uniquement)' });
                     return;
                 }
-                if (file.size > 5 * 1024 * 1024) {
-                    this.pendingFiles.push({ file: null, name: file.name, preview: null, progress: 0, status: 'error', error: 'Cette photo dépasse la taille maximale de 5 MB' });
+                if (file.size > 20 * 1024 * 1024) {
+                    this.pendingFiles.push({ file: null, name: file.name, preview: null, progress: 0, status: 'error', error: 'Cette photo dépasse la taille maximale de 20 MB' });
                     return;
                 }
                 this.pendingFiles.push({

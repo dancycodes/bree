@@ -6,23 +6,52 @@
 
 @section('content')
 
+    @if ($errors->any())
+        <div class="mb-4 rounded-xl border px-4 py-3 text-sm" style="border-color: #fecaca; background-color: #fef2f2; color: #b91c1c;">
+            <ul class="list-disc pl-5 space-y-1">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div
         x-data="{
             title_fr: '',
             title_en: '',
             slug: '',
+            slugEditedManually: false,
             description_fr: '',
             description_en: '',
             is_published: false,
+            uploadProgress: 0,
             activeLang: 'fr',
-            autoSlug(val) {
-                if (!this.slug) {
-                    this.slug = val
-                        .toLowerCase()
-                        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                        .replace(/[^a-z0-9\s-]/g, '')
-                        .trim()
-                        .replace(/\s+/g, '-');
+            slugify(val) {
+                return val
+                    .toLowerCase()
+                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .trim()
+                    .replace(/\s+/g, '-');
+            },
+            slugFromLang(lang) {
+                const source = lang === 'fr' ? this.title_fr : this.title_en;
+                return this.slugify(source);
+            },
+            autoSlug(lang, val) {
+                if (this.slugEditedManually) {
+                    return;
+                }
+
+                if (this.activeLang === lang) {
+                    this.slug = this.slugify(val);
+                }
+            },
+            switchLang(lang) {
+                this.activeLang = lang;
+                if (!this.slugEditedManually) {
+                    this.slug = this.slugFromLang(lang);
                 }
             }
         }"
@@ -36,11 +65,11 @@
                 {{-- Titles --}}
                 <div class="bg-white rounded-2xl shadow-sm p-6">
                     <div class="flex border-b mb-5" style="border-color: #e2e8f0;">
-                        <button @click="activeLang = 'fr'" class="flex-1 py-3 text-xs font-semibold transition-colors"
+                        <button @click="switchLang('fr')" class="flex-1 py-3 text-xs font-semibold transition-colors"
                                 :style="activeLang === 'fr' ? 'color: #c80078; border-bottom: 2px solid #c80078;' : 'color: #94a3b8;'">
                             Français
                         </button>
-                        <button @click="activeLang = 'en'" class="flex-1 py-3 text-xs font-semibold transition-colors"
+                        <button @click="switchLang('en')" class="flex-1 py-3 text-xs font-semibold transition-colors"
                                 :style="activeLang === 'en' ? 'color: #c80078; border-bottom: 2px solid #c80078;' : 'color: #94a3b8;'">
                             English
                         </button>
@@ -52,7 +81,7 @@
                                 Titre (FR) <span style="color: #ef4444;">*</span>
                             </label>
                             <input x-model="title_fr" x-name="title_fr" type="text"
-                                   @input="autoSlug($event.target.value)"
+                                   @input="autoSlug('fr', $event.target.value)"
                                    class="w-full text-sm px-3 py-2.5 rounded-lg border focus:outline-none"
                                    style="border-color: #e2e8f0; color: #1e293b;"
                                    placeholder="Titre en français">
@@ -63,6 +92,7 @@
                                 Title (EN) <span style="color: #ef4444;">*</span>
                             </label>
                             <input x-model="title_en" x-name="title_en" type="text"
+                                   @input="autoSlug('en', $event.target.value)"
                                    class="w-full text-sm px-3 py-2.5 rounded-lg border focus:outline-none"
                                    style="border-color: #e2e8f0; color: #1e293b;"
                                    placeholder="Title in English">
@@ -74,6 +104,7 @@
                                 Slug <span style="color: #ef4444;">*</span>
                             </label>
                             <input x-model="slug" x-name="slug" type="text"
+                                   @input="slugEditedManually = true"
                                    class="w-full text-xs px-3 py-2.5 rounded-lg border focus:outline-none font-mono"
                                    style="border-color: #e2e8f0; color: #475569;"
                                    placeholder="mon-album-slug">
@@ -124,7 +155,10 @@
                     </div>
 
                     <button
-                        @click="$action('{{ route('admin.gallery.albums.store') }}')"
+                        @click="$action.post('{{ route('admin.gallery.albums.store') }}', {
+                            include: ['title_fr', 'title_en', 'slug', 'description_fr', 'description_en', 'is_published'],
+                            onProgress: (progress) => uploadProgress = progress
+                        })"
                         :disabled="$fetching()"
                         class="w-full mt-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
                         style="background-color: #c80078;">
@@ -145,10 +179,18 @@
                             <span class="text-xs" style="color: #94a3b8;">Aucune image sélectionnée</span>
                         </template>
                     </div>
-                    <input type="file" name="cover" x-files accept="image/*"
+                    <input type="file" name="cover" accept="image/*"
+                           x-name="cover"
+                           x-files.max-size-15mb
                            class="w-full text-xs"
                            style="color: #64748b;">
                     <p class="text-xs mt-2" style="color: #cbd5e1;">JPEG, PNG, WebP — max 15 MB</p>
+                    <p x-message="cover" class="text-xs mt-1" style="color: #ef4444;"></p>
+                    <div x-show="uploadProgress > 0 && uploadProgress < 100" class="mt-2">
+                        <div class="h-1.5 rounded-full overflow-hidden" style="background-color: #e2e8f0;">
+                            <div class="h-full transition-all" :style="`width: ${uploadProgress}%; background-color: #c80078;`"></div>
+                        </div>
+                    </div>
                 </div>
 
                 {{-- Nav --}}

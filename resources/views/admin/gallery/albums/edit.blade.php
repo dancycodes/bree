@@ -14,7 +14,10 @@
             description_fr: {{ Js::from($album->description_fr ?? '') }},
             description_en: {{ Js::from($album->description_en ?? '') }},
             is_published: {{ $album->is_published ? 'true' : 'false' }},
-            activeLang: 'fr'
+            activeLang: 'fr',
+            switchLang(lang) {
+                this.activeLang = lang;
+            }
         }"
         x-sync>
 
@@ -26,11 +29,11 @@
                 {{-- Titles --}}
                 <div class="bg-white rounded-2xl shadow-sm p-6">
                     <div class="flex border-b mb-5" style="border-color: #e2e8f0;">
-                        <button @click="activeLang = 'fr'" class="flex-1 py-3 text-xs font-semibold transition-colors"
+                        <button @click="switchLang('fr')" class="flex-1 py-3 text-xs font-semibold transition-colors"
                                 :style="activeLang === 'fr' ? 'color: #c80078; border-bottom: 2px solid #c80078;' : 'color: #94a3b8;'">
                             Français
                         </button>
-                        <button @click="activeLang = 'en'" class="flex-1 py-3 text-xs font-semibold transition-colors"
+                        <button @click="switchLang('en')" class="flex-1 py-3 text-xs font-semibold transition-colors"
                                 :style="activeLang === 'en' ? 'color: #c80078; border-bottom: 2px solid #c80078;' : 'color: #94a3b8;'">
                             English
                         </button>
@@ -127,7 +130,9 @@
                     </div>
 
                     <button
-                        @click="$action.patch('{{ route('admin.gallery.albums.update', $album) }}')"
+                        @click="$action.post('{{ route('admin.gallery.albums.update', $album) }}', {
+                            include: ['title_fr', 'title_en', 'slug', 'description_fr', 'description_en', 'is_published']
+                        })"
                         :disabled="$fetching()"
                         class="w-full mt-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
                         style="background-color: #c80078;">
@@ -163,10 +168,11 @@
                             @endif
                         </template>
                     </div>
-                    <input type="file" name="cover" x-files accept="image/*"
+                    <input type="file" name="cover" x-files.max-size-15mb accept="image/*"
                            class="w-full text-xs"
                            style="color: #64748b;">
                     <p class="text-xs mt-2" style="color: #cbd5e1;">JPEG, PNG, WebP — max 15 MB</p>
+                    <p x-message="cover" class="text-xs mt-1" style="color: #ef4444;"></p>
                 </div>
 
                 {{-- Danger zone --}}
